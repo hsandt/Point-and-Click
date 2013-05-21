@@ -2,6 +2,7 @@
 
 from gamestate import GameState
 from view import LayeredView
+from adventure.models import 
 
 class AdventureState(GameState):
     """Gamestate du menu de pause
@@ -10,7 +11,6 @@ class AdventureState(GameState):
 
     view    --  conteneur des couches de vue
     area    --  aire visitée
-
 
     """
 
