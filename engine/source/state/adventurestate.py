@@ -20,7 +20,7 @@ class AdventureState(GameState):
 
     def on_enter(self):
         self.view = LayeredView()
-        area = Area()
+        self.area = Area()
 
     def on_exit(self):
     	pass
