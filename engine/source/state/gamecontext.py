@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from gamestate import GameState
 from menustate import MenuState
 from adventurestate import AdventureState
@@ -13,15 +15,16 @@ class GameContext(object):
 
     def __init__(self, initial_state_name = "menu"):
         # deux attributs menustate et adventurestate
-        self.menustate = MenuState()
-        self.adventurestate = AdventureState()
-        if initial_state_name == "menu":
-            self.state = self.menustate
-        elif initial_state_name = "adventure":
-            self.state = self.adventurestate
+        self.states = {
+            'menu': MenuState()
+            'adventure': AdventureState()
+        }
+        if initial_state_name in self.states:
+            self.state = self.states[initial_state_name]
+            self.state.on_enter()
         else:
             raise InputError
-        self.state = initial_state_name
+        
 
     def change_state(self, gamestate):
         pass

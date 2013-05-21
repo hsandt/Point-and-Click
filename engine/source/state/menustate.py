@@ -1,10 +1,12 @@
-from gamecontext import menustate
+# -*- coding: utf-8 -*-
+
+from gamestate import GameState
 
 class MenuState(GameState):
     """Gamestate du menu de pause"""
 
     def __init__(self):
-        pass
+        GameState.__init__(self)
 
     def on_enter(self):
         pass
