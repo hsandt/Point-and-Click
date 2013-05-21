@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
 class GameState(object):
-    """Gamestate abstrait"""
+    """
+    Gamestate abstrait
 
-    def __init__(self):
-        pass
+    Attributs:
+
+    gc		--	game context supervisant ce game state
+    """
+
+    def __init__(self, gc):
+        self.gc = gc
 
     def on_enter(self):
         pass

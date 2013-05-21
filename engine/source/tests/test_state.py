@@ -8,5 +8,5 @@ def setup_module(module):
 def test_game_context_init():
 	assert gc.state == gc.states['menu']
 
-def test_game_context_init():
-	assert gc.state == gc.states['menu']
+# def test_game_context_init():
+	# assert gc.state == gc.states['menu']
