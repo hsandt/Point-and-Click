@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import pygame
 
-class LayeredView(pygame.sprite.LayeredUpdate):
+class LayeredView(pygame.sprite.LayeredUpdates):
 	"""manage the different layers of the game, display or hide them when required"""
 	def __init__(self):
-		pygame.sprite.LayeredUpdate.__init__(self)
+		pygame.sprite.LayeredUpdates.__init__(self)
 		pass
 
-	def loadArea(self, int area):
+	def loadArea(self, area):
 		pass
 		
 	def clearMenuLayer(self):
@@ -16,7 +16,7 @@ class LayeredView(pygame.sprite.LayeredUpdate):
 	def fillMenuLayer(self):
 		pass
 
-	def displayText(pygame.Surface text):
+	def displayText(text):
 		pass
 
 	def clearText(self):
