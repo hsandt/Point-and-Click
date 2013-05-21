@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 
-class InputException(Exception):
-	"""docs.python.org/2/tutorial/errors.html
+# source: docs.python.org/2/tutorial/errors.html
+
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+class InputError(Error):
+	"""
 	Exception raised for errors in the input.
 
 	Attributes:
@@ -14,4 +20,16 @@ class InputException(Exception):
 		self.expr = expr
 		self.msg = msg
 
-# class TransitionError()
+class LoadError(Error):
+	"""
+	Raised when an error occurs while trying to load a resource.
+
+	Attributes:
+		res 	-- resource that should have been loaded
+		msg		-- explanation of the error
+	
+	"""
+
+	def __init__(self, res, msg):
+		self.expr = res
+		self.msg = msg
