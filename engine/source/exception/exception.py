@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class InputException(Exception)
+class InputException(Exception):
 	"""docs.python.org/2/tutorial/errors.html
 	Exception raised for errors in the input.
 

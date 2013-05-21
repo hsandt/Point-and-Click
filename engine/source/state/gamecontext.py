@@ -3,37 +3,40 @@
 from gamestate import GameState
 from menustate import MenuState
 from adventurestate import AdventureState
+from exception.exception import InputException
 
 class GameContext(object):
     """
     Contexte du state pattern appliqué aux gamestates
-    Remarque : si d'autres states, ne pas hésiter utiliser des héritages oudes décorateurs
+    Remarque : si d'autres states, ne pas hésiter utiliser des héritages ou des décorateurs
 
-    Keywords:
+    Attributs:
     state   --      état actuel
     """
 
     def __init__(self, initial_state_name = "menu"):
-        # deux attributs menustate et adventurestate
+        """Initialise les gamestates et lance le state initial"""
         self.states = {
-            'menu': MenuState()
+            'menu': MenuState(),
             'adventure': AdventureState()
         }
         if initial_state_name in self.states:
             self.state = self.states[initial_state_name]
             self.state.on_enter()
         else:
-            raise InputError
+            raise InputException
         
-
-    def change_state(self, gamestate):
-        pass
+    def change_state(self, state_name):
+        """Change le gamestate actuel en appliquant les pre/post-conditions"""
+        self.state.on_exit()
+        self.state = self.states[initial_state_name]
+        self.state.on_enter()
 
     def handle_input(self):
-        pass
+        self.state.handle_input()
 
     def update(self):
-        pass
+        self.state.update()
 
     def render(self):
-        pass
+        self.state.render()

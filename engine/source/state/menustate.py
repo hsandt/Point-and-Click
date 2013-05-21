@@ -11,6 +11,9 @@ class MenuState(GameState):
     def on_enter(self):
         pass
 
+    def on_exit(self):
+    	pass
+
     def handle_input(self):
         pass
 
