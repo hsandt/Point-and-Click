@@ -2,6 +2,7 @@
 
 from gamestate import GameState
 from view import LayeredView
+from adventure.models import Area
 
 class AdventureState(GameState):
     """Gamestate du menu de pause
@@ -11,7 +12,6 @@ class AdventureState(GameState):
     view    --  conteneur des couches de vue
     area    --  aire visitée
 
-
     """
 
     def __init__(self):
@@ -20,7 +20,7 @@ class AdventureState(GameState):
 
     def on_enter(self):
         self.view = LayeredView()
-        # area = Area()
+        area = Area()
 
     def on_exit(self):
     	pass
