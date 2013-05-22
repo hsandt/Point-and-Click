@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from sample import main
+
 def main():
-	pass
+	main.main()
 
 if __name__ == "main":
 	main()
