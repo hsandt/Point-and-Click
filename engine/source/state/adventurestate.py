@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from gamestate import GameState
-from view import LayeredView
+from view.layeredview import LayeredView
 from adventure.models import Area
 
 class AdventureState(GameState):
@@ -14,9 +14,9 @@ class AdventureState(GameState):
 
     """
 
-    def __init__(self):
+    def __init__(self, gc):
         """Initialisation des ressources et des modèles qui ne doivent être initialisés qu'une seule fois"""
-        GameState.__init__(self)
+        GameState.__init__(self, gc)
 
     def on_enter(self):
         self.view = LayeredView()
@@ -29,4 +29,7 @@ class AdventureState(GameState):
         pass
 
     def render(self):
+        pass
+
+    def addArea(self):
         pass

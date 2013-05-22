@@ -5,8 +5,8 @@ from gamestate import GameState
 class MenuState(GameState):
     """Gamestate du menu de pause"""
 
-    def __init__(self):
-        GameState.__init__(self)
+    def __init__(self, gc):
+        GameState.__init__(self, gc)
 
     def on_enter(self):
         pass
