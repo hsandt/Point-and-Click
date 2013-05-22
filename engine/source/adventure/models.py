@@ -1,16 +1,24 @@
 # -*-coding:Latin-1 -*
 import pygame
 from pygame import sprite
+from helper.load import load_image
 
 class Area(object):
     """Zone : lieu contenant des Elements, et où le protagoniste peut se déplacer"""
 
-    def __init__(self, name, image_path):
-        
+    def __init__(self, name, image_name):
+        """blablabla...
+        >>> room = Area("blue screen of death", "../test_resource/background.png")
+        >>> teapot = Element("teapot", "../test_resource/teapot.png", (15,30), (60,40))
+        >>> room.add(teapot, "a teapot")
+        >>> print room
+        >>> room.get_element('a teapot').take()
+        """
         self.name = name
         # pour l'instant, je laisse le développeur entrer le path complet...
-        self.image = pygame.image.load(image_path)
+        self.image = load_image(image_name)
         self.elements = pygame.sprite.Group()              # on commence avec un groupe d'Eléments vide
+        print "ok"
 
     def add(self, element, name):
         self.elements.add(element)
@@ -65,7 +73,9 @@ class InteractiveButton(Element):
 class InteractiveMenu:
     """Menu contextuel s'affichant lorsque le joueur clique"""
     def __init__(self, *buttons):
-        self.buttons = 
+        pass
+        # self.buttons = 
+
         
 # class ElementGroup(sprite.Group):
 #     """
