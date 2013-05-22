@@ -3,10 +3,15 @@
 from gamestate import GameState
 
 class MenuState(GameState):
-    """Gamestate du menu de pause"""
+    """Gamestate du menu de pause
 
-    def __init__(self):
-        GameState.__init__(self)
+    Attributs :
+        gc      --  game context supervisant ce game state
+    
+    """
+
+    def __init__(self, gc):
+        GameState.__init__(self, gc)
 
     def on_enter(self):
         pass
