@@ -25,8 +25,6 @@ def test_game_context_enter_state():
 	gc = game.context
 	assert gc.state == gc.states['adventure']
 
-# def test_game_context_init():
-# 	assert gc.state == gc.states['menu']
-
-# def test_game_context_init():
-	# assert gc.state == gc.states['menu']
+def test_game_context_init():
+	gc = game.context
+	assert gc.state == gc.states['adventure']
