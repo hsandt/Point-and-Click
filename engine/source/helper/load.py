@@ -3,15 +3,16 @@
 import os, sys
 import pygame
 from files import get_full_path
+from exception.exception import LoadError
 
 def load_image(name, colorkey=None):
     """helper to load images with transparency"""
-    fullname = os.path.join(get_full_path('resource', name))
+    fullname = os.path.join(get_full_path('test_resource', name))
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:
         print 'Cannot load image:', name
-        raise LoadException (message) # pas ultra
+        raise LoadError(name, message)
     else:
         image = image.convert()
 

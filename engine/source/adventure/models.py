@@ -1,7 +1,7 @@
 # -*-coding:Latin-1 -*
 import pygame
 from pygame import sprite
-from helper import load
+from helper.load import load_image
 
 class Area(object):
     """Zone : lieu contenant des Elements, et où le protagoniste peut se déplacer"""
@@ -16,8 +16,9 @@ class Area(object):
         """
         self.name = name
         # pour l'instant, je laisse le développeur entrer le path complet...
-        self.image = load.load_image(image_name)
+        self.image = load_image(image_name)
         self.elements = pygame.sprite.Group()              # on commence avec un groupe d'Eléments vide
+        print "ok"
 
     def add(self, element, name):
         self.elements.add(element)
