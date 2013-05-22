@@ -65,7 +65,7 @@ class InteractiveButton(Element):
 class InteractiveMenu:
     """Menu contextuel s'affichant lorsque le joueur clique"""
     def __init__(self, *buttons):
-        self.buttons = 
+        self.buttons = None
         
 # class ElementGroup(sprite.Group):
 #     """
