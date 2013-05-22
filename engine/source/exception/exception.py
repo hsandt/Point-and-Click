@@ -33,3 +33,17 @@ class LoadError(Error):
 	def __init__(self, res, msg):
 		self.expr = res
 		self.msg = msg
+
+class OverwriteError(Error):
+	"""
+	Raised when an error occurs while trying to load a resource.
+
+	Attributes:
+		res 	-- resource that should have been loaded
+		msg		-- explanation of the error
+	
+	"""
+
+	def __init__(self, res, msg):
+		self.expr = res
+		self.msg = msg

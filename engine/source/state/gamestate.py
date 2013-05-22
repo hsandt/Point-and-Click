@@ -5,8 +5,8 @@ class GameState(object):
     Gamestate abstrait
 
     Attributs:
-
-    gc		--	game context supervisant ce game state
+        gc		--	game context supervisant ce game state
+    
     """
 
     def __init__(self, gc):
