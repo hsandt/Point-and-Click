@@ -1,16 +1,7 @@
-import sys
-# sys.path.append('/Developer/Library/Python')
-sys.path.append('/Users/hs/Projets/Python/Point-and-click/repo/engine')
-# import pace
-from source import *
-import django
+from state import game
 
 def main():
-	# print source
-	# print django
-	# print dir(source)
-	# print (source.__file__)
-	pac = state.game.PaCGame((800, 600))
+	pac = game.PaCGame((800, 600))
 	pac.enter_state("adventure")
 
 	bsod = pace.adventure.models.Area("blue screen of death", "background.png")
