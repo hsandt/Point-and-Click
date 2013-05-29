@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from nose import with_setup
+from nose.tools import raises
 
+from exception.exception import InputError
 from state.game import PaCGame
 
 def setup_module(module):
@@ -30,6 +32,7 @@ def test_enter_state():
 	gc = game.context
 	assert gc.state == gc.states['menu']
 
-# def test_game_context_init():
-# 	gc = game.context
-# 	assert gc.state == gc.states['adventure']
+@raises(InputError)
+def test_enter_wrong_state():
+	game.context.enter_state('wrong_state')
+

@@ -3,7 +3,7 @@
 import pygame
 from menustate import MenuState
 from adventurestate import AdventureState
-from exception.exception import InputError
+from ..exception.exception import InputError
 
 class PaCGame(object):
     """
@@ -12,7 +12,7 @@ class PaCGame(object):
     Gère la boucle event-update-render centrée sur le Game Context
 
     Attributs:
-    screen      --      pygame.Surface représentant l'écran de jeu
+        screen      --      pygame.Surface représentant l'écran de jeu
     
     """
 
