@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
-from adventure.models import *
+from source.adventure.models import *
 
 class TestArea(unittest.TestCase):
 

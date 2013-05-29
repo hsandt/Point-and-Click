@@ -1,9 +1,8 @@
 # -*-coding:Latin-1 -*
 import pygame
-from pygame import sprite
-from helper.load import load_image
+from source.helper.load import load_image
 
-class Area(object):
+class Area:
     """Zone : lieu contenant des Elements, et où le protagoniste peut se déplacer"""
 
     def __init__(self, name, image_name):
@@ -16,7 +15,7 @@ class Area(object):
         """
         self.name = name
         # pour l'instant, je laisse le développeur entrer le path complet...
-        self.image = load_image(image_name)
+        self.image = pygame.iamge.load(image_name)
         self.elements = pygame.sprite.Group()              # on commence avec un groupe d'Eléments vide
         print "ok"
 
@@ -39,11 +38,11 @@ class Area(object):
         room_str += room_str.join([("-" + element + "\n") for element in self.elements.dict])
         return room_str
 
-class Element(sprite.Sprite):
+class Element(pygame.sprite.Sprite):
     """Elément : Personnage ou Objet situé dans une Zone, avec lequel le protagoniste peut interagir"""
 
     def __init__(self, name, image_path, position, size):
-        sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self)
         self.name = name
         self.image = pygame.image.load(image_path)
         self.rect = pygame.Rect((position, size))
@@ -63,19 +62,24 @@ class InteractiveButton(Element):
         self.action_name = action_name
 
     def on_click(self):
-        #Que se passe-t-il?
+        #Que se passe-t-il? Action à définir en fonction du bouton défini
         print("On me clique dessus, que dois-je faire?")
 
     def notify_menu(self,menu):
         #prévient le menu dont le bouton fait parti qu'il a été cliqué
+
         pass
         
 class InteractiveMenu:
-    """Menu contextuel s'affichant lorsque le joueur clique"""
+    """Menu contextuel s'affichant lorsque le joueur clique sur un element"""
     def __init__(self, *buttons):
+        buttons = list(buttons)
+        for i,button in enumerate(buttons):
+            buttons[i] = button
 
-        pass
-        # self.buttons = 
+        def notify_adventure(self):
+            #Prévient Adventure qu'un des bouttons du menu a été cliqué
+            pass
         
 # class ElementGroup(sprite.Group):
 #     """
@@ -134,7 +138,7 @@ class Character(Entity):
 
     def talk(self):
         #affiche une boite de dialogue avec un texte (peut-être la descrition)
-        pass
+        print("Bonjour! Je suis un PNJ")
         
 
 class Inventory(pygame.sprite.Group):
@@ -159,8 +163,16 @@ class Inventory(pygame.sprite.Group):
 
     def __str__(self):
         inv_str = "Dans l'inventaire, il y a :"
-        inv_str += inv_str.join([("-" + element + "\n") for element in self.sprites])
+        inv_str += inv_str.join([("-" + element + "\n") for element in self.pygame.sprite.Group])
         return room_str
+
+class Cursor(pygame.sprite.Sprite):
+    """curseur de la souris"""
+    def __init__(self, position, state):
+        pygame.sprite.Sprite.__init__(self)
+        self.position = pygame.mouse.get_pos()
+        self.state = pygame.mouse.get_pressed()
+        
         
         
 
