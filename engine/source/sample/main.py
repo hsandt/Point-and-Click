@@ -1,8 +1,8 @@
-import ..state.game
-import ..adventure
+from ..state import game
+from .. import adventure
 
 def main():
-	pac = state.game.PaCGame((800, 600))
+	pac = game.PaCGame((800, 600))
 	pac.context.enter_state("adventure")
 	bsod = adventure.models.Area("blue screen of death", "background.png")
 	# room = Area("blue screen of death", "../test_resource/background.png")

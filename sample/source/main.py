@@ -5,8 +5,9 @@ import source as pace # debug version
 from source.adventure import models
 
 def main():
-    pac = pace.state.game.PaCGame((800, 600))
-    pac.context.enter_state("adventure")
+    pac_game = pace.state.game.PaCGame((800, 600))
+    adv = pac_game.context.states['adventure']
+
 
     bsod = models.Area("blue screen of death", "background.png")
     room = models.Area("blue screen of death", "../test_resource/background.png")
@@ -14,6 +15,8 @@ def main():
     room.add(teapot, "a teapot")
     print room
     room.get_element('a teapot').take()
+
+    pac.context.enter_state("adventure")
 
 if __name__ == '__main__':
     main()

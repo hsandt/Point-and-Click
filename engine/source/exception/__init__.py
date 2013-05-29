@@ -1,1 +1,1 @@
-import exception # to put in the root
+# from .exception import InputError # to put in the root

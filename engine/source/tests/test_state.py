@@ -3,8 +3,8 @@
 from nose import with_setup
 from nose.tools import raises
 
-from exception.exception import InputError
-from state.game import PaCGame
+from ..exception.exception import InputError
+from ..state.game import PaCGame
 
 def setup_module(module):
 	module.game = PaCGame((800,600))

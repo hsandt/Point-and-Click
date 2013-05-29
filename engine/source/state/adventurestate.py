@@ -7,7 +7,7 @@ from ..adventure.models import Area
 class AdventureState(GameState):
     """Gamestate du menu de pause
 
-    Attributs:
+    Attributs :
         gc      --  game context supervisant ce game state
         view    --  conteneur des couches de vue
         area    --  aire visitée
@@ -35,7 +35,7 @@ class AdventureState(GameState):
     def render(self):
         pass
 
-    def addArea(self, area, area_codename = None):
+    def add_area(self, area, area_codename = None):
         """
         Attache la zone area à l'AdventureState sous l'entrée codename dans le dictionnaire
 
@@ -48,3 +48,5 @@ class AdventureState(GameState):
         if area_codename is None:
             area_codename = area.name
         self.areas[area_codename]
+
+    # def _

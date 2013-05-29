@@ -4,21 +4,30 @@ from pygame import sprite
 from ..helper.load import load_image
 
 class Area(object):
-    """Zone : lieu contenant des Elements, et où le protagoniste peut se déplacer"""
+    """
+    Zone de jeu.
+    Elle possède son propre décor de fond et contient des élements.
 
-    def __init__(self, name, image_name):
-        """blablabla...
-        >>> room = Area("blue screen of death", "../test_resource/background.png")
-        >>> teapot = Element("teapot", "../test_resource/teapot.png", (15,30), (60,40))
-        >>> room.add(teapot, "a teapot")
-        >>> print room
-        >>> room.get_element('a teapot').take()
+    Attributs :
+        codename    --  chaîne servant d'identifiant (minuscules, sans espace)
+        fullname    --  nom descriptif de la zone ; par défaut, égal au codename
+        image       --  image du décor de fond
+        elements    --  groupe des éléments contenus
+
+    """
+
+    def __init__(self, codename, image_name, fullname = None):
         """
-        self.name = name
-        # pour l'instant, je laisse le développeur entrer le path complet...
+        """
+        self.codename = codename
+        if fullname is None:
+            self.fullname = codename
+        else:
+            self.fullname = fullname
+
         self.image = load_image(image_name)
-        self.elements = pygame.sprite.Group()              # on commence avec un groupe d'Eléments vide
-        print "ok"
+        
+        self.elements = pygame.sprite.Group()
 
     def add(self, element, name):
         self.elements.add(element)
@@ -35,8 +44,8 @@ class Area(object):
 
 
     def __str__(self):
-        room_str = "Dans " + self.name + " il y a :"
-        room_str += room_str.join([("-" + element + "\n") for element in self.elements.dict])
+        room_str = "Dans " + self.fullname + " il y a :"
+        room_str += room_str.join([("-" + str(element) + "\n") for element in self.elements.sprites()])
         return room_str
 
 class Element(sprite.Sprite):
