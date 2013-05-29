@@ -1,7 +1,7 @@
 # -*-coding:Latin-1 -*
 import pygame
 from pygame import sprite
-from helper.load import load_image
+from ..helper.load import load_image
 
 class Area(object):
     """Zone : lieu contenant des Elements, et où le protagoniste peut se déplacer"""
