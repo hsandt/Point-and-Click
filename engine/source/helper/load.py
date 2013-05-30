@@ -3,7 +3,8 @@
 import os, sys
 import pygame
 from files import get_full_path
-from source.exception.exception import LoadError
+from ..exception.exception import LoadError
+
 
 def load_image(name, colorkey=None):
     """helper to load images with transparency"""

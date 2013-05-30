@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from sample import main
+import sample.main
 
 def main():
-	main.main()
+	sample.main.main()
 
-if __name__ == "main":
+if __name__ == "__main__":
 	main()

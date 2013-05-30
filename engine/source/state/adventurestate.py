@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from gamestate import GameState
-from view.layeredview import LayeredView
-from adventure.models import Area
+from ..view.layeredview import LayeredView
+from ..adventure.models import Area
 
 class AdventureState(GameState):
     """Gamestate du menu de pause

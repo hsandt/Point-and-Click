@@ -25,25 +25,25 @@ class LoadError(Error):
 	Raised when an error occurs while trying to load a resource.
 
 	Attributes:
-		res 	-- resource that should have been loaded
-		msg		-- explanation of the error
+		res_name 	-- name of the resource that should have been loaded
+		msg			-- explanation of the error
 	
 	"""
 
-	def __init__(self, res, msg):
-		self.expr = res
+	def __init__(self, res_name, msg):
+		self.res_name = res_name
 		self.msg = msg
 
 class OverwriteError(Error):
 	"""
-	Raised when an error occurs while trying to load a resource.
+	Raised when trying to add an element with a pre-existing key in a dictionary.
 
 	Attributes:
-		res 	-- resource that should have been loaded
-		msg		-- explanation of the error
+		codename 	-- identifier that is repeated in the insert
+		msg			-- explanation of the error
 	
 	"""
 
-	def __init__(self, res, msg):
-		self.expr = res
+	def __init__(self, codename, msg):
+		self.codename = codename
 		self.msg = msg
