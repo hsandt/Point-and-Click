@@ -44,7 +44,7 @@ class Element(pygame.sprite.Sprite):
     def __init__(self, name, image_path, position, size):
         pygame.sprite.Sprite.__init__(self)
         self.name = name
-        self.image = pygame.image.load(image_path)
+        self.image = load_image(image_path)
         self.rect = pygame.Rect((position, size))
         self.clickBox = pygame.Rect((position, size)) #zone cliquable, par défaut égale au rect précédent, pour l'instant ...
 
