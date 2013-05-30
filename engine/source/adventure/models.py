@@ -168,12 +168,16 @@ class Inventory(pygame.sprite.Group):
         inv_str += inv_str.join([("-" + element + "\n") for element in self.pygame.sprite.Group])
         return room_str
 
-class Cursor(pygame.sprite.Sprite):
-    """curseur de la souris"""
-    def __init__(self, position, state):
-        pygame.sprite.Sprite.__init__(self)
-        self.position = pygame.mouse.get_pos()
-        self.state = pygame.mouse.get_pressed()
+#Sourie gérée par Pygame
+# class Cursor(pygame.sprite.Sprite):
+#     """curseur de la souris"""
+#     def __init__(self, position, state, image_path):
+#         pygame.sprite.Sprite.__init__(self)
+#         self.position = pygame.mouse.get_pos()
+#         self.state = pygame.mouse.get_pressed()
+#         self.image = load_image(image_path)
+
+
         
         
         
