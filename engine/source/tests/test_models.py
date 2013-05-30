@@ -11,8 +11,8 @@ class TestArea(unittest.TestCase):
         self.teapot = Element("teapot", "teapot.png", (15,30), (60,40)) # later an item
 
     def test_add(self):
-        self.room.add(semf.teapot)
-        print room
+        self.room.add(self.teapot)
+        print self.room
         # room.get_element('a teapot').take()
         
     # def test_remove(self):

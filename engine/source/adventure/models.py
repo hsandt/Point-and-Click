@@ -17,11 +17,11 @@ class Area:
         """
         self.name = name
         # pour l'instant, je laisse le développeur entrer le path complet...
-        self.image = pygame.iamge.load(image_name)
+        self.image = load_image(image_name)
         self.elements = pygame.sprite.Group()              # on commence avec un groupe d'Eléments vide
         print "ok"
 
-    def add(self, element, name):
+    def add(self, element):
         self.elements.add(element)
 
     # def get_element(self, name):
@@ -37,7 +37,7 @@ class Area:
 
     def __str__(self):
         room_str = "Dans " + self.name + " il y a :"
-        room_str += room_str.join([("-" + element + "\n") for element in self.elements.dict])
+        room_str += room_str.join([("-" + element.name + "\n") for element in self.elements.sprites()])
         return room_str
 
 class Element(pygame.sprite.Sprite):
