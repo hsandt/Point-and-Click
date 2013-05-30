@@ -5,6 +5,7 @@ import pygame
 from files import get_full_path
 from ..exception.exception import LoadError
 
+
 def load_image(name, colorkey=None):
     """helper to load images with transparency"""
     fullname = os.path.join(get_full_path('test_resource', name))
