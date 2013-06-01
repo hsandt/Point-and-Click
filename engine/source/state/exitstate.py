@@ -2,15 +2,16 @@
 
 from gamestate import GameState
 
-class MenuState(GameState):
-    """Gamestate du menu de pause
+class ExitState(GameState):
+    """Gamestate temporaire de sortie
 
     Attributs :
         gc      --  game context supervisant ce game state
-    
+
     """
 
     def __init__(self, gc):
+        """Initialisation des ressources et des modèles qui ne doivent être initialisés qu'une seule fois"""
         GameState.__init__(self, gc)
 
     def on_enter(self):
@@ -24,6 +25,3 @@ class MenuState(GameState):
 
     def render(self, screen):
         pass
-
-    def __str__(self):
-        return "Menu State"
