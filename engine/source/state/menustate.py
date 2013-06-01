@@ -22,5 +22,8 @@ class MenuState(GameState):
     def handle_input(self):
         pass
 
-    def render(self):
+    def render(self, screen):
         pass
+
+    def __str__(self):
+        return "Menu State"
