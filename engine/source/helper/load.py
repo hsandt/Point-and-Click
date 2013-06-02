@@ -14,8 +14,8 @@ def load_image(image_path, colorkey=None):
         # never reached, pygame stops it here!
         raise LoadError(image_path, message)
     else:
-        image = image.convert()
         if colorkey is not None:
+            image = image.convert()
             if colorkey is -1:
                 colorkey = image.get_at((0,0))
                 # print(colorkey)
