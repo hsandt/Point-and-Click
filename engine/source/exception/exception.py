@@ -69,11 +69,11 @@ class AbstractMethodError(Error):
     Raised when trying to call an abstract method (that should have been overridden).
 
     Attributes:
-        object_name     --  name of the object on which the method was called
+        class_name      --  name of the object on which the method was called
         method_name     --  abstract method that was called
 
     """
 
-    def __init__(self, object_name, method_name):
-        self.object_name = object_name
+    def __init__(self, class_name, method_name):
+        self.class_name = class_name
         self.method_name = method_name

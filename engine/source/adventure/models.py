@@ -2,7 +2,8 @@
 import pygame
 from pygame import sprite
 from ..helper.load import load_image
-from ..exception.exception import GetError
+from ..exception.exception import GetError, AbstractMethodError
+
 
 class Area(sprite.Sprite):
     """
@@ -13,102 +14,132 @@ class Area(sprite.Sprite):
         codename         --  chaîne servant d'identifiant (minuscules, sans espace)
         fullname         --  nom descriptif de la zone ; par défaut, égal au codename
         image            --  image du décor de fond
-        element_group    --  groupe des éléments contenus
+        clickable_group  --  groupe des éléments cliquables contenus
 
     """
 
-    def __init__(self, codename, image_path, fullname=None):
+    def __init__(self, codename, fullname, image_path):
         """
         """
         sprite.Sprite.__init__(self)
-        self.codename = codename
-        if fullname is None:
-            self.fullname = codename
-        else:
-            self.fullname = fullname
+        set_names(self, codename, fullname)
 
         self.image = load_image(image_path)
         print image_path
-        self.rect = (0, 0)
+        self.rect = (0, 0, 800, 600)  # à étudier...
 
-        self.element_group = pygame.sprite.Group()
+        self.clickable_group = pygame.sprite.Group()
 
     def add(self, element):
-        self.element_group.add(element)
+        self.clickable_group.add(element)
         print 'element added ' + element.codename
+
+    def add_acitem(self, acitem, position):
+        acitem.rect.topleft = position
+        self.clickable_group.add(acitem)
+        print 'item ' + acitem.fullname + ' added to area ' + str(self)
 
     def get_element(self, codename):
         """get element by name (should it be precised in the method name?)"""
-        for element in self.element_group.sprites():
+        for element in self.clickable_group.sprites():
             if element.codename == codename:
                 return element
         raise GetError(codename, "Element codename was wrong.")
 
     def remove(self, element):
-        if self.element_group.has(element):
-            self.element_group.remove(element)
+        if self.clickable_group.has(element):
+            self.clickable_group.remove(element)
             print 'element removed : ' + element.codename
         else:
-            print("La salle ne contient pas " + element.name)
-
+            print("La salle ne contient pas " + element.codename)
+            print(str(self))
 
     def __str__(self):
+        # return self.fullname
         room_str = "Dans " + self.fullname + " il y a :"
-        room_str += room_str.join([("-" + str(element) + "\n") for element in self.element_group.sprites()])
+        room_str += room_str.join([("-" + str(element) + "\n") for element in self.clickable_group.sprites()])
         return room_str
 
-class Element(pygame.sprite.Sprite):
-    """Elément : Personnage ou Objet situé dans une Zone, avec lequel le protagoniste peut interagir"""
 
-    def __init__(self, codename, image_path, position, size, fullname = None):
+class Clickable(pygame.sprite.Sprite):
+    """
+    Elément cliquable : sprite disposant d'un comportement face au clic
+
+    Attributs :
+        Dérivés :
+            image
+            rect
+        Nouveaux :
+            codename    -- identifiant
+            fullname    -- nom descriptif
+            mask        -- masque pour la détection de clics
+
+    """
+
+    def __init__(self, codename, fullname, image_path, position, visibility=True):
         sprite.Sprite.__init__(self)
-        self.codename = codename
-        if fullname is None:
-            self.fullname = codename
-        else:
-            self.fullname = fullname
+        set_names(self, codename, fullname)
+        self.image = load_image(image_path)
+        self.rect = pygame.Rect(position, self.image.get_size())
+        self.mask = pygame.mask.from_surface(self.image)
+        self.visibility = visibility  # unused, should affect detection
 
-        self.image = pygame.image.load(image_path)
-        self.rect = pygame.Rect((position, size))
-        self.clickBox = pygame.Rect((position, size)) #zone cliquable, par défaut égale au rect précédent, pour l'instant ...
-
-    # def take(self):
-    #     print "taken " + self.name
-
-    def on_click(self):
-        #que se passe-t-il lorsqu'on clique sur l'objet?-> déléguer la tâche à la classe fille correspondante
-        print("On me clique dessus!")
+    def on_click(self, adventurestate):
+        # opération sur adventurestate déclenchée sur un clic gauche :
+        # déléguée à l'instance d'une classe dérivée
+        raise AbstractMethodError(self.__class__.__name__, "on_click")
 
     def __str__(self):
-        return self.codename + " : " + self.fullname
+        return "Clickable : " + self.codename + " : " + self.fullname
 
-class InteractiveButton(Element):
+
+class InteractiveButton(Clickable):
     """bouton constituant les menus contextuels"""
-    def __init__(self, codename, image_path, position, size, fullname=None):
-        Element.__init__(self, codename, image_path, position, size, fullname)
+    def __init__(self, codename, fullname, image_path, position):
+        Clickable.__init__(self, fullname, codename, image_path, position)
         # codename is fine for action_name
         # self.action_name = action_name
 
-    def on_click(self):
+    def on_click(self, adventurestate):
         #Que se passe-t-il? Action à définir en fonction du bouton défini
         print("On me clique dessus, que dois-je faire?")
+        adventurestate.set_action("take")
 
-    def notify_menu(self,menu):
+    def notify_menu(self, menu):
         #prévient le menu dont le bouton fait parti qu'il a été cliqué
 
         pass
-        
-class InteractiveMenu:
-    """Menu contextuel s'affichant lorsque le joueur clique sur un element"""
-    def __init__(self, *buttons):
-        buttons = list(buttons)
-        for i,button in enumerate(buttons):
-            buttons[i] = button
 
+
+class InteractiveMenu(sprite.Sprite):
+    """
+    Menu contextuel s'affichant lorsque le joueur clique sur un element
+
+    Attributs :
+        buttons     -- boutons utilisés (liste, hash ?)
+        visibility  -- booléean indiquant la visibilité (comme pour un élément mais ce n'en est pas tout à fait un)
+        image, pos... en fait, pourquoi ne pas dériver d'Element ?
+        -> tout est élément cliquable avec comportement
+        + introduire des patterns pour faire des jeux ressemblant à MI ou The Goonies !
+
+    """
+    def __init__(self, image_path, rect, visibility=False, *buttons):
+        sprite.Sprite.__init__(self)
+        buttons = list(buttons)
+        # for i, button in enumerate(buttons):
+        #     self.buttons[i] = button
+        # self.buttons = enumerate(buttons)
+        self.buttons = buttons # no enumerate for now
+        self.image = load_image(image_path)
+        self.rect = rect
+        self.visibility = visibility
+
+        # instead, use a link to adventure state
         def notify_adventure(self):
             #Prévient Adventure qu'un des bouttons du menu a été cliqué
             pass
-        
+
+
 # class ElementGroup(sprite.Group):
 #     """
 #     Groupe d'éléments : sprite group contenant tous les éléments d'une zone,
@@ -130,71 +161,121 @@ class InteractiveMenu:
 #     def get_element(self, name):
 #         return self.dict[name]
 
-class Entity(Element):
-    """Element du jeu autre que les portes avec lesquels, le joueur peut interagir"""
-    def __init__(self, description, visibility = True):
-        Element.__init__()
-        self.description = description #petit texte descriptif de l'element
-        self.visibility = visibility
+# class Entity(Element):
+#     """Element du jeu autre que les portes avec lesquels, le joueur peut interagir"""
+#     def __init__(self, description, visibility = True):
+#         Element.__init__()
+#         self.description = description #petit texte descriptif de l'element
+#         self.visibility = visibility
 
-    def examine(self):
-        """Affiche la description de l'objet"""
-        pass
+#     def examine(self):
+#         """Affiche la description de l'objet"""
+#         pass
 
-    def on_click(self):
-        #Que se passe-t-il lorsqu'on clique sur l'élément?
-        print("On me clique dessus, je ne sais pas quoi faire!!!")
+#     def on_click(self):
+#         #Que se passe-t-il lorsqu'on clique sur l'élément?
+#         print("On me clique dessus, je ne sais pas quoi faire!!!")
 
-class Item(Entity):
-    """Objets que le joueur peut prendre, examiner, activer"""
-    def __init__(self, description, visibility = True):
-        Entity.__init__(self, description, visibility)
 
-    def take(self, inventory, room):
+# use decorated entities!
+class Item(object):
+    """
+    Objet : représente un élément de jeu que le joueur peut prendre, examiner, utiliser
+
+    Il est distinct de sa représentation (sprite) dans la salle et dans l'inventaire.
+    Il n'a pas de position définie car c'est l'objet pur en tant que données / comportement
+
+    Attributs :
+        codename        -- identifiant
+        fullname        -- nom descriptif
+        #description     -- description
+        area_image      -- image utilisée dans la zone
+        inventory_image -- image utilisée dans l'inventaire
+
+    """
+    def __init__(self, codename, fullname, area_image_path, inventory_image_path):
+        ## TODO : put resource loading into the adventure state init by 'decorating' it?
+        ## this would be done in Area.add_item() method
+        set_names(self, codename, fullname)
+        self.area_image_path = area_image_path
+        self.inventory_image_path = inventory_image_path
+        self.area_clickable = AreaClickableItem(self, (0,0))
+
+    # def take(self, adventurestate):  # pas de différence avec attempt_to_take pour l'instant
+    #     """Ajoute l'item à l'inventaire"""
+    #     adventurestate.area.remove(self.area_clickable)
+    #     adventurestate.inventory.add(self)
+
+    def __str__(self):
+        return self.fullname
+
+
+class AreaClickableItem(Clickable):  # ??
+    def __init__(self, item, position, visibility=True):
+        Clickable.__init__(self, item.codename, item.fullname, item.area_image_path, position, visibility)
+
+    # common for any clickable ? only real elements ?
+    def on_click(self, adventurestate):
+        # en mode MI 1&2 : action latente
+        if hasattr(self, adventurestate.action):
+            # si l'action est connue de la part de l'item
+            getattr(self, adventurestate.action)(adventurestate)
+            # adventurestate.action = "look at"
+        else:
+            # si l'action est inconnue, c'est le message 'rien à faire' par défaut
+            print "Hum, je ne peux pas " + adventurestate.action + " cet objet."
+
+    def take(self, adventurestate):
         """Ajoute l'item à l'inventaire"""
-        inventory.add(self)
-        room.remove(self)
+        adventurestate.inventory.add_item(self)
+        adventurestate.area.remove(self)
 
     def use(self):
         #Que se passe-t-il?
+        print 'using ' + self.fullname
         pass
 
-class Character(Entity):
+## + les éléments du décor cliquables mais non obtensibles !
+
+class Character(Clickable):
     """PNJ avec lesquels on peut 'discuter' et plus si affinité (à la discrétion du développeur)"""
     def __init__(self):
-        Entity.__init__(self)
+        Clickable.__init__(self)
 
     def talk(self):
         #affiche une boite de dialogue avec un texte (peut-être la descrition)
         print("Bonjour! Je suis un PNJ")
-        
 
-class Inventory(pygame.sprite.Group):
+
+# ce n'est pas un groupe de sprites ! enfin si, mais ce sont les sprites "inventaire"
+# qui sont utilisés (image et position différentes)
+class Inventory(sprite.Group):
     """Inventaire du joueur"""
     def __init__(self):
-        pygame.sprite.Group.__init__()
-    
-    def add(self, item):
-        self.add(item)
+        sprite.Group.__init__(self)
+
+    ## DON'T USE PREDEFINED NAMES!!
+    def add_item(self, item):
+        self.add(item)  # group method!
         print("Le joueur prend " + item.fullname)
 
     def remove(self, item):
-        if this.has(item):
-            this.remove(item)
+        if self.has(item):
+            self.remove(item)
             print(item.fullname + " a été retiré de l'inventaire")
         else:
             print(item.fullname + " n'est pas dans l'inventaire")
 
     def clear(self):
-        this.empty()
+        self.empty()
         print("L'inventaire a été vidé")
 
     def __str__(self):
         inv_str = "Dans l'inventaire, il y a :"
         inv_str += inv_str.join([("-" + element + "\n") for element in self.pygame.sprite.Group])
-        return room_str
+        return inv_str
 
-#Sourie gérée par Pygame
+#Souris gérée par Pygame
 # class Cursor(pygame.sprite.Sprite):
 #     """curseur de la souris"""
 #     def __init__(self, position, state, image_path):
@@ -204,9 +285,18 @@ class Inventory(pygame.sprite.Group):
 #         self.image = load_image(image_path)
 
 
-        
-        
-        
+# helper pour fournir un nom complet si besoin
+# est-ce ok d'appeler le 1° argument self ?
+def set_names(self, codename, fullname):
+    self.codename = codename
+    if fullname is None:
+        self.fullname = codename
+    else:
+        self.fullname = fullname
+
+
+def get_area_clickable_from_item(item, position):
+    return Clickable(item.codename, item.fullname, item.area_image_path, position)
 
 
 # test unitaire
@@ -214,7 +304,7 @@ if __name__ == '__main__':
 
     # a room should
     room = Area("blue screen of death", "../test_resource/background.png")
-    teapot = Element("teapot", "../test_resource/teapot.png", (15,30), (60,40)) # later an item
+    teapot = Clickable("teapot", "../test_resource/teapot.png", (15, 30), (60, 40))  # later an item
     room.add(teapot)
     print room
     # room.get_element('a teapot').take()
@@ -223,6 +313,3 @@ if __name__ == '__main__':
     inventory.add(teapot)
     print inventory
     inventory.remove(teapot)
-
-
-

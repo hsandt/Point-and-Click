@@ -16,6 +16,14 @@ class LayeredView(pygame.sprite.LayeredUpdates):
     def __init__(self):
         pygame.sprite.LayeredUpdates.__init__(self)
         self.font = pygame.font.SysFont("helvetica", 20)
+        # blank_label = pygame.sprite.Sprite()
+        # blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
+        # blank_label.rect = (20, 400, 400, 30)
+        # self.add(blank_label, layer=3)  # initialize void text
+        self.reset()
+
+    def reset(self):  ## debug ?
+        self.empty()
         blank_label = pygame.sprite.Sprite()
         blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
         blank_label.rect = (20, 400, 400, 30)
@@ -28,7 +36,7 @@ class LayeredView(pygame.sprite.LayeredUpdates):
 
         """
         self.add(area, layer=0)
-        self.add(area.element_group.sprites(), layer=1)
+        self.add(area.clickable_group.sprites(), layer=1)
         print 'loaded area'
 
     def clearMenuLayer(self):

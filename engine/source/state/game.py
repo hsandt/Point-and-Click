@@ -3,7 +3,7 @@
 import pygame
 from menustate import MenuState
 from adventurestate import AdventureState
-from ..exception.exception import InputError
+from ..exception.exception import InputError, AbstractMethodError
 
 
 class PaCGame(object):
@@ -34,16 +34,20 @@ class PaCGame(object):
     def run(self):
         """Lance le jeu"""
         clock = pygame.time.Clock()
-        while 1:
-            self.context.handle_input()
-            self.context.update()
-            self.context.render(self.screen)
-            pygame.display.flip()
 
-            if self.context.enter_incoming_state():
-                return  # signal de sortie détecté
+        try:
+            while 1:
+                self.context.handle_input()
+                self.context.update()
+                self.context.render(self.screen)
+                pygame.display.flip()
 
-            clock.tick(self.FPS)
+                if self.context.enter_incoming_state():
+                    return  # signal de sortie détecté
+
+                clock.tick(self.FPS)
+        except AbstractMethodError as e:
+            print("ERROR: tried to call an abstract method " + e.method_name + " from class " + e.class_name)
 
 
 class GameContext(object):

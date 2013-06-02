@@ -18,7 +18,6 @@ class AdventureState(GameState):
         inventory   --  inventaire de l'avatar
         menu        --  menu interactif
         #action     --  action en cours de sélection dans le cas d'un menu à la Monkey Island voire à la Goonies
-        
 
     """
 
@@ -34,6 +33,7 @@ class AdventureState(GameState):
         self.cursor = None
         self.label = None
         self.mouse_command = {'left': None, 'right': None}
+        self.action = "look at"
 
     def on_exit(self):
         pass
@@ -76,8 +76,12 @@ class AdventureState(GameState):
                 print ("the clicked elt has an on_click()")
                 elt.on_click(self)
 
-
     def render(self, screen):
+        # tempo : on refait tout pour être à jour !
+        self.view.reset()
+        self.view.loadArea(self.area)
+        self.set_menu(self.menu)
+        self.view.displayText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
         self.view.draw(screen)
 
     ##
