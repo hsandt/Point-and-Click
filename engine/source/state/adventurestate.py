@@ -78,11 +78,11 @@ class AdventureState(GameState):
 
     def render(self, screen):
         # tempo : on refait tout pour être à jour !
-        self.view.reset()
-        self.view.loadArea(self.area)
-        self.set_menu(self.menu)
-        self.view.displayText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
-        self.view.draw(screen)
+        # self.view.reset()
+        # self.view.loadArea(self.area)
+        # self.set_menu(self.menu)
+        # self.view.displayText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
+        self.view.draw(screen)  # for now, bg and all
 
     ##
     ## peut-être décorer toute la suite pour le caser dans le init
@@ -120,6 +120,16 @@ class AdventureState(GameState):
     def leave_area(self):
         self.area = None
         self.view.empty()
+
+    # gère modèles et vues, évite les rafraîchissements inutiles
+    def remove_item_from_area(self, item, area):
+        """Retire un item d'une zone donnée"""
+        self.area.remove(item)
+        self.view.remove_item(item)
+
+    def remove_item(self, item):
+        """Retire un item de la zone active"""
+        self.remove_item_from_area(item, self.area)
 
     def set_menu(self, menu):
         self.menu = menu

@@ -201,39 +201,47 @@ class Item(object):
         self.inventory_image_path = inventory_image_path
         self.area_clickable = AreaClickableItem(self, (0,0))
 
-    # def take(self, adventurestate):  # pas de différence avec attempt_to_take pour l'instant
-    #     """Ajoute l'item à l'inventaire"""
-    #     adventurestate.area.remove(self.area_clickable)
-    #     adventurestate.inventory.add(self)
+    def look_at(self, adventurestate):
+        print 'looking at...'
+
+    # pas de différence avec attempt_to_take pour l'instant
+    def take(self, adventurestate):
+        """Ajoute l'item à l'inventaire"""
+        # use codenames!
+        adventurestate.inventory.add_item(self.area_clickable)
+        adventurestate.remove_item(self.area_clickable)
+
+    def use(self):
+        #Que se passe-t-il?
+        print 'using ' + self.fullname
+        pass
 
     def __str__(self):
         return self.fullname
 
 
 class AreaClickableItem(Clickable):  # ??
+    """
+    Attributs :
+        item       -- référence à l'item (modèle)
+    """
     def __init__(self, item, position, visibility=True):
         Clickable.__init__(self, item.codename, item.fullname, item.area_image_path, position, visibility)
+        self.item = item
 
     # common for any clickable ? only real elements ?
     def on_click(self, adventurestate):
         # en mode MI 1&2 : action latente
-        if hasattr(self, adventurestate.action):
+        if hasattr(self.item, adventurestate.action):
             # si l'action est connue de la part de l'item
-            getattr(self, adventurestate.action)(adventurestate)
+            print "item name: " + self.item.codename
+            getattr(self.item, adventurestate.action)(adventurestate)
             # adventurestate.action = "look at"
         else:
             # si l'action est inconnue, c'est le message 'rien à faire' par défaut
-            print "Hum, je ne peux pas " + adventurestate.action + " cet objet."
+            print "Hum, je ne peux pas " + adventurestate.action + " l'objet. (action inconnue)"
 
-    def take(self, adventurestate):
-        """Ajoute l'item à l'inventaire"""
-        adventurestate.inventory.add_item(self)
-        adventurestate.area.remove(self)
 
-    def use(self):
-        #Que se passe-t-il?
-        print 'using ' + self.fullname
-        pass
 
 ## + les éléments du décor cliquables mais non obtensibles !
 
