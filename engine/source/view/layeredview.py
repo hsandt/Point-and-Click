@@ -24,9 +24,11 @@ class LayeredView(pygame.sprite.LayeredUpdates):
 
     def reset(self):  ## debug ?
         self.empty()
+        # this should be set manually (at least position)
         blank_label = pygame.sprite.Sprite()
-        blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
-        blank_label.rect = (20, 200, 400, 30)
+        # blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
+        blank_label.image = pygame.Surface((400, 30))  # to see it more easily
+        blank_label.rect = (20, 290, 400, 30)
         self.add(blank_label, layer=3)  # initialize void text
 
     def loadArea(self, area):
@@ -35,7 +37,8 @@ class LayeredView(pygame.sprite.LayeredUpdates):
         et tous ses objets en mid (couche 1)
 
         """
-        self.empty()  # don't forget to reset!
+        self.remove_sprites_of_layer(0)  # clear bg layer
+        self.remove_sprites_of_layer(1)  # clear item layer
         self.add(area, layer=0)
         self.add(area.clickable_group.sprites(), layer=1)
         print 'loaded area'
@@ -53,11 +56,11 @@ class LayeredView(pygame.sprite.LayeredUpdates):
             self.add(button, layer=2)
 
     def displayText(self, text, rect, textcolor, bgcolor):
-        print 'display Text'
         label_image = self.font.render(text, True, textcolor, bgcolor)
         label = self.get_sprites_from_layer(3)[0]
         label.image = label_image
-        label.rect = rect
+        if rect is not None:  # if no rect is passed, keep it!
+            label.rect = rect
         # rect may be preserved by default or something (static text)
 
     def clearText(self):

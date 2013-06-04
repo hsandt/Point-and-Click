@@ -96,6 +96,7 @@ class Clickable(pygame.sprite.Sprite):
 class InteractiveButton(Clickable):
     """bouton constituant les menus contextuels"""
     def __init__(self, codename, fullname, image_path, position):
+        # may use relative coords here (to the menu)
         Clickable.__init__(self, fullname, codename, image_path, position)
         # codename is fine for action_name
         # self.action_name = action_name
@@ -236,11 +237,10 @@ class AreaClickableItem(Clickable):  # ??
             # si l'action est connue de la part de l'item
             print "item name: " + self.item.codename
             getattr(self.item, adventurestate.action)(adventurestate)
-            # adventurestate.action = "look at"
         else:
             # si l'action est inconnue, c'est le message 'rien à faire' par défaut
-            print "Hum, je ne peux pas " + adventurestate.action + " l'objet. (action inconnue)"
-
+            print "Hum, je ne peux pas " + adventurestate.action + " l'objet " + self.item.fullname + ". (action inconnue)"
+        adventurestate.set_action("look_at")
 
 
 ## + les éléments du décor cliquables mais non obtensibles !

@@ -14,7 +14,7 @@ from source.helper.setter import set_behaviour
 def main():
 
     # on initialise le jeu point and click
-    pac_game = pace.state.game.PaCGame((640, 800), title="DEMO game for pace")
+    pac_game = pace.state.game.PaCGame((640, 400), title="DEMO game for pace")
 
     # on construit l'adventure state avec des salles et des objets
     adv = pac_game.context.states['adventure']
@@ -36,15 +36,15 @@ def main():
     set_behaviour(locker, "take", cannot_take)
 
     # porte "à la main"
-    door = models.Clickable("door", "porte", get_resource_path("door.png"), (100,20))
+    door = models.Clickable("door", "porte", get_resource_path("door.png"), (200,20))
     bsod.add_acitem(door, door.rect.topleft)
     set_behaviour(door, "on_click", lambda self, state: state.enter_area("drowning"))
 
     # on construit des boutons
-    button1 = models.InteractiveButton("take", "Prendre", get_resource_path("take.png"), (40, 200)) 
+    button1 = models.InteractiveButton("take", "Prendre", get_resource_path("take.png"), (40, 340)) 
 
     # on les attache à un menu créé à ce moment (ou bien l'avance puis on append/add les boutons, évite les keyword avant args)
-    menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 200, 160, 60), True, button1)
+    menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), True, button1)
     adv.set_menu(menu)
 
     # on peut entrer dans l'area qui est ready

@@ -75,6 +75,8 @@ class AdventureState(GameState):
             if hasattr(elt, 'on_click'):
                 print ("the clicked elt has an on_click()")
                 elt.on_click(self)
+            else:
+                self.set_action("look_at")
 
     def render(self, screen):
         # tempo : on refait tout pour être à jour !
@@ -139,7 +141,7 @@ class AdventureState(GameState):
     # ou au moins donner une action 'script' à l'objet ??
     def set_action(self, action):
         self.action = action
-        self.view.displayText(action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
+        self.view.displayText(action, None, (255, 255, 255), (0, 0, 0))
 
     # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):
