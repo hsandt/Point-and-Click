@@ -3,7 +3,7 @@
 import pygame
 from menustate import MenuState
 from adventurestate import AdventureState
-from ..exception.exception import InputError, AbstractMethodError
+from ..exception import InputError, AbstractMethodError, GetError
 
 
 class PaCGame(object):
@@ -47,7 +47,11 @@ class PaCGame(object):
 
                 clock.tick(self.FPS)
         except AbstractMethodError as e:
-            print("ERROR: tried to call an abstract method " + e.method_name + " from class " + e.class_name)
+            print("ERROR: tried to call an abstract method  %s from class %s", e.method_name, e.class_name)
+        except GetError as e:
+            print("ERROR: could not find any element with codename %s in %s", e.codename, e.container_name)
+        except IOError as e:
+            print("IOERROR: " + str(e))
 
 
 class GameContext(object):

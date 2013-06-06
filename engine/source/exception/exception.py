@@ -28,14 +28,14 @@ class GetError(Error):
     Exception raised for an incorrect codename in a get call.
 
     Attributes:
-        codename    -- incorrect codename
-        msg         -- explanation of the error
+        codename        -- incorrect codename
+        container_name  -- name of the container missing the element named codename
 
     """
 
     def __init__(self, codename, msg):
         self.codename = codename
-        self.msg = msg
+        self.container_name = container_name
 
 
 class LoadError(Error):
