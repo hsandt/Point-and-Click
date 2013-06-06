@@ -46,13 +46,24 @@ class Area(sprite.Sprite):
                 return element
         raise GetError(codename, "Element codename was wrong.")
 
-    def remove(self, element):
+    def remove_item(self, element):
         if self.clickable_group.has(element):
             self.clickable_group.remove(element)
             print 'element removed : ' + element.codename
         else:
             print("La salle ne contient pas " + element.codename)
-            print(str(self))
+
+    def remove_item_by_name(self, element_name):
+        try:
+            element = self.get_element(element_name)
+        except:
+            print("La salle ne contient pas " + element_name)
+        else:
+            self.clickable_group.remove(element)
+            print 'element removed : ' + element.codename
+
+    def add_gate(self, gate):
+        self.clickable_group.add(gate)
 
     def __str__(self):
         # return self.fullname
@@ -81,13 +92,17 @@ class Clickable(pygame.sprite.Sprite):
         set_names(self, codename, fullname)
         self.image = load_image(image_path)
         self.rect = pygame.Rect(position, self.image.get_size())
-        self.mask = pygame.mask.from_surface(self.image)
+        print "%s has rect %s" % (self.fullname, str(self.rect))
+        self.mask = pygame.mask.from_surface(self.image)  # use it!
         self.visibility = visibility  # unused, should affect detection
 
     def on_click(self, adventurestate):
         # opération sur adventurestate déclenchée sur un clic gauche :
         # déléguée à l'instance d'une classe dérivée
         raise AbstractMethodError(self.__class__.__name__, "on_click")
+
+    def change_image(self, image_path):
+        self.image = load_image(image_path)
 
     def __str__(self):
         return "Clickable : " + self.codename + " : " + self.fullname
@@ -96,17 +111,22 @@ class Clickable(pygame.sprite.Sprite):
 class InteractiveButton(Clickable):
     """bouton constituant les menus contextuels"""
     def __init__(self, codename, fullname, image_path, position):
-        Clickable.__init__(self, fullname, codename, image_path, position)
+        # may use relative coords here (to the menu)
+        Clickable.__init__(self, codename, fullname, image_path, position)
         # codename is fine for action_name
         # self.action_name = action_name
 
     def on_click(self, adventurestate):
         #Que se passe-t-il? Action à définir en fonction du bouton défini
         print("On me clique dessus, que dois-je faire?")
-        adventurestate.set_action("take")
+        adventurestate.set_action(self.codename)
 
     def notify_menu(self, menu):
+        pass
         #prévient le menu dont le bouton fait parti qu'il a été cliqué
+
+    def __str__(self):
+        return "interactive button: " + self.fullname
 
         pass
 
@@ -129,7 +149,7 @@ class InteractiveMenu(sprite.Sprite):
         # for i, button in enumerate(buttons):
         #     self.buttons[i] = button
         # self.buttons = enumerate(buttons)
-        self.buttons = buttons # no enumerate for now
+        self.buttons = buttons  # no enumerate for now
         self.image = load_image(image_path)
         self.rect = rect
         self.visibility = visibility
@@ -186,54 +206,84 @@ class Item(object):
     Il n'a pas de position définie car c'est l'objet pur en tant que données / comportement
 
     Attributs :
-        codename        -- identifiant
-        fullname        -- nom descriptif
-        #description     -- description
-        area_image      -- image utilisée dans la zone
-        inventory_image -- image utilisée dans l'inventaire
+        codename            -- identifiant
+        fullname            -- nom descriptif
+        description         -- description
+        area_image          -- image utilisée dans la zone
+        inventory_image     -- image utilisée dans l'inventaire
+        area_clickable      -- clickable utilisé dans la zone (utile pour référencer!)
+        inventory_clickable -- clickable utilisé dans l'inventaire
 
     """
-    def __init__(self, codename, fullname, area_image_path, inventory_image_path):
+    def __init__(self, codename, fullname, adventurestate, area_image_path, inventory_image_path):
         ## TODO : put resource loading into the adventure state init by 'decorating' it?
         ## this would be done in Area.add_item() method
         set_names(self, codename, fullname)
+        self.description = adventurestate.description_hash[codename]
         self.area_image_path = area_image_path
         self.inventory_image_path = inventory_image_path
         self.area_clickable = AreaClickableItem(self, (0,0))
+        self.inventory_clickable = InventoryClickableItem(self, (0, 0))
 
-    # def take(self, adventurestate):  # pas de différence avec attempt_to_take pour l'instant
-    #     """Ajoute l'item à l'inventaire"""
-    #     adventurestate.area.remove(self.area_clickable)
-    #     adventurestate.inventory.add(self)
+    def look_at(self, adventurestate):
+        print self.description
+
+    # pas de différence avec attempt_to_take pour l'instant
+    def take(self, adventurestate):
+        """Ajoute l'item à l'inventaire"""
+        # if already in inventory, forbid
+        adventurestate.inventory.add_item(self.inventory_clickable)
+        adventurestate.remove_item_by_name(self.codename)
+
+    def use(self, adventurestate):
+        print 'using ' + self.fullname
 
     def __str__(self):
         return self.fullname
 
 
 class AreaClickableItem(Clickable):  # ??
+    """
+    Attributs :
+        item       -- référence à l'item (modèle)
+    """
     def __init__(self, item, position, visibility=True):
         Clickable.__init__(self, item.codename, item.fullname, item.area_image_path, position, visibility)
+        self.item = item
 
     # common for any clickable ? only real elements ?
     def on_click(self, adventurestate):
         # en mode MI 1&2 : action latente
-        if hasattr(self, adventurestate.action):
+        if hasattr(self.item, adventurestate.action):
             # si l'action est connue de la part de l'item
-            getattr(self, adventurestate.action)(adventurestate)
-            # adventurestate.action = "look at"
+            print "item name: " + self.item.codename
+            getattr(self.item, adventurestate.action)(adventurestate)
         else:
             # si l'action est inconnue, c'est le message 'rien à faire' par défaut
-            print "Hum, je ne peux pas " + adventurestate.action + " cet objet."
+            print "Hum, je ne peux pas " + adventurestate.action + " l'objet " + self.item.fullname + ". (action inconnue)"
+        adventurestate.set_action("look_at")
 
-    def take(self, adventurestate):
-        """Ajoute l'item à l'inventaire"""
-        adventurestate.inventory.add_item(self)
-        adventurestate.area.remove(self)
 
-    def use(self):
-        #Que se passe-t-il?
-        print 'using ' + self.fullname
-        pass
+class InventoryClickableItem(Clickable):  # ??
+    """
+    Attributs :
+        item       -- référence à l'item (modèle)
+    """
+    def __init__(self, item, visibility=True):
+        Clickable.__init__(self, item.codename, item.fullname, item.area_image_path, (0, 0), visibility)
+        self.item = item
+
+    # common for any clickable ? only real elements ?
+    def on_click(self, adventurestate):
+        # en mode MI 1&2 : action latente
+        if hasattr(self.item, adventurestate.action):
+            # si l'action est connue de la part de l'item
+            print "item name: " + self.item.codename
+            getattr(self.item, adventurestate.action)(adventurestate)
+        else:
+            # si l'action est inconnue, c'est le message 'rien à faire' par défaut
+            print "Hum, je ne peux pas " + adventurestate.action + " l'objet " + self.item.fullname + ". (action inconnue)"
+        adventurestate.set_action("look_at")
 
 ## + les éléments du décor cliquables mais non obtensibles !
 
@@ -245,6 +295,25 @@ class Character(Clickable):
     def talk(self):
         #affiche une boite de dialogue avec un texte (peut-être la descrition)
         print("Bonjour! Je suis un PNJ")
+
+
+class Gate(Clickable):
+    """
+    Attributs :
+        area          -- zone ciblée par la porte
+        position      -- position du sprite
+        visibility    -- visibilité
+    """
+    def __init__(self, area, codename, fullname, image_path, position, visibility=True):
+        """Initialise la porte avec l'area passée en argument"""
+        Clickable.__init__(self, codename, fullname, image_path, position, visibility)
+        self.area = area
+
+    def on_click(self, adventurestate):
+        adventurestate.enter_area(self.area.codename)
+
+    def __str__(self):
+        return "Gate to " + str(self.area)
 
 
 # ce n'est pas un groupe de sprites ! enfin si, mais ce sont les sprites "inventaire"
