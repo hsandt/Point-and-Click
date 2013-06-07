@@ -14,6 +14,8 @@ class Area(sprite.Sprite):
         codename         --  chaîne servant d'identifiant (minuscules, sans espace)
         fullname         --  nom descriptif de la zone ; par défaut, égal au codename
         image            --  image du décor de fond
+        item_group       --  groupe des items (modèles)
+        # gate_group       --  groupe des portes (modèles)
         clickable_group  --  groupe des éléments cliquables contenus
 
     """
@@ -28,12 +30,20 @@ class Area(sprite.Sprite):
         print image_path
         self.rect = (0, 0, 800, 600)  # à étudier...
 
-        self.clickable_group = pygame.sprite.Group()
+        self.item_group = []
+        # self.gate_group = []
+        self.clickable_group = pygame.sprite.Group() # deprecated
 
     def add(self, element):
         self.clickable_group.add(element)
         print 'element added ' + element.codename
 
+    def add_item(self, item, position):
+        item.area_clickable.rect.topleft = position
+        self.item_group.append(item)
+        print 'item ' + item.fullname + ' added to area ' + str(self)
+
+    # deprecated
     def add_acitem(self, acitem, position):
         acitem.rect.topleft = position
         self.clickable_group.add(acitem)
@@ -61,6 +71,9 @@ class Area(sprite.Sprite):
         else:
             self.clickable_group.remove(element)
             print 'element removed : ' + element.codename
+
+    # def add_gate(self, gate):
+    #     self.gate_group.append(gate)
 
     def add_gate(self, gate):
         self.clickable_group.add(gate)
@@ -103,6 +116,7 @@ class Clickable(pygame.sprite.Sprite):
 
     def change_image(self, image_path):
         self.image = load_image(image_path)
+        self.rect.size = self.image.get_size()
 
     def __str__(self):
         return "Clickable : " + self.codename + " : " + self.fullname
@@ -209,8 +223,8 @@ class Item(object):
         codename            -- identifiant
         fullname            -- nom descriptif
         description         -- description
-        area_image          -- image utilisée dans la zone
-        inventory_image     -- image utilisée dans l'inventaire
+        area_image_path          -- image path utilisée dans la zone
+        inventory_image_path     -- image path utilisée dans l'inventaire
         area_clickable      -- clickable utilisé dans la zone (utile pour référencer!)
         inventory_clickable -- clickable utilisé dans l'inventaire
 
@@ -234,12 +248,82 @@ class Item(object):
         # if already in inventory, forbid
         adventurestate.inventory.add_item(self.inventory_clickable)
         adventurestate.remove_item_by_name(self.codename)
+        return True  # action is over
 
     def use(self, adventurestate):
-        print 'using ' + self.fullname
+        print "Cannot use that item."
+        return True
 
     def __str__(self):
         return self.fullname
+
+
+class Container(Item):
+    """
+    Conteneur : item pouvant être ouvert / fermé, et révélant son contenu lorsqu'il est ouvert
+
+    Il peut être préhensible ou non.
+
+    Attributs hérités:
+        codename            -- identifiant
+        fullname            -- nom descriptif
+        description         -- description
+        area_image          -- image utilisée dans la zone
+        inventory_image     -- image utilisée dans l'inventaire
+        area_clickable      -- clickable utilisé dans la zone (utile pour référencer!)
+        inventory_clickable -- clickable utilisé dans l'inventaire
+
+    Attributs propres:
+        open_state          -- booléen indiquant si le conteneur est ouvert (True) ou fermé (False)
+        key_name            -- codename de la clé pouvant ouvrir le conteneur, ou None s'il n'y a pas besoin de clé
+        content             -- contenu sous forme de liste
+        open_area_image_path-- image path (ou peut-être image, à voir)
+
+    """
+    def __init__(self, codename, fullname, adventurestate, area_image_path, inventory_image_path, open_area_image_path, open_state=False, key_name=None, content=[]):
+        Item.__init__(self, codename, fullname, adventurestate, area_image_path, inventory_image_path)
+        self.open_area_image_path = open_area_image_path
+        self.open_state = open_state
+        self.key_name = key_name
+        self.content = content
+
+    def open(self, adventurestate):
+        if self.open_state:
+            print("%s est déjà ouvert." % self.fullname)
+        else:
+            if self.key_name is None:
+                self.open_indeed(adventurestate)
+            else:
+                print("Une clé est nécessaire pour ouvrir %s." % self.fullname)
+        return True
+
+    def use(self, adventurestate):
+        """
+        Essaie d'ouvrir le conteneur à l'aide d'une clé. open est invoqué automatiquement.
+
+        Plus tard, on utilisera peut-être l'attribut 'locked' et on différenciera les clés des autres objets.
+        """
+        # automatiser la détection de complément !
+        if adventurestate.complement is None:
+            print("Vous ne pouvez pas utiliser %s ainsi !" % self.fullname)
+        else:
+            tool_name = adventurestate.complement
+            if tool_name == self.key_name:
+                if self.open_state:
+                    print("%s est déjà ouvert." % self.fullname)
+                else:
+                    self.open_indeed(adventurestate)
+            else:
+                print("L'objet %s ne peut être utilisé sur %s" % (tool_name, self.fullname))
+        return True
+
+    def open_indeed(self, adventurestate):
+        """Ouvre le coffre à coup sûr, ne doit être appelé directement !"""
+        self.open_state = True
+        # should be modify view from here?
+        self.area_clickable.change_image(self.open_area_image_path)
+        adventurestate.view.load_content(self)
+        print("%s has been opened." % self.fullname)
 
 
 class AreaClickableItem(Clickable):  # ??
@@ -257,11 +341,13 @@ class AreaClickableItem(Clickable):  # ??
         if hasattr(self.item, adventurestate.action):
             # si l'action est connue de la part de l'item
             print "item name: " + self.item.codename
-            getattr(self.item, adventurestate.action)(adventurestate)
+            if getattr(self.item, adventurestate.action)(adventurestate):
+                # if True is returned, the action has been completed
+                adventurestate.set_default_action()
         else:
             # si l'action est inconnue, c'est le message 'rien à faire' par défaut
             print "Hum, je ne peux pas " + adventurestate.action + " l'objet " + self.item.fullname + ". (action inconnue)"
-        adventurestate.set_action("look_at")
+            adventurestate.set_default_action()
 
 
 class InventoryClickableItem(Clickable):  # ??
@@ -279,11 +365,12 @@ class InventoryClickableItem(Clickable):  # ??
         if hasattr(self.item, adventurestate.action):
             # si l'action est connue de la part de l'item
             print "item name: " + self.item.codename
-            getattr(self.item, adventurestate.action)(adventurestate)
+            if getattr(self.item, adventurestate.action)(adventurestate):
+                adventurestate.set_default_action()
         else:
             # si l'action est inconnue, c'est le message 'rien à faire' par défaut
             print "Hum, je ne peux pas " + adventurestate.action + " l'objet " + self.item.fullname + ". (action inconnue)"
-        adventurestate.set_action("look_at")
+            adventurestate.set_default_action()
 
 ## + les éléments du décor cliquables mais non obtensibles !
 

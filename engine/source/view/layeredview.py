@@ -42,8 +42,22 @@ class LayeredView(pygame.sprite.LayeredUpdates):
         self.remove_sprites_of_layer(0)  # clear bg layer
         self.remove_sprites_of_layer(1)  # clear item layer
         self.add(area, layer=0)
-        self.add(area.clickable_group.sprites(), layer=1)
+        # self.add(area.clickable_group.sprites(), layer=1)
+        # well, we could ALSO use sprite groups, even for the console
+        for item in area.item_group:
+            self.add(item.area_clickable, layer=1)
+            # also show contained items if it is a container and it is open
+            if hasattr(item, 'open_state') and item.open_state:  # duck-typing
+                assert hasattr(item, 'content')  # no open_state without content!
+                self.load_content(item)
+        self.add(area.clickable_group, layer=1)
+
         print 'loaded area'
+
+    def load_content(self, container):
+        for contained_elt in container.content:
+            self.add(contained_elt.area_clickable, layer=1)
+            # be careful, content is drawn above!
 
     def remove_item(self, item):
         self.remove(item)

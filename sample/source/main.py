@@ -4,6 +4,7 @@ import sys
 # for the release, remove the next line and change 'source' into 'pace',
 # removing the 'as pace'
 sys.path.append('/Users/hs/Projets/Python/Point-and-click/repo/engine')
+sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine')
 # import pace
 import source as pace # debug version
 from source.adventure import models
@@ -19,7 +20,7 @@ def main():
     # on construit l'adventure state avec des salles et des objets
     adv = pac_game.context.states['adventure']
     adv.set_descriptions_from_file(get_resource_path("descriptions.txt"))
-    
+
     bsod = models.Area('bsod', "blue screen of death", get_resource_path("background.png"))
     adv.add_area(bsod)
     drowning = models.Area('drowning', "the drowning 'room'", get_resource_path("drowning.png"))
@@ -27,16 +28,18 @@ def main():
 
     # on ajoute des éléments dans la mock area
     teapot = models.Item("teapot", None, adv, get_resource_path("teapot.png"), get_resource_path("teapot.png"))
-    bsod.add_acitem(teapot.area_clickable, position=(15, 30))
-    locker = models.Item("locker", None, adv, get_resource_path("closed_locker.png"), None)
-    locker.open = False
-    bsod.add_acitem(locker.area_clickable, position=(80, 60))
+    bsod.add_item(teapot, position=(15, 30))
+    # locker = models.Item("locker", None, adv, get_resource_path("closed_locker.png"), None)
+    # locker.open = False
+    locker = models.Container("locker", None, adv, get_resource_path("closed_locker.png"), None, get_resource_path("open_locker.png"), key_name='key')
+    bsod.add_item(locker, position=(80, 60))
     key = models.Item("key", None, adv, get_resource_path("key.png"), get_resource_path("key.png"))
-    bsod.add_acitem(key.area_clickable, position=(180, 60))
+    bsod.add_item(key, position=(180, 60))
 
     # on change le comportement par défaut du locker
     def cannot_take(item, state):
         print "I cannot take " + str(item) + "!"
+        return True
     set_behaviour(locker, "take", cannot_take)
 
     # use key behaviour
@@ -44,19 +47,21 @@ def main():
     # then the key will remain in the room...!
     def use_key(key, state):
         state.set_complement("key")
+        return False
     set_behaviour(key, "use", use_key)
 
     # use key on locker behaviour (actually use locker when complement is set at 'key')
     # we could also change the verb to 'use2' or 'use_object_on'
 
     # rather, we should have only one use method and use_X_on_Y should be used as a 'case' of use
-    def use_key_on_locker(locker, state):
-        if state.complement == 'key':
-            locker.open = True
-            locker.area_clickable.change_image(get_resource_path("open_locker.png"))
-        else:
-            print "you cannot use the locker this way"
-    set_behaviour(locker, "use", use_key_on_locker)
+    # def use_key_on_locker(locker, state):
+    #     if state.complement == 'key':
+    #         locker.open = True
+    #         locker.area_clickable.change_image(get_resource_path("open_locker.png"))
+    #     else:
+    #         print "you cannot use the locker this way"
+    #     return True
+    # set_behaviour(locker, "use", use_key_on_locker)
 
     # porte "à la main"
     # door = models.Clickable("door", "porte", get_resource_path("door.png"), (200,20))
@@ -68,9 +73,10 @@ def main():
     # on construit des boutons
     button1 = models.InteractiveButton("take", "Prendre", get_resource_path("take.png"), (40, 340))
     button2 = models.InteractiveButton("use", "Utiliser", get_resource_path("use.png"), (210, 306))
+    button3 = models.InteractiveButton("open", "Ouvrir", get_resource_path("open.png"), (110, 306))
 
     # on les attache à un menu créé à ce moment (ou bien l'avance puis on append/add les boutons, évite les keyword avant args)
-    menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), True, button1, button2)
+    menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), True, button1, button2, button3)
     adv.set_menu(menu)
 
     # on peut entrer dans l'area qui est ready

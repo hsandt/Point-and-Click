@@ -40,7 +40,7 @@ class AdventureState(GameState):
         self.cursor = None
         self.label = None
         self.mouse_command = {'left': [0, None], 'right': [0, None]}
-        self.set_action(self.default_action)
+        self.set_default_action()
         self.complement = None
 
     def on_exit(self):
@@ -173,6 +173,9 @@ class AdventureState(GameState):
     def set_action(self, action):
         self.action = action
         self.view.displayText(action, None, (255, 255, 255), (0, 0, 0))
+
+    def set_default_action(self):
+        self.set_action(self.default_action)
 
     def set_complement(self, complement):
         self.complement = complement
