@@ -9,11 +9,12 @@ sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork
 import source as pace # debug version
 from source.adventure import models
 from helper.files import get_resource_path
-# TODO : avoid using resource path at any lod by defining a path at the beginning, that the engine will take into account
+# TODO : avoid using resource path at any load by defining a path at the beginning, that the engine will take into account
 from source.helper.setter import set_behaviour
 
-def main():
 
+def main():
+    """Exemple de jeu avec manu dynamique style Monkey Island 3"""
     # on initialise le jeu point and click
     pac_game = pace.state.game.PaCGame((640, 400), title="DEMO game for pace")
 
@@ -31,6 +32,7 @@ def main():
     bsod.add_item(teapot, position=(15, 30))
     # locker = models.Item("locker", None, adv, get_resource_path("closed_locker.png"), None)
     # locker.open = False
+    # locker = models.Container("locker", None, adv, get_resource_path("closed_locker.png"), None, get_resource_path("open_locker.png"), key_name='key')
     locker = models.Container("locker", None, adv, get_resource_path("closed_locker.png"), None, get_resource_path("open_locker.png"), key_name='key')
     bsod.add_item(locker, position=(80, 60))
     key = models.Item("key", None, adv, get_resource_path("key.png"), get_resource_path("key.png"))
@@ -60,11 +62,29 @@ def main():
     # on construit des boutons
     button1 = models.InteractiveButton("take", "Prendre", get_resource_path("take.png"), (0, 0))
     button2 = models.InteractiveButton("use", "Utiliser", get_resource_path("use.png"), (100, 0))
+    # button3 = models.InteractiveButton("open", "Ouvrir", get_resource_path("open.png"), (200, 0))
     button3 = models.InteractiveButton("open", "Ouvrir", get_resource_path("open.png"), (200, 0))
 
     # on les attache à un menu créé à ce moment (ou bien l'avance puis on append/add les boutons, évite les keyword avant args)
-    menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), 1, True, button1, button2, button3)
-    adv.set_menu(menu)
+    dynamic_menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), 0, True, button1, button2, button3)
+    adv.set_menu(dynamic_menu)
+
+    adv.set_query_mode()
+
+    # # change behaviour of button open: keeps complement
+    # def query_button_on_click(self, adventurestate):
+    #     adventurestate.display_menu_for(self)
+    # set_behaviour(locker, "query", query_button_on_click)
+
+    # # change behaviour of open button: used after complement has been chosen
+    # def open_after_complement(self, adventurestate):
+    #     adventurestate.verb = 'open'  # opt. ici mais pratique en mouse-over pour voir ce qu'on fait
+    #     # direct link to item with a method 'get_by_name'? but this ensures the item is in the current area...
+    #     if getattr(adventurestate.area.get_item_by_name(adventurestate.complement), adventurestate.verb)(adventurestate):
+    #         # if True is returned, the action has been completed
+    #         del adventurestate.verb
+    #         del adventurestate.complement
+    # set_behaviour(button3, "on_click", open_after_complement)
 
     # on peut entrer dans l'area qui est ready
     adv.enter_area('bsod')

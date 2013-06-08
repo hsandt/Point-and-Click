@@ -33,7 +33,7 @@ class GetError(Error):
 
     """
 
-    def __init__(self, codename, msg):
+    def __init__(self, codename, container_name):
         self.codename = codename
         self.container_name = container_name
 
