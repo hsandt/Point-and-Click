@@ -5,7 +5,7 @@ import sys
 # removing the 'as pace'
 #/Users/hs/Projets/Python/Point-and-click/repo/engine
 
-sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork')
+sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine')
 # import pace
 import source as pace # debug version
 from source.adventure import models
