@@ -3,7 +3,8 @@
 import pygame
 
 from gamestate import GameState
-from ..adventure.models import Area, InteractiveMenu, Inventory
+from ..adventure.models import Area, InteractiveMenu, Inventory, Item
+from ..adventure import models
 from ..exception.exception import OverwriteError, GetError
 
 from ..helper.load import load_descriptions
@@ -19,8 +20,8 @@ class AdventureState(GameState):
         area        --  zone en cours de visite
         inventory   --  inventaire de l'avatar
         menu        --  menu interactif
-        default_action -- action par défaut (comme 'move' ou 'look_at')
-        action     --  action en cours de sélection dans le cas d'un menu à la Monkey Island voire à la Goonies
+        default_verb-- verbe par défaut (comme 'move' ou 'look_at')
+        verb     --  verbe en cours de sélection dans le cas d'un menu à la Monkey Island voire à la Goonies
         complement --  1° complément de l'action utiliser un hash ou une liste piur la version finale)
         description_hash -- hash des descriptions (pour l'instant, n'est pas initialisé automatiquement)
 
@@ -33,15 +34,18 @@ class AdventureState(GameState):
         self.area = None
         self.inventory = Inventory()
         self.description_hash = {}
-        self.default_action = 'look_at'
+        # self.default_verb = 'look_at'  # inside set_query_mode()
+        self._verb = None  # may not be needed
+        self._complement = None
+        self.set_query_mode(False)  # ok??
 
     def on_enter(self):
 
         self.cursor = None
         self.label = None
         self.mouse_command = {'left': [0, None], 'right': [0, None]}
-        self.set_default_action()
-        self.complement = None
+        del self.verb  # ok this way?
+        del self.complement
 
     def on_exit(self):
         pass
@@ -75,7 +79,7 @@ class AdventureState(GameState):
     def update(self):
         # print("update adventure state")
         # print("self mouse command is : " + str(self.mouse_command))
-        
+
         # on regarde si on a cliqué (clic gauche) sur un élément du jeu
         # print("valeur mouse_cmd left: {0}, {1}".format(self.mouse_command['left'][0], 2))
         if self.mouse_command['left'][0] == 1:  # only consider new clicks for action clicks
@@ -84,21 +88,29 @@ class AdventureState(GameState):
             self.mouse_command['left'][0] = 2  # say it's now in 'hold mode'
             ## TODO : customize with mask collision
 
-            elt = self.view.get_sprites_at(self.mouse_command['left'][1])[-1]  # [-1] for last position, ie the sprite at the very top
-            # attention, on suppose que tout l'écran est recouvert par le décor et le menu ;
-            # sinon, il faut vérifier que self.view.get_sprites_at(...) n'est pas vide
+            if self.view.get_sprites_at(self.mouse_command['left'][1]):
+                # attention, le décor n'est plus un sprite donc on vérifie que le clic ne tombe pas dessus
+                elt = self.view.get_sprites_at(self.mouse_command['left'][1])[-1]  # [-1] for last position, ie the sprite at the very top
 
-            print ("elt : %s, rect : %s" % (str(elt), str(elt.rect)))
+                # sinon, il faut vérifier que self.view.get_sprites_at(...) n'est pas vide
 
-            # on teste manuellement si on_click existe (duck-typing)
-            # mais on devrait peut-être dissocier les vues cliquables et non-cliquables
-            # dans self.view, et uniquement détecter les clics sur les premières
-            if hasattr(elt, 'on_click'):
-                print ("the clicked elt has an on_click()")
-                elt.on_click(self)
+                print ("elt : %s, rect : %s" % (str(elt), str(elt.rect)))
+
+                # on teste manuellement si on_click existe (duck-typing)
+                # mais on devrait peut-être dissocier les vues cliquables et non-cliquables
+                # dans self.view, et uniquement détecter les clics sur les premières
+                if hasattr(elt, 'on_click'):
+                    print ("the clicked elt has an on_click()")
+                    elt.on_click(self)
+                else:
+                    print ("elt detected has no on_click")
+                    del self.verb
+                    del self.complement
             else:
-                print ("nothing detected OR elt detected has no on_click")
-                self.set_action("look_at")
+                # on a cliqué dans le décor
+                print("click detected on the background")
+                del self.verb
+                del self.complement
 
     def render(self, screen):
         # tempo : on refait tout pour être à jour !
@@ -107,6 +119,7 @@ class AdventureState(GameState):
         # self.set_menu(self.menu)
         # self.view.displayText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
         self.view.draw(screen)  # for now, bg and all
+        ## only draws when necessary
 
     ##
     ## peut-être décorer toute la suite pour le caser dans le init
@@ -138,6 +151,8 @@ class AdventureState(GameState):
         print "entering area..." + area_codename
         self.area = self.areas[area_codename]
         self.view.loadArea(self.area)
+        screen = pygame.display.get_surface()
+        screen.blit(self.area.image, (0, 0))  # pas très conventionnel mais bon
         # area on_enter ?
 
     # un peu pour le debug, un peu pour "on_exit"
@@ -168,21 +183,77 @@ class AdventureState(GameState):
         self.menu = menu
         self.view.fillMenuLayer(menu)
 
-    # developer-defined ? (propre au jeu et non au moteur ; il faut alors donner accès à adventure state (classe dérivée))
-    # ou au moins donner une action 'script' à l'objet ??
-    def set_action(self, action):
-        self.action = action
-        self.view.displayText(action, None, (255, 255, 255), (0, 0, 0))
+    def set_default_verb(self, verb):
+        self.default_verb = verb
 
-    def set_default_action(self):
-        self.set_action(self.default_action)
+    @property
+    def verb(self):
+        """Verbe de l'action en cours"""
+        return self._verb
 
-    def set_complement(self, complement):
-        self.complement = complement
-        self.view.displayText("%s %s with" % (self.action, complement))
+    @verb.setter
+    def verb(self, value):
+        self._verb = value
+        self.refresh_action_label()
+
+    @verb.deleter
+    def verb(self):
+        self._verb = self.default_verb
+        # pour l'instant, on suppose que le complément reste
+        self.refresh_action_label()
+
+    @property
+    def complement(self):
+        """Verbe de l'action en cours"""
+        return self._complement
+
+    @complement.setter
+    def complement(self, value):
+        self._complement = value
+        self.refresh_action_label()
+
+    @complement.deleter
+    def complement(self):
+        self._complement = None
+        # on suppose que le verbe reste
+        self.refresh_action_label()
+
+    def refresh_action_label(self):
+        """
+        Rafraîchit l'indication de l'action en cours
+
+        Plutôt dans l'adventure state que la vue car supposé
+        'haut niveau', dépend du jeu et peut être overridée (avec la bonne doc)
+
+        """
+        # pour l'instant, la préposition par défaut est 'avec'
+        if self.complement is None:
+            action_str = self.verb
+        else:
+            action_str = " %s %s (avec) ..." % (self.verb, self.complement)
+        self.view.displayText(action_str, None, (255, 255, 255), (0, 0, 0))
+
+    def display_menu_for(self, complement_object):
+        self.verb = '???'  # action still undefined
+        self.complement = complement_object.codename  # but complement is for a dynamic menu
+        self.view.display_menu()
 
     def set_descriptions_from_file(self, file_path):
         self.description_hash = load_descriptions(file_path)
+
+    def set_query_mode(self, query_mode=True):
+        """Active le mode 'query' pour tous les modèles
+        !! modification structurelle (classes) et non seulement pour les instances de state adventure
+        """
+        if query_mode:
+            self.default_verb = 'query'
+            Item.query = lambda self, adventurestate: adventurestate.display_menu_for(self)
+            models.InteractiveButton.on_click = models._on_click_for_query_interactive_button
+        else:
+            self.default_verb = 'look_at'
+            if hasattr(Item, 'query'):
+                del Item.query
+            models.InteractiveButton.on_click = models._on_click_for_interactive_button
 
     # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):

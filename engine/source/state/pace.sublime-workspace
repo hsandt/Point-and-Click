@@ -1,0 +1,2136 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"relat",
+				"relative_positioning"
+			],
+			[
+				"top",
+				"topleft"
+			],
+			[
+				"butt",
+				"button"
+			],
+			[
+				"menu",
+				"menu_surface"
+			],
+			[
+				"men",
+				"menu_surface"
+			],
+			[
+				"get_",
+				"get_size"
+			],
+			[
+				"ima",
+				"image"
+			],
+			[
+				"displ",
+				"display"
+			],
+			[
+				"remove",
+				"remove_sprites_of_layer"
+			],
+			[
+				"chane",
+				"change_image(image_path)	(attribute, function)"
+			],
+			[
+				"open_",
+				"open_indeed"
+			],
+			[
+				"ope",
+				"open_area_image_path"
+			],
+			[
+				"load",
+				"load_image"
+			],
+			[
+				"open",
+				"open_area_image"
+			],
+			[
+				"has",
+				"hasattr"
+			],
+			[
+				"item",
+				"item_group"
+			],
+			[
+				"area",
+				"area_clickable"
+			],
+			[
+				"contai",
+				"contained_elt"
+			],
+			[
+				"key",
+				"key_name"
+			],
+			[
+				"cont",
+				"container_state	(local, instance)"
+			],
+			[
+				"container",
+				"container_state"
+			],
+			[
+				"__i",
+				"__init__(codename, fullname, adventurestate, area_image_path, inventory_image_path)	(attribute, function)"
+			],
+			[
+				"set_defa",
+				"set_default_action()	(attribute, function)"
+			],
+			[
+				"inve",
+				"inventory_image"
+			],
+			[
+				"get",
+				"get_size"
+			],
+			[
+				"label",
+				"label_image"
+			],
+			[
+				"compl",
+				"complement"
+			],
+			[
+				"comp",
+				"complement"
+			],
+			[
+				"default",
+				"default_action"
+			],
+			[
+				"Load",
+				"LoadError"
+			],
+			[
+				"des",
+				"description_hash"
+			],
+			[
+				"descri",
+				"description_hash"
+			],
+			[
+				"desc",
+				"description_hash"
+			],
+			[
+				"in",
+				"inventory_clickable	(attribute, instance)"
+			],
+			[
+				"ele",
+				"element_name"
+			],
+			[
+				"spr",
+				"sprite_name"
+			],
+			[
+				"sprite",
+				"sprite_name"
+			],
+			[
+				"click",
+				"clickable_group"
+			],
+			[
+				"method",
+				"method_name"
+			],
+			[
+				"remov",
+				"remove_item_from_area(item, area)	(attribute, function)"
+			],
+			[
+				"are_",
+				"area_clickable	(attribute, instance)"
+			],
+			[
+				"area_",
+				"area_clickable"
+			],
+			[
+				"Area",
+				"AreaClickableItem"
+			],
+			[
+				"AREA",
+				"AreaClickableItem"
+			],
+			[
+				"class",
+				"class_name"
+			],
+			[
+				"get_area",
+				"get_area_clickable_from_item(item, position)	(global, function)"
+			],
+			[
+				"set_names",
+				"set_names(codename, fullname)	(global, function)"
+			],
+			[
+				"inven",
+				"inventaire"
+			],
+			[
+				"objec",
+				"object_name"
+			],
+			[
+				"meth",
+				"method_name"
+			],
+			[
+				"obje",
+				"object_name"
+			],
+			[
+				"ad",
+				"adventurestate"
+			],
+			[
+				"aventure",
+				"adventurestate"
+			],
+			[
+				"bla",
+				"blank_label"
+			],
+			[
+				"mouse",
+				"mouse_command"
+			],
+			[
+				"adventure",
+				"adventurestate"
+			],
+			[
+				"bg",
+				"background"
+			],
+			[
+				"visi",
+				"visibility"
+			],
+			[
+				"image",
+				"image_path"
+			],
+			[
+				"__init",
+				"__init__	(builtin, function)"
+			],
+			[
+				"element",
+				"element_group"
+			],
+			[
+				"teardown_ente",
+				"teardown_enter_area"
+			],
+			[
+				"tear",
+				"teardown_state"
+			],
+			[
+				"setup_en",
+				"setup_enter_area"
+			],
+			[
+				"with",
+				"with_setup"
+			],
+			[
+				"ter",
+				"teardown_area"
+			],
+			[
+				"setup",
+				"setup_item"
+			],
+			[
+				"setu",
+				"setup_area"
+			],
+			[
+				"Over",
+				"OverwriteError"
+			],
+			[
+				"La",
+				"LayeredView"
+			],
+			[
+				"enter_",
+				"enter_area"
+			],
+			[
+				"set",
+				"setup_enter_state"
+			],
+			[
+				"se",
+				"setup_state"
+			],
+			[
+				"wi",
+				"with_setup"
+			],
+			[
+				"add",
+				"add"
+			],
+			[
+				"set_",
+				"set_incoming_state"
+			],
+			[
+				"tera",
+				"teardown_enter_state"
+			],
+			[
+				"st",
+				"state_name"
+			],
+			[
+				"incoming",
+				"incoming_state_name"
+			],
+			[
+				"incom",
+				"incoming_state_name"
+			],
+			[
+				"code",
+				"codename"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"__",
+				"__init__"
+			],
+			[
+				"Stat",
+				"StaticSprite"
+			],
+			[
+				"stat",
+				"staticsprite"
+			],
+			[
+				"exit",
+				"exit_key"
+			],
+			[
+				"Game",
+				"GameState"
+			],
+			[
+				"_",
+				"__init__"
+			],
+			[
+				"at",
+				"atk"
+			],
+			[
+				"ver",
+				"vertical_move"
+			],
+			[
+				"eleme",
+				"element"
+			],
+			[
+				"Re",
+				"Rect"
+			],
+			[
+				"test",
+				"test_resource"
+			],
+			[
+				"ke",
+				"keyPressed"
+			],
+			[
+				"map",
+				"map_path"
+			],
+			[
+				"an",
+				"animations"
+			],
+			[
+				"max",
+				"max_speed"
+			],
+			[
+				"mov",
+				"move_ip"
+			],
+			[
+				"x",
+				"x"
+			],
+			[
+				"conso",
+				"consolimit"
+			],
+			[
+				"consol",
+				"console"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"nex",
+				"nextRealMove"
+			],
+			[
+				"or",
+				"orientationY"
+			],
+			[
+				"step",
+				"stepY"
+			],
+			[
+				"ori",
+				"orientationX"
+			],
+			[
+				"con",
+				"consolimit"
+			],
+			[
+				"fis",
+				"firstStepY"
+			],
+			[
+				"first",
+				"firstStepX"
+			],
+			[
+				"run",
+				"runDistance"
+			],
+			[
+				"_rea",
+				"_realStepX"
+			],
+			[
+				"real",
+				"_realStepY"
+			],
+			[
+				"_real",
+				"_realStepY"
+			],
+			[
+				"dir",
+				"dirY"
+			],
+			[
+				"me",
+				"memory"
+			],
+			[
+				"chara",
+				"character"
+			],
+			[
+				"swi",
+				"switch"
+			],
+			[
+				"CASE",
+				"CASE_SIZE"
+			],
+			[
+				"act",
+				"activeState"
+			],
+			[
+				"un",
+				"unchanging"
+			],
+			[
+				"target",
+				"targetNextHero"
+			],
+			[
+				"go",
+				"goTo"
+			],
+			[
+				"ac",
+				"activeState"
+			],
+			[
+				"beh",
+				"behaviour"
+			],
+			[
+				"fra",
+				"frameDurationFormat"
+			],
+			[
+				"imageSi",
+				"imageSizeFormats"
+			],
+			[
+				"para",
+				"parameters"
+			],
+			[
+				"charac",
+				"characters"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "adventurestate.py",
+			"settings":
+			{
+				"buffer_size": 8713,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/adventure/models.py",
+			"settings":
+			{
+				"buffer_size": 18076,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/exception.py",
+			"settings":
+			{
+				"buffer_size": 1899,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/view/layeredview.py",
+			"settings":
+			{
+				"buffer_size": 4160,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/__init__.py",
+			"settings":
+			{
+				"buffer_size": 90,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "game.py",
+			"settings":
+			{
+				"buffer_size": 4927,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/tests/test_game.py",
+			"settings":
+			{
+				"buffer_size": 3206,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/load.py",
+			"settings":
+			{
+				"buffer_size": 1114,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/files.py",
+			"settings":
+			{
+				"buffer_size": 285,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/setter.py",
+			"settings":
+			{
+				"buffer_size": 155,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 107.0,
+		"selected_items":
+		[
+			[
+				"attri",
+				"Code Folding: Fold Tag Attributes"
+			],
+			[
+				"reidn",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"pac",
+				"Preferences: Browse Packages"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/__init__.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/main.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/setter.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/setter",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/__init__.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/interface/__init__.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/sample/main.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/interface/menu.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/view/layeredview.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/exception.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/state/gamestate.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/state/exitstate.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/__init__.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/state/menustate.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/state/adventurestate.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/load.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/files.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/adventure/models.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/tests/__init__.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/state/game.py",
+		"/Users/hs/Projets/Python/Point-and-click/repo/engine/source/tests/test_adventure_state",
+		"/Users/hs/Projets/hsandt/Project-1/source/helper/vector.py",
+		"/Users/hs/Projets/hsandt/Project-1/source/models/staticsprite.py",
+		"/Users/hs/Projets/C/Sumo/sumo/i2cUtil.c",
+		"/Users/hs/Projets/Python/Point-and-click/engine/source/helper/load.py",
+		"/Users/hs/Projets/Python/Point-and-click/engine/source/loader/load.py",
+		"/Users/hs/Dropbox/TVGDT/Projet1/ProjetTGVDT/main.py",
+		"/Users/hs/Dropbox/TVGDT/Projet1/main.py",
+		"/Users/hs/Dropbox/TVGDT/Projet1/personnage.py",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/behaviour.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/helper",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step3/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step2/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/game_comment.txt",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step4/src/helper.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step2/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step1/src/game_comment.txt",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step2/src/game_comment.txt",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step2/src/behaviour.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step3/src/behaviour.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step3/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step1/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step1/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step1/src/behaviour.coffee",
+		"/Users/hs/Dropbox/html5_createjs/09-add-npc/step3/src/game_comment.txt",
+		"/Users/hs/Dropbox/html5_createjs/08-moving-a-character/step2/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step2/index.html",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step1/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step1/index.html",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step2/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step2/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/07-hit-walls/step1/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step2/index.html",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step3/index.html",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step1/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step2/src/class.coffee",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step2/src/game.coffee",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step1/js/game.js",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step2/js/game.js",
+		"/Users/hs/Dropbox/html5_createjs/06-moving-a-dot/step2/js/class.js",
+		"/Users/hs/Dropbox/html5_createjs/to_do",
+		"/Users/hs/Dropbox/html5/07-moving-a-character/step2/src/game.coffee",
+		"/Users/hs/Dropbox/html5/07-moving-a-character/step2/js/game.js",
+		"/Users/hs/Dropbox/html5/07-moving-a-character/step2/src/game_old.coffee",
+		"/Users/hs/Dropbox/html5/06-moving-a-dot/step1/js/game.js",
+		"/Users/hs/Dropbox/html5/06-moving-a-dot/step1/src/var stage = new Kinetic.Stage({",
+		"/Users/hs/Dropbox/html5/06-moving-a-dot/step1/src/game.coffee",
+		"/Users/hs/Dropbox/html5/06-moving-a-dot/step1/src/try.coffee",
+		"/Users/hs/Projets/CoffeeScript/test",
+		"/Users/hs/Documents/cours/python/tasks/tasks.db",
+		"/Users/hs/Documents/cours/python/foo.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/hs/Projets/Python/Point-and-click/repo/engine/source",
+			"/Users/hs/Projets/hsandt/Project-1/source"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"open",
+			"visibility",
+			".rect",
+			"sprite.Spr",
+			"sprite.Sprite",
+			"image",
+			"dans",
+			"default",
+			"view",
+			"remove(",
+			"look",
+			"look_at",
+			"AreaClic",
+			"remove",
+			"take",
+			"area.add",
+			"clickable_group",
+			"element_group",
+			"print",
+			"on_click",
+			"dev",
+			"print",
+			"prin",
+			"print",
+			"change_",
+			"elements",
+			"precised",
+			"elements",
+			"None",
+			"  Elle possède son propre décor de fond et contient des élements.\n\n    Attributs :\n        codename    --  chaîne servant d'identifiant (minuscules, sans espace)\n        fullname    --  nom descriptif de la zone ; par défaut, égal au codename\n        image       --  image du décor de fond\n        elements    --  groupe des éléments contenus\n\n    \"\"\"\n\n    def __init__(self, codename, image_path, fullname = None):\n        \"\"\"\n        \"\"\"\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:\n            self.fullname = fullname\n\n        self.image = load_image(image_path)\n        \n        self.elements = pygame.sprite.Group()\n\n    def add(self, element):\n        self.elements.add(element)\n\n    def get_element(self, codename):\n        \"\"\"get element by name (should it be precised in the method name?)\"\"\"\n        for element in self.elements.sprites():\n            if element.codename == codename:\n                return self.elements.get_element(name)\n        raise GetError(codename, \"Element codename was wrong.\")\n\n    def remove(self, element):\n        if this.elements.has(element):\n            self.element.remove(element)\n        else:\n            print(\"La salle ne contient pas \" + element.name)\n\n\n    def __str__(self):\n        room_str = \"Dans \" + self.fullname + \" il y a :\"\n        room_str += room_str.join([(\"-\" + str(element) + \"\\n\") for element in self.elements.sprites()])\n        return room_str\n\nclass Element(sprite.Sprite):\n    \"\"\"Elément : Personnage ou Objet situé dans une Zone, avec lequel le protagoniste peut interagir\"\"\"\n\n    def __init__(self, codename, image_path, position, size, fullname = None):\n        sprite.Sprite.__init__(self)\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:",
+			"elements\n\n    Attributs :\n        codename    --  chaîne servant d'identifiant (minuscules, sans espace)\n        fullname    --  nom descriptif de la zone ; par défaut, égal au codename\n        image       --  image du décor de fond\n        elements    --  groupe des éléments contenus\n\n    \"\"\"\n\n    def __init__(self, codename, image_path, fullname = None):\n        \"\"\"\n        \"\"\"\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:\n            self.fullname = fullname\n\n        self.image = load_image(image_path)\n        \n        self.elements = pygame.sprite.Group()\n\n    def add(self, element):\n        self.elements.add(element)\n\n    def get_element(self, codename):\n        \"\"\"get element by name (should it be precised in the method name?)\"\"\"\n        for element in self.elements.sprites():\n            if element.codename == codename:\n                return self.elements.get_element(name)\n        raise GetError(codename, \"Element codename was wrong.\")\n\n    def remove(self, element):\n        if this.elements.has(element):\n            self.element.remove(element)\n        else:\n            print(\"La salle ne contient pas \" + element.name)\n\n\n    def __str__(self):\n        room_str = \"Dans \" + self.fullname + \" il y a :\"\n        room_str += room_str.join([(\"-\" + str(element) + \"\\n\") for element in self.elements.sprites()])\n        return room_str\n\nclass Element(sprite.Sprite):\n    \"\"\"Elément : Personnage ou Objet situé dans une Zone, avec lequel le protagoniste peut interagir\"\"\"\n\n    def __init__(self, codename, image_path, position, size, fullname = None):\n        sprite.Sprite.__init__(self)\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:",
+			"  Elle possède son propre décor de fond et contient des élements.\n\n    Attributs :\n        codename    --  chaîne servant d'identifiant (minuscules, sans espace)\n        fullname    --  nom descriptif de la zone ; par défaut, égal au codename\n        image       --  image du décor de fond\n        elements    --  groupe des éléments contenus\n\n    \"\"\"\n\n    def __init__(self, codename, image_path, fullname = None):\n        \"\"\"\n        \"\"\"\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:\n            self.fullname = fullname\n\n        self.image = load_image(image_path)\n        \n        self.elements = pygame.sprite.Group()\n\n    def add(self, element):\n        self.elements.add(element)\n\n    def get_element(self, codename):\n        \"\"\"get element by name (should it be precised in the method name?)\"\"\"\n        for element in self.elements.sprites():\n            if element.codename == codename:\n                return self.elements.get_element(name)\n        raise GetError(codename, \"Element codename was wrong.\")\n\n    def remove(self, element):\n        if this.elements.has(element):\n            self.element.remove(element)\n        else:\n            print(\"La salle ne contient pas \" + element.name)\n\n\n    def __str__(self):\n        room_str = \"Dans \" + self.fullname + \" il y a :\"\n        room_str += room_str.join([(\"-\" + str(element) + \"\\n\") for element in self.elements.sprites()])\n        return room_str\n\nclass Element(sprite.Sprite):\n    \"\"\"Elément : Personnage ou Objet situé dans une Zone, avec lequel le protagoniste peut interagir\"\"\"\n\n    def __init__(self, codename, image_path, position, size, fullname = None):\n        sprite.Sprite.__init__(self)\n        self.codename = codename\n        if fullname is None:\n            self.fullname = codename\n        else:",
+			"elements",
+			"name",
+			"show",
+			"socket_port",
+			"1337",
+			"connecte",
+			"at",
+			"at(",
+			"at",
+			"update",
+			"position",
+			"step",
+			"True",
+			"event",
+			"get_next_move",
+			"update(",
+			"update",
+			"mouse_click",
+			"center",
+			"NB_SQUARES_PER_ROW",
+			"self.keyPressed",
+			"simula",
+			"imposs",
+			"simulation",
+			"SIMULATION",
+			"es_fpga",
+			"position",
+			"pos",
+			"aller_a",
+			"capteurs_int",
+			"temps_ecoule",
+			"debut_match",
+			"deubt_match",
+			"square",
+			"position",
+			"pos",
+			"position",
+			"Batiment",
+			"batiment",
+			"pg",
+			"K_",
+			"pg",
+			"clock",
+			"game['",
+			"globals.",
+			"move",
+			"map",
+			"sprite",
+			"attack",
+			"SQRT2",
+			"sqrt",
+			"moveXY",
+			"move(",
+			"realStep",
+			"dirX = ",
+			"dirX = (",
+			"dirX = ",
+			"dirX === 1",
+			"dirX ===",
+			"dirX",
+			"@memory[@activeState]",
+			"clock",
+			"consolimit",
+			"consol",
+			"image",
+			"imageloa",
+			"case_names",
+			"consolimit",
+			"target",
+			"image loa",
+			"CHAR_SPEC.speed.slow",
+			"CHAR_SPEC.speed.fast",
+			"CHAR_SPEC.frameDuration.fly",
+			"CHAR_SPEC.frameDuration.walk",
+			"{width: CHAR_SPEC.collisionBox.medium.width, height: CHAR_SPEC.collisionBox.small.height}",
+			"typeof",
+			"type",
+			"delta",
+			"realRotation",
+			"Right",
+			"dirY",
+			"consolimit",
+			"@activeState",
+			"@timer",
+			"keys",
+			"\"left",
+			"keys",
+			"press",
+			"stage",
+			"\"DOWN\"",
+			"groundSizeY",
+			"groundSizeX",
+			"mapWi",
+			"_this.stage",
+			"stage",
+			"mapWi"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"sprite.DirtySprite",
+			"myCharacter",
+			"character.animation",
+			"character",
+			"hero.realTurn",
+			"hero.realMove",
+			"nextY"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "adventurestate.py",
+					"settings":
+					{
+						"buffer_size": 8713,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8222,
+								8222
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2185.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/adventure/models.py",
+					"settings":
+					{
+						"buffer_size": 18076,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5854,
+								5854
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 22.0,
+						"translation.y": 2070.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/exception.py",
+					"settings":
+					{
+						"buffer_size": 1899,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								508,
+								508
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 463.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/view/layeredview.py",
+					"settings":
+					{
+						"buffer_size": 4160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3539,
+								3539
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1059.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/exception/__init__.py",
+					"settings":
+					{
+						"buffer_size": 90,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								90,
+								90
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "game.py",
+					"settings":
+					{
+						"buffer_size": 4927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4471,
+								4471
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1308.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/tests/test_game.py",
+					"settings":
+					{
+						"buffer_size": 3206,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								956,
+								956
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/load.py",
+					"settings":
+					{
+						"buffer_size": 1114,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								747,
+								747
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/files.py",
+					"settings":
+					{
+						"buffer_size": 285,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								174,
+								174
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 125.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source/helper/setter.py",
+					"settings":
+					{
+						"buffer_size": 155,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								155,
+								155
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5078125,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 216.0,
+	"status_bar_visible": true
+}
