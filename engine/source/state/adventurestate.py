@@ -238,6 +238,12 @@ class AdventureState(GameState):
         self.complement = complement_object.codename  # but complement is for a dynamic menu
         self.view.display_menu()
 
+    def hide_menu(self):
+        """Masque le menu dynamique ET rétablit l'action par défaut"""
+        del self.verb
+        del self.complement
+        self.view.hide_menu()
+
     def set_descriptions_from_file(self, file_path):
         self.description_hash = load_descriptions(file_path)
 

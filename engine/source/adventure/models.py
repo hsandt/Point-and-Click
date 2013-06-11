@@ -498,10 +498,19 @@ def _on_click_for_query_interactive_button(self, adventurestate):
     adventurestate.verb = self.codename  # opt. ici mais pratique en mouse-over pour voir ce qu'on fait
     # direct link to item with a method 'get_by_name'? but this ensures the item is in the current area...
     # the item could also be linked to the parent menu, but one link is necessary in both cases
-    if getattr(adventurestate.area.get_item_by_name(adventurestate.complement), adventurestate.verb)(adventurestate):
-        # if True is returned, the action has been completed
+    item = adventurestate.area.get_item_by_name(adventurestate.complement)
+    # that's some decoration
+    if hasattr(item, adventurestate.verb):
+        print "now calling query action %s for item %s" % (adventurestate.verb, item.fullname)
+        if getattr(item, adventurestate.verb)(adventurestate):
+            # if True is returned, the action has been completed
+            # hide the dynamic menu again (includes action to default)
+            print "hiding menu again"
+            adventurestate.hide_menu()
+    else:
+        # si l'action est inconnue, c'est le message 'rien à faire' par défaut
+        print "Hum, je ne peux pas " + adventurestate.verb + " l'objet " + item.fullname + ". (action inconnue)"
         del adventurestate.verb
-        del adventurestate.complement
 
 # test unitaire
 if __name__ == '__main__':
