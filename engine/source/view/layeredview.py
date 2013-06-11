@@ -105,8 +105,9 @@ class LayeredView(pygame.sprite.LayeredDirty):
             label.rect.topleft = position
         label.rect.size = label_image.get_size()
 
-    def displayText():
-        pass
+    def displayText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+        """Affiche du texte dans la couche dédiée."""
+
 
     def clearText(self):
         pass
