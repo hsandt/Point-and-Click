@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 # for the release, remove the next line and change 'source' into 'pace',
 # removing the 'as pace
