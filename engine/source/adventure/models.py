@@ -438,25 +438,36 @@ class Gate(Clickable):
 
 # ce n'est pas un groupe de sprites ! enfin si, mais ce sont les sprites "inventaire"
 # qui sont utilisés (image et position différentes)
-class Inventory(sprite.Group):
-    """Inventaire du joueur"""
-    def __init__(self):
-        sprite.Group.__init__(self)
+class Inventory(object):
+    """Inventaire du joueur
+    Attributs :
+        item_list : liste des items
+        bg_image : background de l'inventaire
 
-    ## DON'T USE PREDEFINED NAMES!!
+    """
+    def __init__(self, path=None):
+        
+        self.item_list = []
+        if path is not None:
+            self.bg_image = load_image(path)
+        else:
+            self.bg_image = None #Ou trouver une image par défaut
+        
+
+
     def add_item(self, item):
-        self.add(item)  # group method!
+        self.item_list.append(item)
         print("Le joueur prend " + item.fullname)
 
     def remove(self, item):
-        if self.has(item):
-            self.remove(item)
+        if item in self.item_list:
+            self.item_list.remove(item)
             print(item.fullname + " a été retiré de l'inventaire")
         else:
             print(item.fullname + " n'est pas dans l'inventaire")
 
     def clear(self):
-        self.empty()
+        del self.item_list[:]
         print("L'inventaire a été vidé")
 
     def __str__(self):

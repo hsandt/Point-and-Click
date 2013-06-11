@@ -12,15 +12,17 @@ class LayeredView(pygame.sprite.LayeredDirty):
     ##0 : background
     now, background is a special entity of LayeredDirty
     1 : elements
-    2 : menu
-    3 : more text
+    2 : inventory
+    3 : menu
+    4 : more text
 
     """
 
     background_layer = 0
     element_layer = 1
-    menu_layer = 2
-    text_layer = 3
+    inventory_layer = 2
+    menu_layer = 3
+    text_layer = 4
 
     def __init__(self):
         pygame.sprite.LayeredDirty.__init__(self)
@@ -39,7 +41,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
         # blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
         blank_label.image = pygame.Surface((400, 30))  # to see it more easily
         blank_label.rect = pygame.rect.Rect(20, 290, 100, 30)
-        self.add(blank_label, layer=3)  # initialize void text
+        self.add(blank_label, layer=self.text_layer)  # initialize void text
         # donner un nom au label pour l'identifier plus facilement ?
 
     def loadArea(self, area):
@@ -48,8 +50,8 @@ class LayeredView(pygame.sprite.LayeredDirty):
         et tous ses objets en mid (couche 1)
 
         """
-        self.remove_sprites_of_layer(0)  # clear bg layer
-        self.remove_sprites_of_layer(1)  # clear item layer
+        self.remove_sprites_of_layer(self.background_layer)  # clear bg layer
+        self.remove_sprites_of_layer(self.element_layer)  # clear item layer
         self.clear(None, area.image)  # oldie prototype
         ## OR: the background is a sprite at layer 0, and is dirtied when changing area
         for sprite in self:
@@ -57,18 +59,18 @@ class LayeredView(pygame.sprite.LayeredDirty):
         # self.add(area.clickable_group.sprites(), layer=1)
         # well, we could ALSO use sprite groups, even for the console
         for item in area.item_group:
-            self.add(item.area_clickable, layer=1)
+            self.add(item.area_clickable, layer=self.element_layer)
             # also show contained items if it is a container and it is open
             if hasattr(item, 'open_state') and item.open_state:  # duck-typing
                 assert hasattr(item, 'content')  # no open_state without content!
                 self.load_content(item)
-        self.add(area.clickable_group, layer=1)
+        self.add(area.clickable_group, layer=self.element_layer) #ajout des portes
 
         print 'loaded area'
 
     def load_content(self, container):
         for contained_elt in container.content:
-            self.add(contained_elt.area_clickable, layer=1)
+            self.add(contained_elt.area_clickable, layer=self.element_layer)
             # be careful, content is drawn above!
 
     def remove_item(self, item):
@@ -94,7 +96,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
 
     def setActionText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
         label_image = self.font.render(text, True, textcolor, bgcolor)
-        label = self.get_sprites_from_layer(3)[0]
+        label = self.get_sprites_from_layer(4)[0]
         label.image = label_image
         label.dirty = 1
         # if rect is not None:  # if no rect is passed, keep it!
@@ -122,3 +124,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
             if sprite.codename == sprite_name:
                 return sprite
         raise GetError(sprite_name, "layered view")
+
+    def display_inventory(self):
+        #self.self.get_sprites_from_layer(self.inventory_layer)[0].all_visible = 1
+        pass
