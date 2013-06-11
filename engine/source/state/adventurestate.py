@@ -117,7 +117,7 @@ class AdventureState(GameState):
         # self.view.reset()
         # self.view.loadArea(self.area)
         # self.set_menu(self.menu)
-        # self.view.displayText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
+        # self.view.setActionText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
         self.view.draw(screen)  # for now, bg and all
         ## only draws when necessary
 
@@ -231,7 +231,7 @@ class AdventureState(GameState):
             action_str = self.verb
         else:
             action_str = " %s %s (avec) ..." % (self.verb, self.complement)
-        self.view.displayText(action_str, None, (255, 255, 255), (0, 0, 0))
+        self.view.setActionText(action_str, None, (255, 255, 255), (0, 0, 0))
 
     def display_menu_for(self, complement_object):
         self.verb = '???'  # action still undefined
