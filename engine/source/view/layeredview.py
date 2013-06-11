@@ -92,7 +92,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
     def hide_menu(self):
         self.get_sprites_from_layer(self.menu_layer)[0].all_visible = 0
 
-    def displayText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+    def setActionText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
         label_image = self.font.render(text, True, textcolor, bgcolor)
         label = self.get_sprites_from_layer(3)[0]
         label.image = label_image
@@ -104,6 +104,9 @@ class LayeredView(pygame.sprite.LayeredDirty):
         if position is not None:
             label.rect.topleft = position
         label.rect.size = label_image.get_size()
+
+    def displayText():
+        pass
 
     def clearText(self):
         pass
