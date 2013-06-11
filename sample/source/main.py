@@ -1,30 +1,29 @@
 import sys
 # for the release, remove the next line and change 'source' into 'pace',
 # removing the 'as pace'
-
 #/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine
 
+#sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/')
 
 #/Users/hs/Projets/Python/Point-and-click/repo/engine
 
 sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine')
-
 # import pace
 import source as pace # debug version
 from source.adventure import models
 
 
-def main():
-    pac = pace.state.game.PaCGame((800, 600))
-    pac.context.enter_state("adventure")
+# def main():
+#     pac = pace.state.game.PaCGame((800, 600))
+#     pac.context.enter_state("adventure")
 
-    bsod = models.Area("blue screen of death", "background.png")
-    room = models.Area("blue screen of death", "../test_resource/background.png")
-    teapot = models.Element("teapot", "../test_resource/teapot.png", (15,30), (60,40))
-    room.add(teapot, "a teapot")
-    print room
-    room.get_element('a teapot').take()
-=======
+#     bsod = models.Area("blue screen of death", "background.png")
+#     room = models.Area("blue screen of death", "../test_resource/background.png")
+#     teapot = models.Element("teapot", "../test_resource/teapot.png", (15,30), (60,40))
+#     room.add(teapot, "a teapot")
+#     print room
+#     room.get_element('a teapot').take()
+
 from helper.files import get_resource_path
 # TODO : avoid using resource path at any lod by defining a path at the beginning, that the engine will take into account
 from source.helper.setter import set_behaviour
@@ -53,27 +52,27 @@ def main():
     bsod.add_acitem(key.area_clickable, position=(180, 60))
 
     # on change le comportement par défaut du locker
-    def cannot_take(item, state):
-        print "I cannot take " + str(item) + "!"
+def cannot_take(item, state):
+    print "I cannot take " + str(item) + "!"
     set_behaviour(locker, "take", cannot_take)
 
     # use key behaviour
     # note that, Q5-like, we can directly use the key in the room with the locker without taking it
     # then the key will remain in the room...!
-    def use_key(key, state):
-        state.set_complement("key")
+def use_key(key, state):
+    state.set_complement("key")
     set_behaviour(key, "use", use_key)
 
     # use key on locker behaviour (actually use locker when complement is set at 'key')
     # we could also change the verb to 'use2' or 'use_object_on'
 
     # rather, we should have only one use method and use_X_on_Y should be used as a 'case' of use
-    def use_key_on_locker(locker, state):
-        if state.complement == 'key':
-            locker.open = True
-            locker.area_clickable.change_image(get_resource_path("open_locker.png"))
-        else:
-            print "you cannot use the locker this way"
+def use_key_on_locker(locker, state):
+    if state.complement == 'key':
+        locker.open = True
+        locker.area_clickable.change_image(get_resource_path("open_locker.png"))
+    else:
+        print "you cannot use the locker this way"
     set_behaviour(locker, "use", use_key_on_locker)
 
     # porte "à la main"
@@ -101,7 +100,7 @@ def main():
 
     # on peut lancer le jeu
     pac_game.run()
->>>>>>> ee77143d4afc8f0aaa9f75b5692f9d56ca47118f
+
 
 if __name__ == '__main__':
     main()
