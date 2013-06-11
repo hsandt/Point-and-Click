@@ -2,7 +2,7 @@
 
 import pygame
 
-from game import GameState
+from gamestate import GameState
 from ..adventure.models import Area, InteractiveMenu, Inventory, Item
 from ..adventure import models
 from ..exception.exception import OverwriteError, GetError
