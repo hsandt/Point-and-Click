@@ -40,6 +40,7 @@ class AdventureState(GameState):
         self._verb = None  # may not be needed
         self._complement = None
         self.set_query_mode(False)  # ok??
+        self.inventory = Inventory()
 
     def on_enter(self):
 
@@ -185,6 +186,9 @@ class AdventureState(GameState):
         self.menu = menu
         self.view.fillMenuLayer(menu)
 
+    def set_inventory_layer(self):
+        self.view.display_inventory(self.inventory)
+
     def set_default_verb(self, verb):
         self.default_verb = verb
 
@@ -269,3 +273,16 @@ class AdventureState(GameState):
     # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):
         return "Adventure State"
+
+    def add_to_inventory(self, item):
+
+        self.inventory.add_item(item)
+        remove_item(item)
+
+    def remove_from_inventory(item):
+        
+        self.inventory.remove_item(item) #pour l'instant on considère que l'item est détruit une fois retiré de l'inventaire
+
+    def clear_inventory(self):
+        
+        self.inventory.clear() #même remarque que pour remove_from_inventory
