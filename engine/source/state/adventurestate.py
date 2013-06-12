@@ -13,9 +13,11 @@ from ..helper.load import load_descriptions
 class AdventureState(GameState):
     """Gamestate du mode principal de jeu
 
-    Attributs :
+    Attributs hérités :
         gc          --  game context supervisant ce game state
         view        --  conteneur des couches de vue (propre à chaque state)
+
+    Attributs :
         areas       --  ensemble des zones en jeu
         area        --  zone en cours de visite
         inventory   --  inventaire de l'avatar
@@ -243,6 +245,9 @@ class AdventureState(GameState):
         del self.verb
         del self.complement
         self.view.hide_menu()
+
+    def display_text(self, text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+        self.view.display_text(text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0))
 
     def set_descriptions_from_file(self, file_path):
         self.description_hash = load_descriptions(file_path)

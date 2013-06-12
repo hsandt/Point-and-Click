@@ -35,6 +35,6 @@ def load_descriptions(file_path):
     description_hash = {}
     with open(file_path) as f:
         for line in f:
-            info = line.split(None, 1)  # format: %item_name%<tab>%description%
+            info = line.strip().split(None, 1)  # format: %item_name%<tab>%description%\n
             description_hash[info[0]] = info[1]
     return description_hash

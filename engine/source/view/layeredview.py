@@ -105,11 +105,15 @@ class LayeredView(pygame.sprite.LayeredDirty):
             label.rect.topleft = position
         label.rect.size = label_image.get_size()
 
-    def displayText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+    def display_text(self, text, position, textcolor, bgcolor):
         """Affiche du texte dans la couche dédiée."""
+        text_surface = self.font.render(text, True, textcolor, bgcolor)
+        text_sprite = pygame.sprite.DirtySprite()  # initillay dirty
+        text_sprite.image = text_surface
+        text_sprite.rect = pygame.rect.Rect(position, text_surface.get_size())
+        self.add(text_sprite, layer=3)  # any sprite in layer 3 but of index 0 is considered as a non action-descriptive text
 
-
-    def clearText(self):
+    def clear_text(self):
         pass
 
     def displayCursor(self):

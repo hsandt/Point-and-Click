@@ -258,7 +258,7 @@ class Item(object):
         area_clickable      -- clickable utilisé dans la zone (utile pour référencer!)
         inventory_clickable -- clickable utilisé dans l'inventaire
 
-    """
+        """
     def __init__(self, codename, fullname, adventurestate, area_image_path, inventory_image_path):
         ## TODO : put resource loading into the adventure state init by 'decorating' it?
         ## this would be done in Area.add_item() method
@@ -271,6 +271,8 @@ class Item(object):
 
     def look_at(self, adventurestate):
         print self.description
+        # view
+        adventurestate.display_text(self.description, (280, 300))
 
     # pas de différence avec attempt_to_take pour l'instant
     def take(self, adventurestate):
