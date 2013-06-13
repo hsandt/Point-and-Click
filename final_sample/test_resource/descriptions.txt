@@ -1,0 +1,3 @@
+teapot	It is a small hand-made teapot.
+locker	It is closed.
+key		A golden pair of keys.
