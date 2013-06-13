@@ -53,7 +53,9 @@ class Area(object):
 
     def get_clickable(self, codename):
         """get element by name (should it be precised in the method name?)"""
+        print "On cherche un element de nom : " + codename
         for element in self.clickable_group.sprites():
+            print "nom de l'item : " + element.codename
             if element.codename == codename:
                 return element
         raise GetError(codename, "[Area] " + self.fullname)
@@ -73,13 +75,10 @@ class Area(object):
             print("La salle ne contient pas " + element.codename)
 
     def remove_item_by_name(self, element_name):
-        try:
-            element = self.get_element(element_name)
-        except:
-            print("La salle ne contient pas " + element_name)
-        else:
-            self.clickable_group.remove(element)
-            print 'element removed : ' + element.codename
+        element = self.get_item_by_name(element_name)
+
+        self.clickable_group.remove(element)
+        print 'element removed : ' + element.codename
 
     # def add_gate(self, gate):
     #     self.gate_group.append(gate)
@@ -445,16 +444,23 @@ class Inventory(object):
     Attributs :
         item_list : liste des items
         bg_image : background de l'inventaire
+        inventoryRect : rect de l'inventaire
+        inventorySprite : Sprite de l'inventaire
 
     """
     def __init__(self, path=None):
-        
+        #hauteur de 112 pixels et 350 en largeur par défaut
         self.item_list = []
         if path is not None:
             self.bg_image = load_image(path)
         else:
-            self.bg_image = None #Ou trouver une image par défaut
-        
+            self.bg_image = pygame.Surface((350, 112))
+            self.bg_image.fill((0,0,0))#fond noir par défaut
+        self.inventoryRect = pygame.Rect((0,0), (350,112))
+        self.inventoryRect.bottomright = (640, 400) #par défaut l'inventaire est en bas à droite de l'écran
+        self.inventorySprite = pygame.sprite.DirtySprite()
+        self.inventorySprite.rect = self.inventoryRect
+        self.inventorySprite.image = self.bg_image
 
 
     def add_item(self, item):
@@ -474,8 +480,6 @@ class Inventory(object):
 
     def __str__(self):
         inv_str = "Dans l'inventaire, il y a :"
-        inv_str += inv_str.join([("-" + element + "\n") for element in self.pygame.sprite.Group])
-        return inv_str
 
 #Souris gérée par Pygame
 # class Cursor(pygame.sprite.DirtySprite):
