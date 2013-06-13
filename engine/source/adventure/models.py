@@ -272,7 +272,7 @@ class Item(object):
     def look_at(self, adventurestate):
         print self.description
         # view
-        adventurestate.display_text(self.description, (280, 300))
+        adventurestate.view.set_text(self.description, None, 1, (255,255,255), (0,0,0))
 
     # pas de différence avec attempt_to_take pour l'instant
     def take(self, adventurestate):

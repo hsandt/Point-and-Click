@@ -8,7 +8,8 @@ from ..exception import InputError, AbstractMethodError, GetError
 
 class PaCGame(object):
     """
-    Jeu "point and click"
+    Classe gérant le lancement du jeu point and click
+    
     A instancier pour démarrer le jeu
     Gère la boucle event-update-render centrée sur le Game Context
 
@@ -21,11 +22,8 @@ class PaCGame(object):
 
     def __init__(self, window_size=(600, 400), title="Pace game", FPS=60):
         """Initialisation du jeu : moteur, fenêtre et game states"""
-
-        # initialisation de pygame et de la fenêtre de jeu
-        pygame.init()
-        self.screen = pygame.display.set_mode(window_size)
-        self.title = pygame.display.set_caption(title)
+        self.window_size = window_size
+        self.title = title
         self.FPS = FPS
 
         # création du game context (inclut la création des game states)
@@ -33,10 +31,15 @@ class PaCGame(object):
 
     def run(self):
         """Lance le jeu"""
+        # initialisation de pygame et de la fenêtre de jeu
+        pygame.init()
+        self.screen = pygame.display.set_mode(self.window_size)
+        pygame.display.set_caption(self.title)
+
         clock = pygame.time.Clock()
 
         try:
-            while 1:
+            while 1:  # or while(not end state)
                 self.context.handle_input()
                 self.context.update()
                 self.context.render(self.screen)

@@ -1,8 +1,22 @@
 {
-	"folders":
-	[
-		{
-			"path": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source"
-		}
-	]
+    "folders":
+    [
+        {
+            "path": "/Users/hs/Projets/Python/Point-and-click/repo/engine/source"
+        }
+    ],
+    // Define configurations for the drop down export menu
+    "html_panel": [
+        // Browser print color (selections and multi-selections allowed)
+        {
+            "Browser Print - Color": {
+                "numbers": true,
+                "wrap": 900,
+                "browser_print": true,
+                "multi_select": true,
+                "color_scheme": "Packages/ExportHtml/ColorSchemes/Print-Color.tmTheme",
+                "style_gutter": false
+            }
+        }
+    ]
 }

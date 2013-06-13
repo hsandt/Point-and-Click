@@ -36,6 +36,8 @@ class LayeredView(pygame.sprite.LayeredDirty):
 
     def reset(self):  ## debug ?
         self.empty()
+        # hors reset ? si on affiche le menu pause, ne disparaîtra pas...
+        # ou même dans le __init__ d'adventurestate pour indiquer les params (et modifiables par user!)
         # this should be set manually (at least position)
         blank_label = pygame.sprite.DirtySprite()
         # blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
@@ -43,6 +45,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
         blank_label.rect = pygame.rect.Rect(20, 290, 100, 30)
         self.add(blank_label, layer=self.text_layer)  # initialize void text
         # donner un nom au label pour l'identifier plus facilement ?
+        self.display_text("Description here", (280, 300), (255,255,255), (0,0,0))
 
     def loadArea(self, area):
         """
@@ -96,7 +99,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
 
     def setActionText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
         label_image = self.font.render(text, True, textcolor, bgcolor)
-        label = self.get_sprites_from_layer(4)[0]
+        label = self.get_sprites_from_layer(self.text_layer)[0]
         label.image = label_image
         label.dirty = 1
         # if rect is not None:  # if no rect is passed, keep it!
@@ -113,7 +116,17 @@ class LayeredView(pygame.sprite.LayeredDirty):
         text_sprite = pygame.sprite.DirtySprite()  # initillay dirty
         text_sprite.image = text_surface
         text_sprite.rect = pygame.rect.Rect(position, text_surface.get_size())
-        self.add(text_sprite, layer=3)  # any sprite in layer 3 but of index 0 is considered as a non action-descriptive text
+        text_sprite.rect.w = 100
+        self.add(text_sprite, layer=self.text_layer)  # any sprite in layer 3 but of index 0 is considered as a non action-descriptive text
+
+    def set_text(self, text, position, index, textcolor, bgcolor):
+        label_image = self.font.render(text, True, textcolor, bgcolor)
+        label = self.get_sprites_from_layer(self.text_layer)[index]
+        label.image = label_image
+        label.dirty = 1
+        if position is not None:
+            label.rect.topleft = position
+        label.rect.size = label_image.get_size()
 
     def clear_text(self):
         pass
