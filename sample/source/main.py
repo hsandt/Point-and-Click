@@ -89,6 +89,8 @@ def main():
     menu = models.InteractiveMenu(get_resource_path("menu.png"), (40, 340, 160, 60), 1, True, button1, button2, button3)
     adv.set_menu(menu)
 
+    
+
     # on peut entrer dans l'area qui est ready
     adv.enter_area('bsod')
 

@@ -451,7 +451,9 @@ class Inventory(object):
         if path is not None:
             self.bg_image = load_image(path)
         else:
-            self.bg_image = None #Ou trouver une image par défaut
+            self.bg_image = pygame.Surface((400, 200))
+            self.bg_image.fill((0,0,0))#fond noir par défaut
+
         
 
 

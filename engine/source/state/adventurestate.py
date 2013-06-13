@@ -185,7 +185,7 @@ class AdventureState(GameState):
         self.view.fillMenuLayer(menu)
 
     def set_inventory_layer(self):
-        self.view.display_inventory(self.inventory)
+        self.view.display_inventory()
 
     def set_default_verb(self, verb):
         self.default_verb = verb
