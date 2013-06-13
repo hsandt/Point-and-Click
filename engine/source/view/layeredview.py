@@ -126,11 +126,19 @@ class LayeredView(pygame.sprite.LayeredDirty):
         raise GetError(sprite_name, "layered view")
 
     def fillInventoryLayer(self, inventory):
-        self.add(inventory, layer=self.inventory_layer)
+        self.add(inventory.inventorySprite, layer=self.inventory_layer)
+        print "Inventory Layer filled"
         for item in inventory.item_list:
             self.add(item, layer=self.inventory_layer)
-        
 
-    def display_inventory(self):
-        self.get_sprites_from_layer(self.inventory_layer)[0].all_visible = 1
+    def add_item_to_layer(self, item):
+        self.add(item, layer=self.inventory_layer)
+
+    def display_inventory(self, inventory):
+        #Vérifier si l'inventaire contient des éléments et les afficher
+        if len(inventory.item_list) != 0:
+            for element_number in range(0,len(inventory.item_list)):
+                self.get_sprites_from_layer(self.inventory_layer)[element_number].all_visible = 1
+            pass
+        
         

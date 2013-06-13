@@ -32,13 +32,15 @@ class AdventureState(GameState):
         GameState.__init__(self, gc)
         self.areas = {}
         self.area = None
-        self.inventory = Inventory()
         self.description_hash = {}
         # self.default_verb = 'look_at'  # inside set_query_mode()
         self._verb = None  # may not be needed
         self._complement = None
         self.set_query_mode(False)  # ok??
         self.inventory = Inventory()
+        #Affichage de l'inventaire
+        self.view.fillInventoryLayer(self.inventory)
+        self.set_inventory_layer()
 
     def on_enter(self):
 
@@ -47,6 +49,7 @@ class AdventureState(GameState):
         self.mouse_command = {'left': [0, None], 'right': [0, None]}
         del self.verb  # ok this way?
         del self.complement
+        
 
     def on_exit(self):
         pass
@@ -185,7 +188,7 @@ class AdventureState(GameState):
         self.view.fillMenuLayer(menu)
 
     def set_inventory_layer(self):
-        self.view.display_inventory()
+        self.view.display_inventory(self.inventory)
 
     def set_default_verb(self, verb):
         self.default_verb = verb
@@ -272,7 +275,7 @@ class AdventureState(GameState):
     def add_to_inventory(self, item):
 
         self.inventory.add_item(item)
-        remove_item(item)
+        view.add_to_inventory(item)
 
     def remove_from_inventory(item):
         
