@@ -59,7 +59,7 @@ class AdventureState(GameState):
     def handle_input(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                self.gc.set_incoming_state('exit')  # changement toléré exceptionnellement dans le handle...
+                self.gc.incoming_state_name = 'exit'  # changement toléré exceptionnellement dans le handle...
                 # en fait, on pourrait fusionner handle et update
                 # mais la séparation évite d'après plusieurs events -> actions en même temps
                 # pour peu que plusieurs events attendent dans la file

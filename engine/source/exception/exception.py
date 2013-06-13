@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # source: docs.python.org/2/tutorial/errors.html
+# some classes may have been customized
 
 
 class Error(Exception):
@@ -13,14 +14,14 @@ class InputError(Error):
     Exception raised for an incorrect input, independently from the current state of the game.
 
     Attributes:
-        expr    -- input expression in which the error occured
-        msg     -- explanation of the error
+        expr      -- input expression for which the error occured
+        expected  -- list of possible expressions expected instead
 
     """
 
-    def __init__(self, expr, msg):
+    def __init__(self, expr, expected):
         self.expr = expr
-        self.msg = msg
+        self.expected = expected
 
 
 class GetError(Error):

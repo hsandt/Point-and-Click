@@ -19,7 +19,7 @@ from source.adventure import models
 
 # def main():
 #     pac = pace.state.game.PaCGame((800, 600))
-#     pac.context.enter_state("adventure")
+#     pac.manager.enter_state("adventure")
 
 #     bsod = models.Area("blue screen of death", "background.png")
 #     room = models.Area("blue screen of death", "../test_resource/background.png")
@@ -35,16 +35,18 @@ from source.helper.setter import set_behaviour
 def main():
 
     # on initialise le jeu point and click
-    pac_game = pace.state.game.PaCGame((640, 400), title="DEMO game for pace")
+    pac_game = pace.state.game.GameApp((640, 400), title="DEMO game for pace")
+    print pac_game.manager
 
     # on construit l'adventure state avec des salles et des objets
-    adv = pac_game.context.states['adventure']
+    adv = pac_game.manager.states['adventure']
     adv.set_descriptions_from_file(get_resource_path("descriptions.txt"))
 
     bsod = models.Area('bsod', "blue screen of death", get_resource_path("background.png"))
     adv.add_area(bsod)
     drowning = models.Area('drowning', "the drowning 'room'", get_resource_path("drowning.png"))
     adv.add_area(drowning)
+    print bsod
 
     # on ajoute des éléments dans la mock area
     teapot = models.Item("teapot", None, adv, get_resource_path("teapot.png"), get_resource_path("teapot.png"))
@@ -95,9 +97,9 @@ def main():
     adv.enter_area('bsod')
 
     # on peut entrer dans le state qui est ready
-    pac_game.context.enter_state("adventure")
+    pac_game.manager.enter_state("adventure")
 
-    assert pac_game.context.states['adventure'].area.codename == 'bsod'
+    assert pac_game.manager.states['adventure'].area.codename == 'bsod'
 
     # on peut lancer le jeu
     pac_game.run()
