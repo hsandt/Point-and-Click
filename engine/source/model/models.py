@@ -26,9 +26,15 @@ class Element(object):
 
     def __init__(self, codename, fullname, adventurestate, tag=None, parent=None):
         set_names(self, codename, fullname)
-        # TODO: pass description and use a factory to build items from files
+        # TODO: pass description instead of adventurestate and use a factory to build items from files
         if tag == 'inventory':
             self.description = "your inventory"
+        elif tag == 'menu':
+            self.description = "menu"
+        elif tag == 'button':
+            self.description = "button"
+        elif tag == 'verb':
+            self.description = "verb subject"
         else:
             self.description = adventurestate.description_hash[codename]  # use description + factory instead
         self.tag = tag
@@ -125,6 +131,10 @@ class ObservableElement(Element, Subject):
 
         self._visible = True
         self._view_position = (0, 0)
+
+    def notify(self):
+        print "%s will now notify its observers: %s." % (self.codename, self.observer_list)
+        Subject.notify(self)
 
     @property
     def visible(self):
@@ -533,6 +543,55 @@ class AdventureMenu(ObservableElement):
 
         self.all_visible = visible
         # notify
+
+class ActionSubject(ObservableElement):
+    """Sujet représentant l'action courante
+
+    Attributs hérités :
+        codename
+        fullname
+        description
+        parent
+        children
+        observer_list
+
+    Attributs propres :
+        _verb            -- le verbe en cours
+        _complement      -- le complément en cours
+        visible         -- booléen indiquant si le verbe est visible
+        image_path      -- chemin de l'image utilisée pour le menu
+        view_position   -- position à fournir à la vue
+
+    """
+    def __init__(self, adventurestate, starting_verb):
+        ObservableElement.__init__(self, 'verb_label', None, adventurestate, tag="verb", parent=None)
+        self._verb = starting_verb
+        self._complement = None
+        # le reste doit être initialisé avant de lancer le jeu
+        self.image_path = None
+        self.view_position = (0, 0)
+        self.textcolor = (255, 255, 255)
+        self.bgcolor = (0, 0, 0)
+
+    @property
+    def verb(self):
+        """Verbe de l'action en cours"""
+        return self._verb
+
+    @verb.setter
+    def verb(self, value):
+        self._verb = value
+        self.notify()
+
+    @property
+    def complement(self):
+        """Verbe de l'action en cours"""
+        return self._complement
+
+    @complement.setter
+    def complement(self, value):
+        self._complement = value
+        self.notify()
 
 # helper pour fournir un nom complet si besoin
 # est-ce ok d'appeler le 1° argument self ?

@@ -55,6 +55,7 @@ class ElementView(pygame.sprite.DirtySprite, Observer):
     def bind_subject(self, subject):
         self.subject_list.append(subject)
         subject.attach(self)
+        print 'view now bound to %s' % (subject.codename)
 
     def recursive_bind_subject(self, subject):
         """Bind recursively to the subject and all its parents"""
@@ -348,6 +349,7 @@ class VerbButtonClickable(MenuButtonClickable):
         MenuButtonClickable.__init__(self, button, visible)
         
     def on_click(self, adventurestate, button):
+        print "on_click for Verb Button %s" % self.subject_list[0].codename
         # l'enfant situé le plus bas parmi les sujets est le modèle observé à l'origine, i.e. le bouton de verbe
         verb_button = self.subject_list[0]
         adventurestate.verb = verb_button.codename
@@ -384,6 +386,38 @@ class AdventureMenuView(ElementView):
     #     for button in self.buttons:
     #         button.visible = value
 
+
+class ActionLabel(ElementView):
+    """Label observant l'action actuelle (qui n'est pas vraiment un élément)"""
+    def __init__(self, action_subject, image_path, position, visible, textcolor, bgcolor):
+        ElementView.__init__(self, image_path, position, visible)
+        self.bind_subject(action_subject)
+        self.font = pygame.font.SysFont("helvetica", 20)
+
+    def update(self):
+        self.update_visibility()
+        self.update_position()
+        self.update_text()
+
+    def update_text(self):
+        print "Action label: update text"
+
+        # pour l'instant, la préposition par défaut est 'avec'
+        if self.verb_subject.complement is None:
+            action_str = self.verb_subject.verb
+        else:
+            action_str = " %s %s avec ..." % (self.verb_subject.verb, self.verb_subject.complement)
+
+        label_image = self.font.render(action_str, True, self.verb_subject.textcolor, self.verb_subject.bgcolor)
+        self.image = label_image
+        self.dirty = 1
+        if self.verb_subject.view_position is not None:
+            self.rect.topleft = self.verb_subject.view_position
+        self.rect.size = label_image.get_size()
+
+    @property
+    def verb_subject(self):
+        return self.subject_list[0]
 
 # BETA: switch between both methods to activate query mode
 

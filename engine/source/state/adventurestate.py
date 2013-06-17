@@ -38,7 +38,7 @@ class AdventureState(GameState):
         self.area = None
         self.description_hash = {}
         self.default_verb = 'look_at'
-        self._verb = None  # optionnel car le verbe est réinitialiser sur on_enter, mais au cas où
+        self._action_subject = models.ActionSubject(self, self.default_verb)
         self._complement = None  # idem
         self.inventory = models.Inventory(self)
 
@@ -154,6 +154,9 @@ class AdventureState(GameState):
         self.area = None
         self.view.empty()
 
+    def set_descriptions_from_file(self, file_path):
+        self.description_hash = load_descriptions(file_path)
+
     # gère modèles et vues, évite les rafraîchissements inutiles
     # def remove_item_from_area(self, item, area):
     #     """Retire un item d'une zone donnée"""
@@ -174,11 +177,20 @@ class AdventureState(GameState):
     #     self.remove_item_by_name_from_area(item_name, self.area)
 
     def set_menu(self, menu):
+        """setter de modèle avec construction automatique de la vue"""
         self.menu = menu
         self.view.load_menu(menu)
 
-    def set_inventory_layer(self):
+    def set_inventory_view(self, position, image_path):
+        """setter de la vue seulement car l'inventaire modèle est automatiquement créé"""
+        self.inventory.view_position = position
+        self.inventory.image_path = image_path
         self.view.load_inventory(self.inventory)
+
+    def set_action_label(self, position, image_path, visible=1, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+        self._action_subject.view_position = position
+        self._action_subject.image_path = image_path
+        self.view.load_action_label(self._action_subject, image_path, position, visible, textcolor, bgcolor)
 
     def set_default_verb(self, verb):
         self.default_verb = verb
@@ -186,34 +198,33 @@ class AdventureState(GameState):
     @property
     def verb(self):
         """Verbe de l'action en cours"""
-        return self._verb
+        return self._action_subject.verb
 
     @verb.setter
     def verb(self, value):
-        self._verb = value
-        self.refresh_action_label()
+        self._action_subject.verb = value
 
     @verb.deleter
     def verb(self):
-        self._verb = self.default_verb
+        self._action_subject.verb = self.default_verb
         # pour l'instant, on suppose que le complément reste
-        self.refresh_action_label()
+        # self.refresh_action_label()
 
     @property
     def complement(self):
         """Verbe de l'action en cours"""
-        return self._complement
+        return self._action_subject._complement
 
     @complement.setter
     def complement(self, value):
-        self._complement = value
-        self.refresh_action_label()
+        self._action_subject._complement = value
+        # self.refresh_action_label()
 
     @complement.deleter
     def complement(self):
-        self._complement = None
+        self._action_subject._complement = None
         # on suppose que le verbe reste
-        self.refresh_action_label()
+        # self.refresh_action_label()
 
     def refresh_action_label(self):
         """
@@ -230,25 +241,26 @@ class AdventureState(GameState):
             action_str = " %s %s avec ..." % (self.verb, self.complement)
         self.view.setActionText(action_str, None, (255, 255, 255), (0, 0, 0))
 
+
     def display_menu_for(self, complement_object):
+        """BETA : affiche le menu dynamique en mode query"""
         self.verb = '???'  # action still undefined
         self.complement = complement_object.codename  # but complement is for a dynamic menu
         self.view.display_menu()
 
     def hide_menu(self):
-        """Masque le menu dynamique ET rétablit l'action par défaut"""
+        """BETA : Masque le menu dynamique ET rétablit l'action par défaut"""
         del self.verb
         del self.complement
         self.view.hide_menu()
 
-    def display_text(self, text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
-        self.view.display_text(text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0))
+    # def display_text(self, text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
+    #     self.view.display_text(text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0))
 
-    def set_descriptions_from_file(self, file_path):
-        self.description_hash = load_descriptions(file_path)
+    
 
     def set_query_mode(self, query_mode=True):
-        """Active le mode 'query' pour tous les modèles
+        """BETA : Active le mode 'query' pour tous les modèles
         !! modification structurelle (classes) et non seulement pour les instances de state adventure
         """
         if query_mode:
@@ -265,27 +277,6 @@ class AdventureState(GameState):
     # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):
         return "Adventure State"
-        
-    # def move_inventory_to(self, position):
-    #     self.inventory.inventorySprite.rect.topleft = position
-
-    def set_inventory_view(self, position, image_path):
-        self.inventory.view_position = position
-        self.inventory.image_path = image_path
-        self.view.load_inventory(self.inventory)
-
-    def add_to_inventory(self, item):
-
-        self.inventory.add_item(item)
-        self.view.refresh_inventory_layer(self.inventory)
-
-    def remove_from_inventory(self, item):
-        
-        self.inventory.remove_item(item)  #pour l'instant on considère que l'item est détruit une fois retiré de l'inventaire
-
-    def clear_inventory(self):
-        
-        self.inventory.clear() #même remarque que pour remove_from_inventory
 
     # pure view methods
     def move_action_label_to(self, position):
