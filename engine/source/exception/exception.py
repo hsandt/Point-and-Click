@@ -26,16 +26,16 @@ class InputError(Error):
 
 class GetError(Error):
     """
-    Exception raised for an incorrect codename in a get call.
+    Exception raised for an incorrect element in a get call.
 
     Attributes:
-        codename        -- incorrect codename
-        container_name  -- name of the container missing the element named codename
+        element_string        -- string identifying the element
+        container_name        -- name of the container where the element could not be found
 
     """
 
-    def __init__(self, codename, container_name):
-        self.codename = codename
+    def __init__(self, element_name, container_name):
+        self.element_name = element_name
         self.container_name = container_name
 
 

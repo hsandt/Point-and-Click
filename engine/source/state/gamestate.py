@@ -8,14 +8,14 @@ class GameState(object):
     Gamestate abstrait
 
     Attributs:
-        gc			game context supervisant ce game state
+        gsm			game state manager supervisant ce game state
         view      vue en couches associée au game state
     
     """
 
-    def __init__(self, gc):
-        self.gc = gc
-        self.view = LayeredView()
+    def __init__(self, gsm, view):
+        self.gsm = gsm
+        self.view = view
 
     def on_enter(self):
         pass
@@ -27,7 +27,7 @@ class GameState(object):
         pass
 
     def update(self):
-        raise AbstractMethodError(self)
+        raise AbstractMethodError(self.__class__.__name__, "update")
 
     def render(self):
-        raise AbstractMethodError(self)
+        raise AbstractMethodError(self.__class__.__name__, "render")

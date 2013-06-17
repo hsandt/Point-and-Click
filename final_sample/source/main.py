@@ -14,7 +14,7 @@ sys.path.append('/Users/hs/Projets/Python/Point-and-click/repo/engine')
 sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine')
 # import pace
 import source as pace # debug version
-from source.adventure import models
+from source.model import models
 
 
 # def main():
@@ -26,7 +26,7 @@ from source.adventure import models
 #     teapot = models.Element("teapot", "../test_resource/teapot.png", (15,30), (60,40))
 #     room.add(teapot, "a teapot")
 #     print room
-#     room.get_element('a teapot').take()
+#     room.get_element('a teapot').take()nputError,
 
 from helper.files import get_resource_path
 # TODO : avoid using resource path at any lod by defining a path at the beginning, that the engine will take into account
@@ -41,61 +41,52 @@ def main():
     adv = pac_game.manager.states['adventure']
     adv.set_descriptions_from_file(get_resource_path("descriptions.txt"))
 
-    room1 = models.Area('room1', "first room", get_resource_path("thegoonies_room.png"))
+    # room 1
+    room1 = models.Area('room1', "first room", adv, get_resource_path("thegoonies_room.png"))
     adv.add_area(room1)
-    drowning = models.Area('drowning', "the drowning 'room'", get_resource_path("drowning.png"))
+    door1 = models.Gate("door1", "some door", adv, room1, "room2", get_resource_path("door.png"), (352, 142))
+    teapot = models.Item("teapot", None, adv, room1, get_resource_path("teapot.png"), (400, 180), get_resource_path("teapot.png"))
+    key = models.Item("key", None, adv, room1, get_resource_path("key.png"), (380, 220), get_resource_path("key.png"))
+
+    # room 2
+    room2 = models.Area('room2', "another room", adv, get_resource_path("thegoonies_room.png"))
+    adv.add_area(room2)
+    door2 = models.Gate("door2", "another porte", adv, room2, "drowning", get_resource_path("door.png"), (382, 142))
+    locker = models.Container("locker", None, adv, room2, get_resource_path("closed_locker.png"), (325, 150), None, get_resource_path("open_locker.png"), key_name='key')
+    
+    def use_locker(self, state):
+        if state.complement is None:
+            state.display_description("I cannot use this item alone.")
+            return True
+        else:
+            self.use_tool_with(state.complement, state)
+    set_behaviour(locker, "use", use_locker)
+
+    # drowning room
+    drowning = models.Area('drowning', "the drowning 'room'", adv,  get_resource_path("drowning.png"))
     adv.add_area(drowning)
-    print room1
-
-    # on ajoute des éléments dans la mock area
-    teapot = models.Item("teapot", None, adv, get_resource_path("teapot.png"), get_resource_path("teapot.png"))
-    room1.add_item(teapot, position=(15, 30))
-    # locker = models.Item("locker", None, adv, get_resource_path("closed_locker.png"), None)
-    # locker.open = False
-    locker = models.Container("locker", None, adv, get_resource_path("closed_locker.png"), None, get_resource_path("open_locker.png"), key_name='key')
-    room1.add_item(locker, position=(80, 60))
-    key = models.Item("key", None, adv, get_resource_path("key.png"), get_resource_path("key.png"))
-    room1.add_item(key, position=(180, 60))
-
-    # on change le comportement par défaut du locker
-
-    def cannot_take(item, state):
-        print "I cannot take " + str(item) + "!"
-        return True
-
-    set_behaviour(locker, "take", cannot_take)
-
-    # use key behaviour
-    # note that, Q5-like, we can directly use the key in the room with the locker without taking it
-    # then the key will remain in the room...!
-
-    def use_key(key, state):
-        state.complement = "key"
-        return False
-    set_behaviour(key, "use", use_key)
-
-    # porte "à la main"
-    # door = models.Clickable("door", "porte", get_resource_path("door.png"), (200,20))
-    door = models.Gate(drowning, "door", "porte", get_resource_path("door.png"), (352, 142))
-    # room1.add_acitem(door, door.rect.topleft)
-    room1.add_gate(door)
-    # set_behaviour(door, "on_click", lambda self, state: state.enter_area("drowning"))
 
     # on construit des boutons
-    button1 = models.InteractiveButton("hit", "frapper", get_resource_path("small_hit.png"), (38, 70))
-    button2 = models.InteractiveButton("take", "prendre", get_resource_path("small_take.png"), (38, 102))
-    button3 = models.InteractiveButton("use", "utiliser", get_resource_path("small_use.png"), (38, 134))
+    button0 = models.VerbButton("look_at", "look at", adv, get_resource_path("small_hit.png"), (38, 38))
+    button1 = models.VerbButton("hit", "hit", adv, get_resource_path("small_hit.png"), (38, 70))
+    button2 = models.VerbButton("take", "take", adv, get_resource_path("small_take.png"), (38, 102))
+    button3 = models.VerbButton("use", "use", adv, get_resource_path("small_use.png"), (38, 134))
 
     # on les attache à un menu créé à ce moment (ou bien l'avance puis on append/add les boutons, évite les keyword avant args)
-    menu = models.InteractiveMenu(get_resource_path("thegoonies_menu.png"), (102, 20, 0, 0), 1, True, button1, button2, button3)
+    menu = models.AdventureMenu("menu", "Menu statique des verbes d'action", adv, get_resource_path("thegoonies_menu.png"), (102, 20), True, button1, button2, button3)
     adv.set_menu(menu)
 
-    
+    # déplacer l'inventaire là où l'on veut
+    adv.set_inventory_view(position=(246, 292), image_path=get_resource_path("thegoonies_inventory.png"))
+
+    # déplacer les actions et descriptions là on l'on veut
+    adv.move_action_label_to((10, 230))
+    adv.move_description_label_to((270, 350))
 
     # on peut entrer dans l'area qui est ready
     adv.enter_area('room1')
 
-    # on peut entrer dans le state qui est ready
+    # on peut entrer dans le state qui est readyinventory.background = pygame.sprite.DirtySprite()
     pac_game.manager.enter_state("adventure")
 
     assert pac_game.manager.states['adventure'].area.codename == 'room1'

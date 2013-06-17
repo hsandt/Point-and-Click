@@ -1,2 +1,2 @@
-import load
+from load import load_image
 import setter

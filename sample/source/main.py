@@ -14,7 +14,7 @@ sys.path.append('/Users/hs/Projets/Python/Point-and-click/repo/engine')
 sys.path.append('/Users/macbook/Documents/projet log/Github/Point-and-Click fork/engine')
 # import pace
 import source as pace # debug version
-from source.adventure import models
+from source.model import models
 
 
 # def main():

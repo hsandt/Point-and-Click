@@ -1,1 +1,2 @@
-import layeredview
+from layeredview import LayeredView
+import views

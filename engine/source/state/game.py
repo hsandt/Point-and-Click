@@ -3,7 +3,8 @@
 import pygame
 from menustate import MenuState
 from adventurestate import AdventureState
-from ..exception import InputError, AbstractMethodError, GetError
+from ..view import LayeredView
+from ..exception import AbstractMethodError, GetError, InputError
 
 
 class GameApp(object):
@@ -62,17 +63,23 @@ class GameApp(object):
 
                 clock.tick(self.FPS)
 
+        # should we transfer the internal error message?
+
         except AbstractMethodError as e:
             print("ERROR: tried to call abstract method  %s from class %s" % (e.method_name, e.class_name))
 
         except GetError as e:
-            print("ERROR: could not find any element with codename %s in %s" % (e.codename, e.container_name))
+            print("ERROR: could not find any element with codename %s in %s" % (e.element_name, e.container_name))
 
         except InputError as e:
             print("ERROR: wrong input: %s, expecting one of the following: %s" % (e.expr, e.expected))
 
         except IOError as e:
             print("IOERROR: " + str(e))
+
+        except ValueError as e:
+            print("ValueError: " + str(e))
+            raise
 
 
 class GameStateManager(object):
@@ -90,9 +97,10 @@ class GameStateManager(object):
         """Crée les gamestates et les associe au manager"""
 
         # afin d'agréger les gamestates au manager, on fait passer ce dernier en argument du constructeur
+        view = LayeredView()
         self.states = {
-            'menu': MenuState(self),
-            'adventure': AdventureState(self)
+            'menu': MenuState(self, view),
+            'adventure': AdventureState(self, view)
         }
 
         self.state = None
@@ -137,6 +145,8 @@ class GameStateManager(object):
             False   -- sinon (le state est maintenu ou on passe à un state ordinaire)
         """
 
+        assert self.incoming_state_name in [None, 'exit'] + self.states.keys()
+
         # la plupart du temps, aucun nouveau state n'est attendu
         if self.incoming_state_name is None:
             return False  # pas de sortie
@@ -151,8 +161,8 @@ class GameStateManager(object):
         if self.incoming_state_name == 'exit':
             return True  # signal de sortie
 
-        # si aucun cas ne convient, l'incoming_state_name n'était pas conforme
-        raise InputError(self.incoming_state_name, self.states.keys())
+        # # si aucun cas ne convient, l'incoming_state_name n'était pas conforme
+        # raise InputError(self.incoming_state_name, self.states.keys())
 
     def set_incoming_state(self, state_name):
         """
@@ -168,8 +178,8 @@ class GameStateManager(object):
 
     @incoming_state_name.setter
     def incoming_state_name(self, state_name):
-        # vérification du state name proposé (exit possible)
-        if state_name not in self.states.keys() + ['exit']:
+        # vérification du state name proposé (None toléré et exit possible)
+        if state_name not in self.states.keys() + [None, 'exit']:
             raise InputError(state_name, self.states.keys())
         # sinon, on met à jour _incoming_state_name
         self._incoming_state_name = state_name

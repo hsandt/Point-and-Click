@@ -1,3 +1,14 @@
-teapot	It is a small hand-made teapot.
-locker	It is closed.
-key		A golden pair of keys.
+inventory	Your inventory.
+room1		A horrendous room with a single door on one side.
+room2 		A terrible room one door in front of you, and another behind you but you cannot see it.
+drowning 	The drowning room of the death.
+teapot		It is a small hand-made teapot.
+locker		It is closed.
+key			A golden pair of keys.
+door1		A classic door.
+door2		The same door as in the previous room.
+look_at 	...
+hit 		...
+take 		...
+use 		...
+menu 		...

@@ -3,8 +3,8 @@
 import pygame
 
 from gamestate import GameState
-from ..adventure.models import Area, InteractiveMenu, Inventory, Item
-from ..adventure import models
+from ..model import models
+from ..view import views
 from ..exception.exception import OverwriteError, GetError
 
 from ..helper.load import load_descriptions
@@ -14,60 +14,73 @@ class AdventureState(GameState):
     """Gamestate du mode principal de jeu
 
     Attributs hérités :
-        gc          --  game context supervisant ce game state
-        view        --  conteneur des couches de vue (propre à chaque state)
+        gsm         --  game state manager supervisant ce game state
+        view        --  vue
 
     Attributs :
-        areas       --  ensemble des zones en jeu
-        area        --  zone en cours de visite
-        inventory   --  inventaire de l'avatar
-        menu        --  menu interactif
-        default_verb-- verbe par défaut (comme 'move' ou 'look_at')
-        verb     --  verbe en cours de sélection dans le cas d'un menu à la Monkey Island voire à la Goonies
-        complement --  1° complément de l'action utiliser un hash ou une liste piur la version finale)
+        areas        --  ensemble des zones en jeu
+        area         --  zone en cours de visite
+        inventory    --  inventaire de l'avatar
+        menu         --  menu interactif
+        default_verb --  verbe par défaut (appelé sur clic gauche sans rien)
+        verb         --  verbe en cours de sélection
+        complement   --  1° complément de l'action
         description_hash -- hash des descriptions (pour l'instant, n'est pas initialisé automatiquement)
+
+        cursor       -- à venir
 
     """
 
-    def __init__(self, gc):
-        """Initialisation des ressources et des modèles qui ne doivent être initialisés qu'une seule fois"""
-        GameState.__init__(self, gc)
+    def __init__(self, gsm, view):
+        """Initialisation des ressources et des modèles (une seule fois)"""
+        GameState.__init__(self, gsm, view)
         self.areas = {}
         self.area = None
         self.description_hash = {}
-        # self.default_verb = 'look_at'  # inside set_query_mode()
-        self._verb = None  # may not be needed
-        self._complement = None
-        self.set_query_mode(False)  # ok??
-        self.inventory = Inventory()
-        #Affichage de l'inventaire
-        self.view.fillInventoryLayer(self.inventory)
-        self.set_inventory_layer()
+        self.default_verb = 'look_at'
+        self._verb = None  # optionnel car le verbe est réinitialiser sur on_enter, mais au cas où
+        self._complement = None  # idem
+        self.inventory = models.Inventory(self)
+
+        # query mode encore en beta
+        # self.set_query_mode(False)
 
     def on_enter(self):
 
-        self.cursor = None
-        self.label = None
+        self.cursor = None  # TODO: autoriser les curseurs personnalisés
+        # mouse_command décrit, pour chaque bouton de la souris, l'état d'appui
+        # 0 : relâché, 1 : vient d'être pressé, 2 : en cours d'appui
+        # et la position du clic (None ici)
         self.mouse_command = {'left': [0, None], 'right': [0, None]}
-        del self.verb  # ok this way?
+
+        # on réinitialise l'action
+        del self.verb
         del self.complement
         
-
     def on_exit(self):
         pass
 
     def handle_input(self):
+        """
+        Gère les évènements séparéments de l'update
+
+        Permet de considérer tous les évènements avant de commencer la mise à jour
+
+        """
         for event in pygame.event.get():
+
+            # détection escape (quitter le jeu)
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                self.gc.incoming_state_name = 'exit'  # changement toléré exceptionnellement dans le handle...
-                # en fait, on pourrait fusionner handle et update
-                # mais la séparation évite d'après plusieurs events -> actions en même temps
-                # pour peu que plusieurs events attendent dans la file
+                self.gsm.incoming_state_name = 'exit'  # changement toléré 
+
+            # détection space pour ouvrir le menu pause
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.gsm.incoming_state_name = 'menu'
 
             # détection clics souris : entrée -> assigner le sprite cliqué (situé le plus haut)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # we should add a security to check that view is not void, especially when
-                # only clickable are considered (otherwise bg has oods to be clicked on)
+                # we should add a safety to check that view is not void, especially when
+                # only clickable are considered (otherwise bg has odds to be clicked on)
                 if event.button == 1:
                     if self.mouse_command['left'][0] == 0:  #  if mouse button has just been set down
                         self.mouse_command['left'][:] = [1, event.pos]  # 1 for 'new click' (may be called several times due to looping)
@@ -83,54 +96,32 @@ class AdventureState(GameState):
                     self.mouse_command['right'][0] = 0
 
     def update(self):
-        # print("update adventure state")
-        # print("self mouse command is : " + str(self.mouse_command))
 
         # on regarde si on a cliqué (clic gauche) sur un élément du jeu
-        # print("valeur mouse_cmd left: {0}, {1}".format(self.mouse_command['left'][0], 2))
         if self.mouse_command['left'][0] == 1:  # only consider new clicks for action clicks
             print "click detected on " + str(self.mouse_command['left'][1])
 
             self.mouse_command['left'][0] = 2  # say it's now in 'hold mode'
             ## TODO : customize with mask collision
 
-            if self.view.get_sprites_at(self.mouse_command['left'][1]):
-                # attention, le décor n'est plus un sprite donc on vérifie que le clic ne tombe pas dessus
-                elt = self.view.get_sprites_at(self.mouse_command['left'][1])[-1]  # [-1] for last position, ie the sprite at the very top
-
-                # sinon, il faut vérifier que self.view.get_sprites_at(...) n'est pas vide
-
-                print ("elt : %s, rect : %s" % (str(elt), str(elt.rect)))
-
-                # on teste manuellement si on_click existe (duck-typing)
-                # mais on devrait peut-être dissocier les vues cliquables et non-cliquables
-                # dans self.view, et uniquement détecter les clics sur les premières
-                if hasattr(elt, 'on_click'):
-                    print ("the clicked elt has an on_click()")
-                    elt.on_click(self)
-                else:
-                    print ("elt detected has no on_click")
-                    del self.verb
-                    del self.complement
-            else:
-                # on a cliqué dans le décor
-                print("click detected on the background")
-                del self.verb
-                del self.complement
+            # on teste les sprites sur lesquels on a pu vouloir cliquer en commençant
+            # par celui dessiné le plus au-dessus
+            reversed_sprites = self.view.get_sprites_at(self.mouse_command['left'][1])
+            reversed_sprites.reverse()
+            for sprite in reversed_sprites:
+                # vérifier que le sprite est visible et cliquable, sinon on l'ignore
+                if sprite.visible and hasattr(sprite, 'on_click'):
+                    sprite.on_click(self, button=1)
+                    return  # cela suffit, on a trouvé le sprite voulu
+            # si on ne trouve rien de convenable c'est qu'on a cliqué dans le décor
+            print("click detected on the background")
+            del self.verb
+            del self.complement
 
     def render(self, screen):
-        # tempo : on refait tout pour être à jour !
-        # self.view.reset()
-        # self.view.loadArea(self.area)
-        # self.set_menu(self.menu)
-        # self.view.setActionText(self.action, (20, 400, 400, 30), (255, 255, 255), (0, 0, 0))
-        self.view.draw(screen)  # for now, bg and all
-        ## only draws when necessary
+        self.view.draw(screen)
 
-    ##
-    ## peut-être décorer toute la suite pour le caser dans le init
-    ## ainsi, même si le développeur construit son jeu, rien ne se passe
-    ## avant le run !
+    # méthodes de construction du jeu
 
     def add_area(self, area):
         """
@@ -156,10 +147,7 @@ class AdventureState(GameState):
         # area on_exit ?
         print "entering area..." + area_codename
         self.area = self.areas[area_codename]
-        self.view.loadArea(self.area)
-        screen = pygame.display.get_surface()
-        screen.blit(self.area.image, (0, 0))  # pas très conventionnel mais bon
-        # area on_enter ?
+        self.view.load_area(self.area)
 
     # un peu pour le debug, un peu pour "on_exit"
     def leave_area(self):
@@ -167,30 +155,30 @@ class AdventureState(GameState):
         self.view.empty()
 
     # gère modèles et vues, évite les rafraîchissements inutiles
-    def remove_item_from_area(self, item, area):
-        """Retire un item d'une zone donnée"""
-        self.area.remove_item(item)
-        self.view.remove_item(item)
+    # def remove_item_from_area(self, item, area):
+    #     """Retire un item d'une zone donnée"""
+    #     self.area.remove_item(item)
+    #     self.view.remove_item(item)
 
-    def remove_item_by_name_from_area(self, item_name, area):
-        """Retire un item d'une zone donnée"""
-        self.area.remove_item_by_name(item_name)
-        self.view.remove_item_by_name(item_name)
+    # def remove_item_by_name_from_area(self, item_name, area):
+    #     """Retire un item d'une zone donnée"""
+    #     self.area.remove_item_by_name(item_name)
+    #     self.view.remove_item_by_name(item_name)
 
-    def remove_item(self, item):
-        """Retire un item de la zone active"""
-        self.remove_item_from_area(item, self.area)
+    # def remove_item(self, item):
+    #     """Retire un item de la zone active"""
+    #     self.remove_item_from_area(item, self.area)
 
-    def remove_item_by_name(self, item_name):
-        """Retire un item de la zone active"""
-        self.remove_item_by_name_from_area(item_name, self.area)
+    # def remove_item_by_name(self, item_name):
+    #     """Retire un item de la zone active"""
+    #     self.remove_item_by_name_from_area(item_name, self.area)
 
     def set_menu(self, menu):
         self.menu = menu
-        self.view.fillMenuLayer(menu)
+        self.view.load_menu(menu)
 
     def set_inventory_layer(self):
-        self.view.display_inventory(self.inventory)
+        self.view.load_inventory(self.inventory)
 
     def set_default_verb(self, verb):
         self.default_verb = verb
@@ -239,7 +227,7 @@ class AdventureState(GameState):
         if self.complement is None:
             action_str = self.verb
         else:
-            action_str = " %s %s (avec) ..." % (self.verb, self.complement)
+            action_str = " %s %s avec ..." % (self.verb, self.complement)
         self.view.setActionText(action_str, None, (255, 255, 255), (0, 0, 0))
 
     def display_menu_for(self, complement_object):
@@ -265,27 +253,46 @@ class AdventureState(GameState):
         """
         if query_mode:
             self.default_verb = 'query'
-            Item.query = lambda self, adventurestate: adventurestate.display_menu_for(self)
+            models.Item.query = lambda self, adventurestate: adventurestate.display_menu_for(self)
             models.InteractiveButton.on_click = models._on_click_for_query_interactive_button
         else:
             self.default_verb = 'look_at'
-            if hasattr(Item, 'query'):
-                del Item.query
-            models.InteractiveButton.on_click = models._on_click_for_interactive_button
+            if hasattr(models.Item, 'query'):
+                del models.Item.query
+            # query mode still in beta
+            # models.InteractiveButton.on_click = models._on_click_for_interactive_button
 
     # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):
         return "Adventure State"
+        
+    # def move_inventory_to(self, position):
+    #     self.inventory.inventorySprite.rect.topleft = position
+
+    def set_inventory_view(self, position, image_path):
+        self.inventory.view_position = position
+        self.inventory.image_path = image_path
+        self.view.load_inventory(self.inventory)
 
     def add_to_inventory(self, item):
 
         self.inventory.add_item(item)
-        view.add_to_inventory(item)
+        self.view.refresh_inventory_layer(self.inventory)
 
-    def remove_from_inventory(item):
+    def remove_from_inventory(self, item):
         
-        self.inventory.remove_item(item) #pour l'instant on considère que l'item est détruit une fois retiré de l'inventaire
+        self.inventory.remove_item(item)  #pour l'instant on considère que l'item est détruit une fois retiré de l'inventaire
 
     def clear_inventory(self):
         
         self.inventory.clear() #même remarque que pour remove_from_inventory
+
+    # pure view methods
+    def move_action_label_to(self, position):
+        self.view.move_text(position, index=0)  # index 0 pour les actions
+
+    def move_description_label_to(self, position):
+        self.view.move_text(position, index=1)  # index 1 pour les descriptions
+
+    def display_description(self, text, position=None, textcolor=(255,255,255), bgcolor=(0,0,0)):
+        self.view.set_text(text, position, 1, textcolor, bgcolor)
