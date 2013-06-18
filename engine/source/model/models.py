@@ -3,7 +3,6 @@
 import pygame
 from pygame import sprite
 from .subject import Subject
-from ..helper.load import load_image
 from ..exception.exception import GetError, AbstractMethodError
 
 
@@ -66,13 +65,15 @@ class Element(object):
         if element in self.children:
             del element.parent
             print 'element %s removed from area %s' % (str(element), str(self))
-        raise GetError(str(element), str(self))
+        else:
+            raise GetError(str(element), str(self))
 
     def move_element_to(self, element, new_parent):
         if element in self.children:
             remove_element(element)
             new_parent.add_element(element)
-        raise GetError(str(element), str(self))
+        else:
+            raise GetError(str(element), str(self))
 
     def remove_all(self):
         for child in children:
@@ -207,6 +208,7 @@ class Item(ObservableElement):
         area_image_path     -- image path utilisée dans la zone
         area_position       -- position dans la zone
         inventory_image_path-- image path utilisée dans l'inventaire
+        takeable            -- booléen valant True si l'objet peut être pris
 
     """
     def __init__(self, codename, fullname, adventurestate, parent, area_image_path=None, area_position=None, inventory_image_path=None):
@@ -222,22 +224,24 @@ class Item(ObservableElement):
         self.area_position = area_position
         self.inventory_image_path = inventory_image_path
 
-        # on ne définit la méthode 'take' que si l'objet était destiné à entrer dans l'inventaire,
-        # i.e. possède une image dédiée (cela se fait dans l'init)
-        if inventory_image_path is None:
-            self.take
-
+        # l'objet peut être pris s'il a une image pour l'inventaire !
+        self.takeable = inventory_image_path is not None
+    
+    # TODO: trouver un moyen de ne DEFINIR la méthode que si l'objet est préhensible
     def take(self, adventurestate):
             """Réponse au verbe 'take'"""
-            if self.parent.tag == 'inventory':
-                adventurestate.display_description("I already have this item in my inventory!")
-            elif self.parent.tag == 'area':
-                # on prend l'objet depuis une zone
-                old_parent = self.parent
-                self.parent = adventurestate.inventory
-
-                self.notify()
-                adventurestate.inventory.notify()
+            if self.takeable:
+                if self.parent.tag == 'inventory':
+                    adventurestate.display_description("I already have this item in my inventory!")
+                elif self.parent.tag in ['area', 'item']:
+                    # on prend l'objet depuis une zone ou depuis un coffre
+                    self.parent = adventurestate.inventory
+                    # en parallèle, ajouter la vue (les observateurs ne suffisent pas quand une vue est créée)
+                    adventurestate.add_item_view_to_inventory(self)
+                    self.notify()
+                    adventurestate.inventory.notify()
+            else:
+                adventurestate.display_description("I cannot take this object.")
             return True  # action terminée
 
     def use(self, adventurestate):
@@ -248,6 +252,7 @@ class Item(ObservableElement):
             return False  # l'action n'est pas terminée
         else:
             self._use_tool_with(adventurestate, adventurestate.complement)
+            print "used tool with!!"
             return True  # action terminée
 
     def _use_tool_with(self, adventurestate, tool):
@@ -256,19 +261,19 @@ class Item(ObservableElement):
 
         Le concepteur doit overrider cette méthode en posant des conditions sur l'outil utilisé.
         """
-        adventurestate.display_description("I cannot use %s with this!" % tool.fullname)
+        adventurestate.display_description("I cannot use %s on %s" % (tool.fullname, self.fullname))
 
     @property
     def view_position(self):
         if self.parent.tag == 'inventory':
-            return None  # ou bien position dans l'inventaire...
+            return None  # pas de position statique dans l'inventaire
         else:
             return self.area_position
 
     @view_position.setter
     def view_position(self, position):
         if self.parent.tag == 'inventory':
-            pass  # pas encore de position dans l'inventaire...
+            pass  # idem
         else:
             self.area_position = position
 
@@ -291,7 +296,7 @@ class Container(Item):
         children                   -- contenu
 
     Attributs propres:
-        _open_state                -- booléen indiquant si le conteneur est ouvert (True) ou fermé (False)
+        open_state                -- booléen indiquant si le conteneur est ouvert (True) ou fermé (False)
         key_name                  -- codename de la clé pouvant ouvrir le conteneur, ou None s'il n'y a pas besoin de clé
         area_open_image_path      -- image path (ou peut-être image, à voir)
         inventory_open_image_path -- image path (ou peut-être image, à voir)
@@ -326,67 +331,73 @@ class Container(Item):
             if self.open_state:
                 print("%s est déjà ouvert." % self.fullname)
             else:
-                self.open_state = True
+                self.open_indeed(adventurestate)
                 adventurestate.display_description("You open %s with %s." % (self.fullname, tool.fullname))
+                # remarque : ici, la clé ne disparaît pas !
         else:
-            print("I cannot use %s on %s" % (tool.fullname, self.fullname))
+            adventurestate.display_description("I cannot use %s on %s" % (tool.fullname, self.fullname))
 
     def close(self, adventurestate):
         """Réponse au verbe 'close'"""
         if self.open_state:
-            self.open_state = False
+            self.close_indeed(adventurestate)
             adventurestate.display_description("You close %s." % self.fullname)
 
     def remove_element(self, element):
         self.content.remove(element)
         print 'element %s removed from container %s' % (element.codename, self.codename)
 
-    @property
-    def open_state(self):
-        """Gère l'ouverture et la fermeture effective du conteneur"""
-        return self._open_state
+    # ne pas utiliser de propriété pour open_state car il faut accéder à des paramètres comme adventurestate en plus
+    def open_indeed(self, adventurestate):
+        """Ouverture effective"""
+        self.open_state = True
 
-    @open_state.setter
-    def open_state(self, value):
-        self._open_state = value
-        if value:
-            # ouverture effective
-            if self.parent.tag == 'inventory':
-                # dans l'inventaire, ouvrir une boîte dépose le contenu dans l'inventaire
-                self.parent.add_item_list(self.content)
-                self.remove_all()
-            else:
-                pass
-                # dans une zone, rendre visible tous les objets contenus
-                # on suppose qu'on n'ouvre jamais un conteneur dans un autre conteneur
-                # for contained_item in self.children:
-                #     contained_item.visible = 1
-                # plutôt que d'appeler les vues de chaque contenu à travers leurs modèles, on laisse les vues des contenus observer le conteneur !
-            print("%s has been opened." % self.codename)
+        if self.parent.tag == 'inventory':
+            # dans l'inventaire, ouvrir une boîte dépose le contenu dans l'inventaire
+            print "CONTENT: %s" % self.children
+            self.parent.add_item_list(self.content)
+            self.remove_all()
+            # ajouter également les observateurs dans la vue de l'inventaire !
+            adventurestate.add_item_view_to_inventory(contained_item)
+        else:  # area
+            # à moins de charger tout de suite les objets contenus et de ne les rendre visibles que maintenant, il faut dire à la vue de charger les objets contenus maintenant
+            for contained_item in self.children:
+                adventurestate.add_item_view_to_area(contained_item)
+            # remarque : les objets *restent* contenus, au cas où on refermerait le conteneur
+        print("%s has been opened." % self.codename)
+        self.notify()  # notifies container and contained!
+
+    def close_indeed(self, adventurestate):
+        """fermeture effective"""
+        self.open_state = False
+
+        if self.parent.codename == 'inventory':
+            # dans l'inventaire, fermer une boîte ne cache pas les objets déjà libérés
+            pass
         else:
-            # fermeture effective
-            if self.parent.codename == 'inventory':
-                # dans l'inventaire, fermer une boîte ne cache pas les objets déjà libérés
-                pass
-            else:
-                pass
-                # dans une zone, fermer un conteneur cache les objets contenus (qui n'ont pas encore été pris)
-                # for contained_item in self.content:
-                #     contained_item.visible = 0
-                # cf plus haut
-            print("%s has been closed." % self.codename)
+            pass
+            # dans une zone, fermer un conteneur cache les objets contenus (qui n'ont pas encore été pris)
+            # ici, on va détruire les observateurs mais on pourrait seulement les masquer
+            for contained_item in self.children:
+                for item_view in contained_item.observer_list:
+                    item_view.destroy()
+                # adventurestate.destroy_item_view_from_area(contained_item)
+        print("%s has been closed." % self.codename)
         self.notify()  # notifie la vue du conteneur mais aussi celles des objets contenus
 
 
+class Character(ObservableElement):
+    """
+    PNJ avec lesquels on peut 'discuter' et plus si affinité (à la discrétion du développeur)
 
-# class Character(Clickable):
-#     """PNJ avec lesquels on peut 'discuter' et plus si affinité (à la discrétion du développeur)"""
-#     def __init__(self):
-#         Clickable.__init__(self)
+    En développement
 
-#     def talk(self):
-#         #affiche une boite de dialogue avec un texte (peut-être la descrition)
-#         print("Bonjour! Je suis un PNJ")
+    """
+    def __init__(self, codename, fullname, adventurestate, parent=None):
+        ObservableElement.__init__(self, codename, fullname, adventurestate, "item", parent)
+
+    def talk(self):
+        pass
 
 
 class Gate(ObservableElement):
@@ -457,38 +468,8 @@ class Inventory(ObservableElement):
                 return True
         return False
 
-    # @property
-    # def position(self):
-    #     """Position topleft du modèle et de la vue (None pour coin bottomright)"""
-    #     return self._position
-
-    # @position.setter
-    # def position(self, value):
-    #     self._position = value
-
-    #     if self.background is not None:
-    #         # si la vue est en cours d'utilisation
-    #         if value is not None:
-    #             self.background.rect.topleft = value
-    #         else:
-    #             assert hasattr(self, "size")
-    #             self.background.rect.bottomright = pygame.display.get_surface().bottomright  # appel exceptionnel du display
-
-    # @position.deleter
-    # def position(self):
-    #     self._position = None
-
     def __str__(self):
         inv_str = "Dans l'inventaire, il y a :"
-
-#Souris gérée par Pygame
-# class Cursor(pygame.sprite.DirtySprite):
-#     """curseur de la souris"""
-#     def __init__(self, position, state, image_path):
-#         pygame.sprite.DirtySprite.__init__(self)
-#         self.position = pygame.mouse.get_pos()
-#         self.state = pygame.mouse.get_pressed()
-#         self.image = load_image(image_path)
 
 
 class MenuButton(ObservableElement):
@@ -542,7 +523,6 @@ class AdventureMenu(ObservableElement):
         self.buttons = buttons
 
         self.all_visible = visible
-        # notify
 
 class ActionSubject(ObservableElement):
     """Sujet représentant l'action courante
@@ -593,9 +573,12 @@ class ActionSubject(ObservableElement):
         self._complement = value
         self.notify()
 
-# helper pour fournir un nom complet si besoin
-# est-ce ok d'appeler le 1° argument self ?
 def set_names(self, codename, fullname):
+    """
+    helper pour fournir un nom complet si besoin
+    1° argument nommé 'self' pour faciliter la lecture
+
+    """
     self.codename = codename
     if fullname is None:
         self.fullname = codename

@@ -1,0 +1,2 @@
+bsod		The famous killing screen.
+teapot		It is a small hand-made teapot.

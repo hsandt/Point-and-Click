@@ -99,24 +99,32 @@ class AdventureState(GameState):
 
         # on regarde si on a cliqué (clic gauche) sur un élément du jeu
         if self.mouse_command['left'][0] == 1:  # only consider new clicks for action clicks
-            print "click detected on " + str(self.mouse_command['left'][1])
+            self.update_on_mouse_button(1)
+        elif self.mouse_command['right'][0] == 1:
+            self.update_on_mouse_button(2)
 
-            self.mouse_command['left'][0] = 2  # say it's now in 'hold mode'
-            ## TODO : customize with mask collision
+    def update_on_mouse_button(self, button):
+        button_side = 'left' if button == 1 else 'right'
+        print "click detected on " + str(self.mouse_command[button_side][1])
 
-            # on teste les sprites sur lesquels on a pu vouloir cliquer en commençant
-            # par celui dessiné le plus au-dessus
-            reversed_sprites = self.view.get_sprites_at(self.mouse_command['left'][1])
-            reversed_sprites.reverse()
-            for sprite in reversed_sprites:
-                # vérifier que le sprite est visible et cliquable, sinon on l'ignore
-                if sprite.visible and hasattr(sprite, 'on_click'):
-                    sprite.on_click(self, button=1)
-                    return  # cela suffit, on a trouvé le sprite voulu
-            # si on ne trouve rien de convenable c'est qu'on a cliqué dans le décor
-            print("click detected on the background")
-            del self.verb
-            del self.complement
+        self.mouse_command[button_side][0] = 2  # say it's now in 'hold mode'
+        ## TODO : customize with mask collision
+
+        # on teste les sprites sur lesquels on a pu vouloir cliquer en commençant
+        # par celui dessiné le plus au-dessus
+        reversed_sprites = self.view.get_sprites_at(self.mouse_command[button_side][1])
+        reversed_sprites.reverse()
+        for sprite in reversed_sprites:
+            # vérifier que le sprite est visible et cliquable, sinon on l'ignore
+            if sprite.visible and hasattr(sprite, 'on_click'):
+                if sprite.on_click(self, button):
+                    del self.verb
+                    del self.complement
+                return  # cela suffit, on a trouvé le sprite voulu
+        # si on ne trouve rien de convenable c'est qu'on a cliqué dans le décor
+        print("click detected on the background")
+        del self.verb
+        del self.complement
 
     def render(self, screen):
         self.view.draw(screen)
@@ -157,24 +165,11 @@ class AdventureState(GameState):
     def set_descriptions_from_file(self, file_path):
         self.description_hash = load_descriptions(file_path)
 
-    # gère modèles et vues, évite les rafraîchissements inutiles
-    # def remove_item_from_area(self, item, area):
-    #     """Retire un item d'une zone donnée"""
-    #     self.area.remove_item(item)
-    #     self.view.remove_item(item)
+    def add_item_view_to_area(self, item):
+        self.view.add_item_view_to_area(item)
 
-    # def remove_item_by_name_from_area(self, item_name, area):
-    #     """Retire un item d'une zone donnée"""
-    #     self.area.remove_item_by_name(item_name)
-    #     self.view.remove_item_by_name(item_name)
-
-    # def remove_item(self, item):
-    #     """Retire un item de la zone active"""
-    #     self.remove_item_from_area(item, self.area)
-
-    # def remove_item_by_name(self, item_name):
-    #     """Retire un item de la zone active"""
-    #     self.remove_item_by_name_from_area(item_name, self.area)
+    def add_item_view_to_inventory(self, item):
+        self.view.add_item_view_to_inventory(item)
 
     def set_menu(self, menu):
         """setter de modèle avec construction automatique de la vue"""
@@ -203,28 +198,27 @@ class AdventureState(GameState):
     @verb.setter
     def verb(self, value):
         self._action_subject.verb = value
+        self._action_subject.notify()
 
     @verb.deleter
     def verb(self):
         self._action_subject.verb = self.default_verb
-        # pour l'instant, on suppose que le complément reste
-        # self.refresh_action_label()
+        self._action_subject.notify()
 
     @property
     def complement(self):
         """Verbe de l'action en cours"""
-        return self._action_subject._complement
+        return self._action_subject.complement
 
     @complement.setter
     def complement(self, value):
-        self._action_subject._complement = value
-        # self.refresh_action_label()
+        self._action_subject.complement = value
+        self._action_subject.notify()
 
     @complement.deleter
     def complement(self):
-        self._action_subject._complement = None
-        # on suppose que le verbe reste
-        # self.refresh_action_label()
+        self._action_subject.complement = None
+        self._action_subject.notify()
 
     def refresh_action_label(self):
         """
@@ -254,11 +248,6 @@ class AdventureState(GameState):
         del self.complement
         self.view.hide_menu()
 
-    # def display_text(self, text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
-    #     self.view.display_text(text, position, textcolor=(255, 255, 255), bgcolor=(0, 0, 0))
-
-    
-
     def set_query_mode(self, query_mode=True):
         """BETA : Active le mode 'query' pour tous les modèles
         !! modification structurelle (classes) et non seulement pour les instances de state adventure
@@ -274,16 +263,12 @@ class AdventureState(GameState):
             # query mode still in beta
             # models.InteractiveButton.on_click = models._on_click_for_interactive_button
 
-    # peut-être ajouter .name pour accéder au nom plus facilement (et faire des tests)
     def __str__(self):
         return "Adventure State"
 
-    # pure view methods
-    def move_action_label_to(self, position):
-        self.view.move_text(position, index=0)  # index 0 pour les actions
-
+    # static view methods
     def move_description_label_to(self, position):
-        self.view.move_text(position, index=1)  # index 1 pour les descriptions
+        self.view.move_text(position, index=0)  # index 1 pour les descriptions
 
     def display_description(self, text, position=None, textcolor=(255,255,255), bgcolor=(0,0,0)):
-        self.view.set_text(text, position, 1, textcolor, bgcolor)
+        self.view.set_text(text, position, index=0, textcolor=textcolor, bgcolor=bgcolor)

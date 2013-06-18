@@ -22,21 +22,23 @@ def main():
     room1 = models.Area('room1', "first room", adv, get_resource_path("thegoonies_room.png"))
     adv.add_area(room1)
     door1 = models.Gate("door1", "some door", adv, room1, "room2", get_resource_path("door.png"), (352, 142))
-    teapot = models.Item("teapot", None, adv, room1, get_resource_path("teapot.png"), (400, 180), get_resource_path("teapot.png"))
+    teapot = models.Item("teapot", None, adv, None, get_resource_path("teapot.png"), (8, 8), get_resource_path("teapot.png"))
     key = models.Item("key", None, adv, room1, get_resource_path("key.png"), (380, 220), get_resource_path("key.png"))
 
     # room 2
     room2 = models.Area('room2', "another room", adv, get_resource_path("thegoonies_room.png"))
     adv.add_area(room2)
     door2 = models.Gate("door2", "another porte", adv, room2, "drowning", get_resource_path("door.png"), (382, 142))
-    locker = models.Container("locker", None, adv, room2, get_resource_path("closed_locker.png"), (325, 150), None, get_resource_path("open_locker.png"), key_name='key')
+    locker = models.Container("locker", None, adv, room2, get_resource_path("closed_locker.png"), (325, 150), None, open_state=False, key_name='key', area_open_image_path=get_resource_path("open_locker.png"))
+    locker.acquire_element(teapot)
+    print "!!! " + teapot.parent.codename
     
     def use_locker(self, state):
         if state.complement is None:
             state.display_description("I cannot use this item alone.")
-            return True
         else:
-            self.use_tool_with(state.complement, state)
+            self._use_tool_with(state, state.complement)
+        return True  # action terminée
     set_behaviour(locker, "use", use_locker)
 
     # drowning room
@@ -48,9 +50,10 @@ def main():
     button1 = models.VerbButton("hit", "hit", adv, get_resource_path("small_hit.png"), (38, 70))
     button2 = models.VerbButton("take", "take", adv, get_resource_path("small_take.png"), (38, 102))
     button3 = models.VerbButton("use", "use", adv, get_resource_path("small_use.png"), (38, 134))
+    button4 = models.VerbButton("close", "close", adv, get_resource_path("small_close.png"), (38, 166))
 
     # on les attache à un menu créé à ce moment
-    menu = models.AdventureMenu("menu", "Menu statique des verbes d'action", adv, get_resource_path("thegoonies_menu.png"), (102, 20), True, button1, button2, button3)
+    menu = models.AdventureMenu("menu", "Menu statique des verbes d'action", adv, get_resource_path("thegoonies_menu.png"), (102, 20), True, button1, button2, button3, button4)
     adv.set_menu(menu)
 
     # déplacer l'inventaire là où l'on veut

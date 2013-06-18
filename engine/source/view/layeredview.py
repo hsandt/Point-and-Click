@@ -35,11 +35,6 @@ class LayeredView(pygame.sprite.LayeredDirty):
 
     def reset(self):  ## debug ?
         self.empty()  # warning, does not cut observers off
-        blank_label = pygame.sprite.DirtySprite()
-        # blank_label.image = pygame.Surface((400, 30), flags=pygame.SRCALPHA)
-        blank_label.image = pygame.Surface((400, 30))  # to see it more easily
-        blank_label.rect = pygame.rect.Rect(20, 290, 100, 30)
-        self.add(blank_label, layer=self.text_layer)  # initialize void description
         # le label de description pourrait éventuellement observer un modèle contenu les infos texte...
         self.display_text("Description here", (280, 250), (255,255,255), (0,0,0))
 
@@ -82,15 +77,6 @@ class LayeredView(pygame.sprite.LayeredDirty):
             self.add(models.AreaItemClickable(contained_elt), layer=self.item_layer)
             # be careful, content is drawn above!
 
-    # def remove_item(self, item):
-    #     self.remove(item)
-
-    # def remove_item_by_name(self, item_name):
-    #     self.remove(self.get_sprite_by_name_in_layer(item_name, self.item_layer))  # or in two steps to ensure it exists
-
-    # def clearMenuLayer(self):
-    #     self.remove_sprites_of_layer(self.menu_layer)
-
     def load_menu(self, menu):
         # menu and buttons on the same layer, but what is added after is above
         self.add(views.AdventureMenuView(menu), layer=self.menu_layer)
@@ -98,39 +84,24 @@ class LayeredView(pygame.sprite.LayeredDirty):
             # uniquement des verb buttons pour l'instant
             self.add(views.VerbButtonClickable(button), layer=self.menu_layer)
 
-    # def display_menu(self):
-    #     self.get_sprites_from_layer(self.menu_layer)[0].all_visible = 1
-
-    # def hide_menu(self):
-    #     self.get_sprites_from_layer(self.menu_layer)[0].all_visible = 0
-
-    def setActionText(self, text, position=None, textcolor=(255, 255, 255), bgcolor=(0, 0, 0)):
-        label_image = self.font.render(text, True, textcolor, bgcolor)
-        label = self.get_sprites_from_layer(self.text_layer)[0]
-        label.image = label_image
-        label.dirty = 1
-        # if rect is not None:  # if no rect is passed, keep it!
-        #     label.rect = rect
-        # rect may be preserved by default or something (static text)
-        # for now, let's adjust the rect whatever
-        if position is not None:
-            label.rect.topleft = position
-        label.rect.size = label_image.get_size()
-
-    
-
     def load_action_label(self, action_subject, image_path, position, textcolor, bgcolor, visible):
         self.add(views.ActionLabel(action_subject, image_path, position, visible, textcolor, bgcolor), layer=self.text_layer)
 
     def load_inventory(self, inventory):
         """Load the inventory (call it once)"""
-        print "loaded inventory"
         inventory_view = views.InventoryView(inventory)
+        print "now on inventory layer: %s", self.get_sprites_from_layer(self.inventory_layer)
         self.add(inventory_view, layer=self.inventory_layer)
-        self.add(inventory_view.item_group, layer=self.inventory_layer)
-        print self.get_sprites_from_layer(self.inventory_layer)
+        print "now on inventory layer: %s", self.get_sprites_from_layer(self.inventory_layer)
+        print "inventory has been loaded, now on inventory layer: %s", self.get_sprites_from_layer(self.inventory_layer)
 
-    # warning: adds text without properly indexing, to improve
+    def add_item_view_to_inventory(self, item):
+        self.add(views.InventoryItemClickable(item), layer=self.inventory_layer)
+
+    def add_item_view_to_area(self, item):
+        self.add(views.AreaItemClickable(item), layer=self.item_layer)
+
+    # warning: adds text without properly indexing, needs improvement
     def display_text(self, text, position, textcolor, bgcolor, layer=None):
         """Affiche du texte dans la couche dédiée."""
         text_sprite = pygame.sprite.DirtySprite()  # initially dirty
@@ -144,7 +115,7 @@ class LayeredView(pygame.sprite.LayeredDirty):
         # then give it substance
         self.set_text(text, position, -1, textcolor, bgcolor)
 
-    # use it only for custom text (cutscene), use an observer for anything else
+    # use it only for custom text such as descriptions, use an observer for anything bound to a model
     def set_text(self, text, position, index, textcolor, bgcolor):
         label_image = self.font.render(text, True, textcolor, bgcolor)
         label = self.get_sprites_from_layer(self.text_layer)[index]
@@ -161,13 +132,12 @@ class LayeredView(pygame.sprite.LayeredDirty):
         label.rect.topleft = position
         label.dirty = 1
 
-    def clear_text(self):
-        pass
-
     def displayCursor(self):
+        """en développement"""
         pass
 
     def hideCursor(self):
+        """en développement"""
         pass
 
     # deprecated (or have ANY sprite have a name)
@@ -197,4 +167,6 @@ class LayeredView(pygame.sprite.LayeredDirty):
             sprite.visible = 1
 
 def get_relative_position_for(index):
-    return (20 + 100 * index, 20)
+    """Helper donnant la position relative dans l'inventaire"""
+    # TODO : module (plusieurs lignes) et flèches (pour plus d'objets que l'espace ne le permet) + personnalisation par le concepteur
+    return (40 + 100 * index, 20)

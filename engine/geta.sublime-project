@@ -1,0 +1,22 @@
+{
+	"folders":
+	[
+		{
+			"path": "source"
+		}
+	],
+	"html_panel":
+	[
+		{
+			"Browser Print - Color":
+			{
+				"browser_print": true,
+				"color_scheme": "Packages/ExportHtml/ColorSchemes/Print-Color.tmTheme",
+				"multi_select": true,
+				"numbers": true,
+				"style_gutter": false,
+				"wrap": 900
+			}
+		}
+	]
+}

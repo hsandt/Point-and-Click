@@ -55,7 +55,7 @@ class ElementView(pygame.sprite.DirtySprite, Observer):
     def bind_subject(self, subject):
         self.subject_list.append(subject)
         subject.attach(self)
-        print 'view now bound to %s' % (subject.codename)
+        print '%s now observes to %s' % (self.__class__.__name__, subject.codename)
 
     def recursive_bind_subject(self, subject):
         """Bind recursively to the subject and all its parents"""
@@ -72,7 +72,7 @@ class ElementView(pygame.sprite.DirtySprite, Observer):
             self.cutoff_subject(subject)
 
     def destroy(self):
-        # call mother classes' destructors
+        # call "mother classes' destructors"
         self.kill()  # remove references from all groups containing this sprite
         self.clear_subjects()  # remove references (bidirectional) as an observer
 
@@ -181,19 +181,17 @@ class AreaItemClickable(ItemClickable):
     """
     def __init__(self, item, visible=1):
         ItemClickable.__init__(self, item, visible)
+        print 'creating aic for %s' % item.codename
 
-        if hasattr(item, 'open'):
-            # un conteneur duck-typed est par défaut ouvert/fermé sur clic droit, selon son état actuel
-            if item.open_state:
-                self.specific_verb = 'close'
-            else:
-                self.specific_verb = 'open'
-        elif hasattr(item, 'take'):
+        if hasattr(item, 'take'):
             # un autre objet pouvant être pris sera pris
             self.specific_verb = 'take'
         else:
             # sinon, on se ramènera au verbe par défaut pour les clics gauches
             self.specific_verb = None
+        # si c'est un conteneur, update_open_state affectera automatiquement la bonne action spécifique
+        # on peut aussi appeler systématiquement update() à chaque vue initialisée
+        self.update()
 
     def update(self):
         self.update_visibility()
@@ -201,13 +199,16 @@ class AreaItemClickable(ItemClickable):
         if hasattr(self.item, 'open_state'):
             self.update_open_state()
         self.update_parent()
+        self.update_position()
 
     def update_open_state(self):
         if self.item.open_state:
             self.change_image(self.item.area_open_image_path)
+            self.specific_verb = 'close'
         else:
             # area_image_path est l'image de l'objet fermée dans la zone
             self.change_image(self.item.area_image_path)
+            self.specific_verb = 'open'
 
     def update_parent(self):
         if self.item.parent.tag == 'inventory':
@@ -234,32 +235,37 @@ class InventoryItemClickable(ItemClickable):
     def __init__(self, item):
         ItemClickable.__init__(self, item, visible=1)  # toujours visible dans l'inventaire
 
-        if hasattr(item, 'open'):
-            # un conteneur duck-typed est par défaut ouvert/fermé sur clic droit, selon son état actuel
-            if item.open_state:
-                self.specific_verb = 'close'
-            else:
-                self.specific_verb = 'open'
-        else:
-            # sinon, on observe l'objet (étant dans l'inventaire, pas de déplacement ni de re-prise de l'objet envisagée)
-            self.specific_verb = 'look_at'
+        self.specific_verb = 'use'
+        self.update()
 
     def update(self):
         # duck-type conteneurs
         if hasattr(self.item, 'open_state'):
-            if self.item.open_state:
-                self.change_image(self.item.inventory_open_image_path)
-            else:
-                # area_image_path est l'image de l'objet fermée dans la zone
-                self.change_image(self.item.inventory_image_path)
+            self.update_open_state()
+            # chaque objet est capable de se replacer au bon endroit !
+        self.update_indexed_position()
 
+    def update_open_state(self):
+        if self.item.open_state:
+            self.change_image(self.item.inventory_open_image_path)
+            self.specific_verb = 'close'
+        else:
+            # area_image_path est l'image de l'objet fermée dans la zone
+            self.change_image(self.item.inventory_image_path)
+            self.specific_verb = 'open'
+
+    def update_indexed_position(self):
+        inventory = self.subject_list[1]  # l'inventaire est le premier parent
+        index = inventory.children.index(self.item)  # on récupère l'index dans l'inventaire
+        self.rect.topleft = self.subject_list[1].view_position  # on part du topleft de l'inventory
+        self.rect.move_ip(*get_relative_position_for(index))  # on décale en fonction de l'index
 
 class GateClickable(Clickable):
     """Vue d'une porte"""
     def __init__(self, gate, visible=1):
         """Initialise la porte avec l'area passée en argument"""
         Clickable.__init__(self, gate.image_path, gate.view_position, visible)
-        self.bind_subject(gate)
+        self.recursive_bind_subject(gate)
 
     def on_click(self, adventurestate, button):
         gate = self.subject_list[0]
@@ -293,53 +299,32 @@ class InventoryView(ElementView):
     """
     def __init__(self, inventory, visible=1):
         ElementView.__init__(self, inventory.image_path, inventory.view_position, visible)
-        self.bind_subject(inventory)
+        self.recursive_bind_subject(inventory)
         # maybe we should also bind the items IN the inventory,
         # for now every item takes care of its own image
 
-        self.item_group = pygame.sprite.RenderUpdates()
+        # self.item_view_list = []
+        print '%s position: %s, %s' % (self.subject_list[0].codename, self.rect.x, self.rect.y)
+        self.update_position()
 
     def update(self):
         self.update_visibility()
         self.update_position()
-        self.update_content()  # add content aspect
 
-    def update_content(self):
-        print "Inventory view: update content"
-
-        # destroy all sprites but the first, which is the inventory background
-        for item_view in self.item_group:
-            item_view.destroy()
-
-        # (we could also remove them from the view to reuse the observer sprites later):
-        # self.remove(self.get_sprites_from_layer(self.inventory_layer)[1:])
-
-        # add the views for every item ion the inventory
-        # TODO: arrow system for more than 4 items
-        for index, item in enumerate(self.inventory.children):
-            # dans cette version, on recrée la vue à chaque fois:
-            item_view = InventoryItemClickable(item)
-            item_view.rect.topleft = self.rect.topleft
-            # print get_relative_position_for(index)
-            item_view.rect.move_ip(*get_relative_position_for(index))
-            # print "after: " + str(item.inventory_clickable.rect.topleft)
-            self.item_group.add(item_view)
-            print "added view of %s in item_group of inventory at %s, %s" % (item.codename, item_view.rect.x, item_view.rect.y)
-            self.dirty = 1
 
     @property
     def inventory(self):
         return self.subject_list[0]
 
 def get_relative_position_for(index):
-    return (40 * index, 20)
+    return (80 * index + 20, 20)
 
 class MenuButtonClickable(Clickable):
     """Vue d'un bouton (classe abstraite)"""
     def __init__(self, button, visible):
         """Initialise la vue du bouton passé en argument"""
         Clickable.__init__(self, button.image_path, button.relative_rect.topleft, visible)
-        self.bind_subject(button)
+        self.recursive_bind_subject(button)
 
 
 class VerbButtonClickable(MenuButtonClickable):
@@ -370,28 +355,14 @@ class AdventureMenuView(ElementView):
     """
     def __init__(self, menu, visible=1):
         ElementView.__init__(self, menu.image_path, menu.view_position, visible)
-        self.bind_subject(menu)
-
-
-    # # may be generalized to other views containing other views: inventory, etc.
-    # @property
-    # def all_visible(self):
-    #     """Visibility property of self plus all clickables under self"""
-    #     return self.visible
-
-    # @all_visible.setter
-    # def all_visible(self, value):
-    #     print 'using my visible setter'
-    #     self.visible = value
-    #     for button in self.buttons:
-    #         button.visible = value
+        self.recursive_bind_subject(menu)
 
 
 class ActionLabel(ElementView):
     """Label observant l'action actuelle (qui n'est pas vraiment un élément)"""
     def __init__(self, action_subject, image_path, position, visible, textcolor, bgcolor):
         ElementView.__init__(self, image_path, position, visible)
-        self.bind_subject(action_subject)
+        self.recursive_bind_subject(action_subject)
         self.font = pygame.font.SysFont("helvetica", 20)
 
     def update(self):
@@ -406,11 +377,11 @@ class ActionLabel(ElementView):
         if self.verb_subject.complement is None:
             action_str = self.verb_subject.verb
         else:
-            action_str = " %s %s avec ..." % (self.verb_subject.verb, self.verb_subject.complement)
+            action_str = " %s %s avec ..." % (self.verb_subject.verb, self.verb_subject.complement.codename)
 
         label_image = self.font.render(action_str, True, self.verb_subject.textcolor, self.verb_subject.bgcolor)
         self.image = label_image
-        self.dirty = 1
+        self.dirty = 1  # seems optional...
         if self.verb_subject.view_position is not None:
             self.rect.topleft = self.verb_subject.view_position
         self.rect.size = label_image.get_size()
@@ -422,10 +393,12 @@ class ActionLabel(ElementView):
 # BETA: switch between both methods to activate query mode
 
 def _on_click_for_interactive_button(self, adventurestate):
+    """beta : pour revenir au mode classique"""
     adventurestate.verb = self.codename
     del adventurestate.complement
 
 def _on_click_for_query_interactive_button(self, adventurestate):
+    """beta : pour passer en mode query (menu contextuel par objet)"""
     adventurestate.verb = self.codename  # opt. ici mais pratique en mouse-over pour voir ce qu'on fait
     # direct link to item with a method 'get_by_name'? but this ensures the item is in the current area...
     # the item could also be linked to the parent menu, but one link is necessary in both cases
