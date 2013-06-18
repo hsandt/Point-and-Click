@@ -109,7 +109,7 @@ class Element(object):
 
 class ObservableElement(Element, Subject):
     """
-    Element pouvant disposer d'une vue = observateur
+    Element pouvant disposer d'une vue = observateur (classe abstraite)
 
     Attributs hérités :
         codename            -- identifiant

@@ -364,6 +364,7 @@ class ActionLabel(ElementView):
         ElementView.__init__(self, image_path, position, visible)
         self.recursive_bind_subject(action_subject)
         self.font = pygame.font.SysFont("helvetica", 20)
+        self.update_text()
 
     def update(self):
         self.update_visibility()

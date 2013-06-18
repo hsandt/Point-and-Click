@@ -47,15 +47,12 @@ class AdventureState(GameState):
 
     def on_enter(self):
 
-        self.cursor = None  # TODO: autoriser les curseurs personnalisés
+        # TODO: autoriser les curseurs personnalisés
+        
         # mouse_command décrit, pour chaque bouton de la souris, l'état d'appui
         # 0 : relâché, 1 : vient d'être pressé, 2 : en cours d'appui
         # et la position du clic (None ici)
         self.mouse_command = {'left': [0, None], 'right': [0, None]}
-
-        # on réinitialise l'action
-        del self.verb
-        del self.complement
         
     def on_exit(self):
         pass
