@@ -1,2 +1,3 @@
 .DS_Store
 *.pyc
+engine/build/*
