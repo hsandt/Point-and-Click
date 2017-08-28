@@ -2,7 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "source"
+			"path": "."
 		}
 	],
 	"html_panel":
@@ -17,6 +17,17 @@
 				"style_gutter": false,
 				"wrap": 900
 			}
+		}
+	],
+	"build_systems": [
+		{
+			"name": "Play Final Sample",
+			"cmd": [
+				"/Users/hs/Developer/Python/VirtualEnvs/geta/bin/python2.7",
+				"-m",
+				"final_sample.source.main"
+			],
+			"working_dir": "${project_dir}"
 		}
 	]
 }

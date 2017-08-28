@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os, sys
-import pygame
+import pygame_sdl2 as pygame
 from ..exception.exception import LoadError
 
 
@@ -13,7 +13,8 @@ def load_image(image_path, colorkey=None):
     except pygame.error as message:
         print 'Cannot load image at:', image_path
         # never reached, pygame stops it here!
-        raise LoadError(image_path, message)
+        raise  # more info, such as file is not a BMP file
+        # raise LoadError(image_path, message)
     else:
         if colorkey is not None:
             image = image.convert()

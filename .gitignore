@@ -1,3 +1,12 @@
 .DS_Store
 *.pyc
-engine/build/*
+
+/engine/build/*
+
+*.sublime-workspace
+
+.idea/Geta.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml

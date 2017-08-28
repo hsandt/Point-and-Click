@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pygame
+import pygame_sdl2 as pygame
 from .observer import Observer
 from ..helper import load_image
 from ..exception import AbstractMethodError
@@ -29,7 +29,7 @@ class ElementView(pygame.sprite.DirtySprite, Observer):
         # monochromatic surface instead of images may be allowed later
         self.image = load_image(image_path)
         self.rect = pygame.Rect(position, self.image.get_size())
-        self.mask = pygame.mask.from_surface(self.image)  # use it!
+        # self.mask = pygame.mask.from_surface(self.image)  # currently not used, good thing because pygame_sdl2 does not support it yet
         self.visible = visible  # TODO: should affect detection
 
         self.subject_list = []

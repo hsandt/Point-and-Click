@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import pygame
+import pygame_sdl2 as pygame
 
 from ..view import views
 from ..model import models

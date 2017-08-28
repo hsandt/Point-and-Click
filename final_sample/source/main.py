@@ -1,21 +1,23 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# first, append a special path to the engine in case you have not installed it
 import sys
-sys.path.append('../../engine')
-from source.state.game import GameApp
-from source.model import models
+
+from engine import source as geta
+
+from engine.source.state.game import GameApp
+from engine.source.model import models
 
 from helper.files import get_resource_path
-from source.helper.setter import set_behaviour
+from engine.source.helper import setter
 
 def main():
 
     # on initialise le jeu point and click
-    pac_game = GameApp((640, 400), title="DEMO game for GETA")
+    game_app = GameApp((640, 400), title="DEMO game for GETA")
 
     # on construit l'adventure state avec des salles et des objets
-    adv = pac_game.manager.states['adventure']
+    adv = game_app.manager.states['adventure']
     adv.set_descriptions_from_file(get_resource_path("descriptions.txt"))
 
     # room 1
@@ -32,14 +34,14 @@ def main():
     locker = models.Container("locker", None, adv, room2, get_resource_path("closed_locker.png"), (325, 150), None, open_state=False, key_name='key', area_open_image_path=get_resource_path("open_locker.png"))
     locker.acquire_element(teapot)
     print "!!! " + teapot.parent.codename
-    
+
     def use_locker(self, state):
         if state.complement is None:
             state.display_description("I cannot use this item alone.")
         else:
             self._use_tool_with(state, state.complement)
         return True  # action terminée
-    set_behaviour(locker, "use", use_locker)
+    setter.set_behaviour(locker, "use", use_locker)
 
     # drowning room
     drowning = models.Area('drowning', "the drowning 'room'", adv,  get_resource_path("drowning.png"))
@@ -67,10 +69,10 @@ def main():
     adv.enter_area('room1')
 
     # on peut entrer dans le state qui est prêt
-    pac_game.manager.enter_state("adventure")
+    game_app.manager.enter_state("adventure")
 
     # on peut lancer le jeu
-    pac_game.run()
+    game_app.run()
 
 
 if __name__ == '__main__':

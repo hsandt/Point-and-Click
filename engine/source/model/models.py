@@ -1,7 +1,6 @@
-# -*-coding:Latin-1 -*
+# -*-coding:utf-8 -*
 
-import pygame
-from pygame import sprite
+import pygame_sdl2 as pygame
 from .subject import Subject
 from ..exception.exception import GetError, AbstractMethodError
 
@@ -11,14 +10,14 @@ class Element(object):
     Elément : zone, objet, personnage ou porte
 
     Il possède une description et réagit au verbe 'look_at'
-    Il correspond à un élément quelconque sous root dans l'arborescence XML (à venir).
+    Il correspond à un élément quelconque sous root dans l'arborescence XML (à venir).
 
     Attributs :
         codename            -- identifiant
         fullname            -- nom descriptif (codename par défaut)
         description         -- description
         tag                 -- type d'élément ('area', 'item', 'inventory'...)
-        _parent             -- parent dans l'arborescence des élements
+        _parent             -- parent dans l'arborescence des éléments
         children            -- liste des enfants
 
         """
@@ -224,7 +223,7 @@ class Item(ObservableElement):
         self.area_position = area_position
         self.inventory_image_path = inventory_image_path
 
-        # l'objet peut être pris s'il a une image pour l'inventaire !
+        # l'objet peut Ãªtre pris s'il a une image pour l'inventaire !
         self.takeable = inventory_image_path is not None
     
     # TODO: trouver un moyen de ne DEFINIR la méthode que si l'objet est préhensible
@@ -236,7 +235,7 @@ class Item(ObservableElement):
                 elif self.parent.tag in ['area', 'item']:
                     # on prend l'objet depuis une zone ou depuis un coffre
                     self.parent = adventurestate.inventory
-                    # en parallèle, ajouter la vue (les observateurs ne suffisent pas quand une vue est créée)
+                    # en parallÃ¨le, ajouter la vue (les observateurs ne suffisent pas quand une vue est créée)
                     adventurestate.add_item_view_to_inventory(self)
                     self.notify()
                     adventurestate.inventory.notify()
@@ -283,9 +282,9 @@ class Item(ObservableElement):
 
 class Container(Item):
     """
-    Conteneur : item pouvant être ouvert / fermé, et révélant son contenu lorsqu'il est ouvert
+    Conteneur : item pouvant Ãªtre ouvert / fermé, et révélant son contenu lorsqu'il est ouvert
 
-    Il peut être préhensible ou non.
+    Il peut Ãªtre préhensible ou non.
 
     Attributs hérités :
         codename
@@ -298,8 +297,8 @@ class Container(Item):
     Attributs propres:
         open_state                -- booléen indiquant si le conteneur est ouvert (True) ou fermé (False)
         key_name                  -- codename de la clé pouvant ouvrir le conteneur, ou None s'il n'y a pas besoin de clé
-        area_open_image_path      -- image path (ou peut-être image, à voir)
-        inventory_open_image_path -- image path (ou peut-être image, à voir)
+        area_open_image_path      -- image path (ou peut-Ãªtre image, Ã  voir)
+        inventory_open_image_path -- image path (ou peut-Ãªtre image, Ã  voir)
 
     """
     def __init__(self, codename, fullname, adventurestate, parent, area_image_path=None, area_position=None, inventory_image_path=None, open_state=False, key_name=None, area_open_image_path=None, inventory_open_image_path=None):
@@ -314,26 +313,26 @@ class Container(Item):
         if self.open_state:
             adventurestate.display_description("%s is already open." % self.fullname)
         else:
-            # le conteneur doit être ouvert, on vérifie si une clé est nécessaire
+            # le conteneur doit Ãªtre ouvert, on vérifie si une clé est nécessaire
             if self.key_name is None:
                 # ouverture effective du conteneur
                 self.open_state = True
                 adventurestate.display_description("You open %s." % self.fullname)
             else:
                 # si une clé est nécessaire, il faut passer par l'action 'use key with...'
-                # remarque : la clé peut être un outil quelconque, comme un pied de biche...
+                # remarque : la clé peut Ãªtre un outil quelconque, comme un pied de biche...
                 adventurestate.display_description("You need something to open %s." % self.fullname)
         return True
 
     def _use_tool_with(self, adventurestate, tool):
-        """Applique l'outil qui devrait être une clé ou un autre outil capable d'ouvrir le conteneur"""
+        """Applique l'outil qui devrait Ãªtre une clé ou un autre outil capable d'ouvrir le conteneur"""
         if tool.codename == self.key_name:
             if self.open_state:
-                print("%s est déjà ouvert." % self.fullname)
+                print("%s est déjÃ  ouvert." % self.fullname)
             else:
                 self.open_indeed(adventurestate)
                 adventurestate.display_description("You open %s with %s." % (self.fullname, tool.fullname))
-                # remarque : ici, la clé ne disparaît pas !
+                # remarque : ici, la clé ne disparaÃ®t pas !
         else:
             adventurestate.display_description("I cannot use %s on %s" % (tool.fullname, self.fullname))
 
@@ -347,23 +346,23 @@ class Container(Item):
         self.content.remove(element)
         print 'element %s removed from container %s' % (element.codename, self.codename)
 
-    # ne pas utiliser de propriété pour open_state car il faut accéder à des paramètres comme adventurestate en plus
+    # ne pas utiliser de propriété pour open_state car il faut accéder Ã  des paramÃ¨tres comme adventurestate en plus
     def open_indeed(self, adventurestate):
         """Ouverture effective"""
         self.open_state = True
 
         if self.parent.tag == 'inventory':
-            # dans l'inventaire, ouvrir une boîte dépose le contenu dans l'inventaire
+            # dans l'inventaire, ouvrir une boÃ®te dépose le contenu dans l'inventaire
             print "CONTENT: %s" % self.children
             self.parent.add_item_list(self.content)
             self.remove_all()
             # ajouter également les observateurs dans la vue de l'inventaire !
             adventurestate.add_item_view_to_inventory(contained_item)
         else:  # area
-            # à moins de charger tout de suite les objets contenus et de ne les rendre visibles que maintenant, il faut dire à la vue de charger les objets contenus maintenant
+            # Ã  moins de charger tout de suite les objets contenus et de ne les rendre visibles que maintenant, il faut dire Ã  la vue de charger les objets contenus maintenant
             for contained_item in self.children:
                 adventurestate.add_item_view_to_area(contained_item)
-            # remarque : les objets *restent* contenus, au cas où on refermerait le conteneur
+            # remarque : les objets *restent* contenus, au cas oÃ¹ on refermerait le conteneur
         print("%s has been opened." % self.codename)
         self.notify()  # notifies container and contained!
 
@@ -372,7 +371,7 @@ class Container(Item):
         self.open_state = False
 
         if self.parent.codename == 'inventory':
-            # dans l'inventaire, fermer une boîte ne cache pas les objets déjà libérés
+            # dans l'inventaire, fermer une boÃ®te ne cache pas les objets déjÃ  libérés
             pass
         else:
             pass
@@ -388,7 +387,7 @@ class Container(Item):
 
 class Character(ObservableElement):
     """
-    PNJ avec lesquels on peut 'discuter' et plus si affinité (à la discrétion du développeur)
+    PNJ avec lesquels on peut 'discuter' et plus si affinité (Ã  la discrétion du développeur)
 
     En développement
 
@@ -408,7 +407,7 @@ class Gate(ObservableElement):
         codename            -- identifiant
         fullname            -- nom descriptif (codename par défaut)
         description         -- description
-        observer_list       -- liste des observateurs (vues associées à l'objet)
+        observer_list       -- liste des observateurs (vues associées Ã  l'objet)
         _visible
 
     Attributs propres :
@@ -448,7 +447,7 @@ class Inventory(ObservableElement):
 
     """
     def __init__(self, adventurestate):
-        """Initialisation à vide, les autres caractéristiques seront accédées par set"""
+        """Initialisation Ã  vide, les autres caractéristiques seront accédées par set"""
         ObservableElement.__init__(self, "inventory", "l'inventaire", adventurestate, tag="inventory", parent=None)
 
         self.view_position = None
@@ -503,12 +502,12 @@ class AdventureMenu(ObservableElement):
         description
         parent
         children            -- liste des boutons
-        observer_list       -- liste des observateurs (vues associées à l'objet)
+        observer_list       -- liste des observateurs (vues associées Ã  l'objet)
 
     Attributs propres :
         visible        -- booléen indiquant si le menu est visible
         image_path      -- chemin de l'image utilisée pour le menu
-        view_position   -- position à fournir à la vue
+        view_position   -- position Ã  fournir Ã  la vue
 
     """
     def __init__(self, codename, fullname, adventurestate, image_path, view_position, visible=True, *buttons):
@@ -540,14 +539,14 @@ class ActionSubject(ObservableElement):
         _complement      -- le complément en cours
         visible         -- booléen indiquant si le verbe est visible
         image_path      -- chemin de l'image utilisée pour le menu
-        view_position   -- position à fournir à la vue
+        view_position   -- position Ã  fournir Ã  la vue
 
     """
     def __init__(self, adventurestate, starting_verb):
         ObservableElement.__init__(self, 'verb_label', None, adventurestate, tag="verb", parent=None)
         self._verb = starting_verb
         self._complement = None
-        # le reste doit être initialisé avant de lancer le jeu
+        # le reste doit Ãªtre initialisé avant de lancer le jeu
         self.image_path = None
         self.view_position = (0, 0)
         self.textcolor = (255, 255, 255)
@@ -576,7 +575,7 @@ class ActionSubject(ObservableElement):
 def set_names(self, codename, fullname):
     """
     helper pour fournir un nom complet si besoin
-    1° argument nommé 'self' pour faciliter la lecture
+    1Â° argument nommé 'self' pour faciliter la lecture
 
     """
     self.codename = codename

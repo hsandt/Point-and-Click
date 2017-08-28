@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pygame
+import pygame_sdl2 as pygame
 from menustate import MenuState
 from adventurestate import AdventureState
 from ..view import LayeredView
@@ -28,9 +28,10 @@ class GameApp(object):
         self.title = title
         self.FPS = FPS
 
-        # initialisatio des modules nécessaires à la construction du jeu
+        # initialisation des modules nécessaires à la construction du jeu
         pygame.font.init()
         pygame.display.init() # temp
+        # pygame.init()
         self.screen = pygame.display.set_mode(self.window_size)
 
         # création du game state manager (inclut la création des game states)

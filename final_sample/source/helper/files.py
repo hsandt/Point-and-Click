@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os
+from os.path import dirname, join
 
-# on remonte de deux dossiers pour atteindre le dossier projet
-MAIN_DIRECTORY = os.path.join(os.path.dirname(__file__), "..", "..","sample_resource")
+__author__ = 'huulong'
 
+# this module is located in final_sample/source/helper so the main directory is final_sample/
+MAIN_DIRECTORY = dirname(dirname(dirname(__file__)))
+
+
+def get_full_path(*path):
+    return join(MAIN_DIRECTORY, *path)
+
+
+# the resource folder is final_sample/sample_resource/
 def get_resource_path(*path):
-    return os.path.join(MAIN_DIRECTORY, *path)
+    return join(MAIN_DIRECTORY, "sample_resource", *path)
